@@ -1,0 +1,61 @@
+{
+  "run_timestamp": "2026-07-11T23:43:22.062222",
+  "original_rows": 25,
+  "corrupted_rows": 26,
+  "clean_rows": 25,
+  "pipeline_passed": true,
+  "injection_log": {
+    "A1_negative_stock": {
+      "rows": [
+        23
+      ],
+      "cause": "Scanner return posted before original sale"
+    },
+    "A2_null_price": {
+      "rows": [
+        12
+      ],
+      "cause": "CSV import lost column alignment"
+    },
+    "A3_price_inversion": {
+      "rows": [
+        18
+      ],
+      "cause": "Manual markdown set retail below cost"
+    },
+    "A4_future_date": {
+      "rows": [
+        14
+      ],
+      "value": "2026-07-17",
+      "cause": "POS terminal clock drift"
+    },
+    "A5_stock_outlier": {
+      "rows": [
+        12
+      ],
+      "cause": "ERP defaulted to max int on migration"
+    },
+    "A6_duplicate_rows": {
+      "source_rows": [
+        23
+      ],
+      "cause": "ETL cron overlap; double insert"
+    },
+    "A7_blank_name": {
+      "rows": [
+        25
+      ],
+      "cause": "Operator pressed Enter, skipped name field"
+    }
+  },
+  "cleaning_report": {
+    "C01_negative_stock": 2,
+    "C02_null_price": 1,
+    "C03_price_inversion": 1,
+    "C04_future_dates": 1,
+    "C05_stock_outlier": 1,
+    "C06_duplicates": 1,
+    "C07_blank_names": 0
+  }
+}

@@ -1,0 +1,4 @@
+Series,ADF_Stat,p_value,Stationary,Critical_1pct,Critical_5pct
+Raw Revenue,-8.3,0.0,✅ YES,-3.4494,-2.8699
+First-Order Diff,-10.6945,0.0,✅ YES,-3.4497,-2.8701
+Seasonal Diff (7),-7.1751,0.0,✅ YES,-3.45,-2.8702
