@@ -1,61 +1,61 @@
 Customer_ID,First_Name,Last_Name,Email,City,State,Join_Date,Loyalty_Tier
-C0001,Randall,Rocha,ithomas@example.org,Juliechester,MH,2024-08-01,Gold
-C0002,Brandy,Cox,williamdavis@example.org,East Courtneychester,PA,2025-07-07,Gold
-C0003,Bryan,James,jrice@example.org,Lake Nicoleview,WI,2025-08-15,Silver
-C0004,Danielle,Rodriguez,amoore@example.net,Teresaburgh,NY,2024-09-16,Platinum
-C0005,Rita,Harrell,meagan89@example.org,West Kathryn,ND,2024-11-14,Bronze
-C0006,Stephanie,Nielsen,georgetracy@example.org,Natashaport,IA,2026-02-14,Gold
-C0007,Brian,Humphrey,millertodd@example.org,East Donna,OH,2025-03-12,Silver
-C0008,Frederick,Rose,ibrandt@example.net,Lake Larry,TN,2024-08-23,Silver
-C0009,Debra,Kim,omartinez@example.org,Andrewside,IN,2026-05-02,Gold
-C0010,Brianna,Smith,perezrebecca@example.com,New Johnfort,IL,2025-05-17,Bronze
-C0011,Amber,Cummings,esanchez@example.com,North Collin,NE,2025-05-12,Gold
-C0012,Michael,Jenkins,nuneztracey@example.org,South Jessicaville,IA,2024-12-05,Gold
-C0013,James,Herrera,robertramirez@example.org,South Lindseyside,CT,2026-05-17,Gold
-C0014,Brent,Kidd,novaksara@example.org,South Todd,IL,2025-01-01,Platinum
-C0015,Michelle,Barrera,nicholasgalloway@example.com,Mitchellside,TN,2025-01-29,Bronze
-C0016,Jennifer,Moore,jeff09@example.net,Lake Leeton,OR,2025-08-12,Silver
-C0017,Thomas,Calhoun,brianromero@example.org,New Carlosbury,MO,2025-07-18,Bronze
-C0018,David,Zamora,bethwilliams@example.org,Sandovalshire,NC,2026-03-05,Silver
-C0019,Leslie,Green,john62@example.net,Stephenland,AL,2024-12-08,Bronze
-C0020,Stephen,Murillo,jonesjason@example.com,West Nicole,FM,2024-09-08,Bronze
-C0021,John,Mitchell,tbass@example.com,Lake Lisaport,TN,2025-11-08,Silver
-C0022,Dale,Humphrey,darrell18@example.org,Juanborough,VT,2025-04-03,Bronze
-C0023,Matthew,Watts,william40@example.org,Calderonton,AL,2025-11-13,Platinum
-C0024,Matthew,Anderson,evan78@example.net,Hoffmanville,CA,2024-08-18,Bronze
-C0025,Sierra,Vazquez,amydavenport@example.net,South David,ME,2026-01-05,Bronze
-C0026,Michael,Fitzpatrick,nolanjason@example.org,West Kimberlychester,RI,2025-02-26,Gold
-C0027,Kara,Frost,michellecherry@example.org,Johnsonmouth,WY,2026-05-04,Bronze
-C0028,Sarah,Pham,josephcobb@example.org,Brennanfort,IN,2026-03-28,Bronze
-C0029,James,Sellers,kevin33@example.org,South Mark,VI,2025-12-11,Gold
-C0030,Chad,Ayala,darlene68@example.com,North Natalieview,HI,2024-11-17,Bronze
-C0031,Beverly,Terrell,rodriguezryan@example.net,Samuelhaven,DE,2024-10-31,Silver
-C0032,Paul,Ray,bradley60@example.net,West Ryan,TN,2025-09-20,Platinum
-C0033,Samantha,Hanson,cortezkevin@example.com,Nguyenport,OH,2025-05-10,Platinum
-C0034,David,Fisher,lbyrd@example.net,Richardtown,ME,2024-09-04,Platinum
-C0035,Justin,Jordan,steven73@example.net,Leonburgh,TN,2025-03-25,Gold
-C0036,Christopher,Robertson,clarence34@example.org,East Andrew,IA,2026-05-25,Platinum
-C0037,Tracey,Carr,gibsonolivia@example.net,Lake Heather,NM,2024-07-22,Bronze
-C0038,Reginald,Hernandez,staffordmichelle@example.org,Robinsonhaven,NH,2024-12-11,Bronze
-C0039,Brent,Wright,bryantlaurie@example.net,Stephaniemouth,RI,2024-08-24,Bronze
-C0040,Lisa,Mcclain,jrivas@example.com,Lake Michelle,NV,2024-10-20,Bronze
-C0041,Jonathon,Wright,katie87@example.net,West Scott,VT,2026-03-29,Gold
-C0042,Justin,Nelson,patricia12@example.org,South Heather,VT,2025-01-13,Bronze
-C0043,Jason,Perry,amy60@example.org,Priceshire,UT,2025-08-19,Gold
-C0044,Andrew,Gilmore,wwoods@example.com,Castanedachester,ND,2024-09-28,Bronze
-C0045,Julie,Payne,tracynelson@example.com,South Matthewfurt,VA,2025-08-27,Platinum
-C0046,Frederick,Mcdonald,tinaferguson@example.com,North Dawnberg,VI,2025-05-17,Platinum
-C0047,Steven,Williams,dmurphy@example.com,Kathleenfurt,KY,2024-08-04,Bronze
-C0048,Karen,Decker,mary70@example.net,West Jeffreyland,WI,2025-02-11,Silver
-C0049,Susan,Williams,herringjames@example.org,East David,TN,2024-12-12,Silver
-C0050,Danny,Gould,xlyons@example.com,New Catherine,WA,2026-01-23,Platinum
-C0051,Jennifer,Strickland,tamirodriguez@example.org,Barbarafurt,MO,2024-11-30,Gold
-C0052,Shelly,Gonzalez,curtisbarton@example.net,Port Tonyaton,MI,2024-08-31,Silver
-C0053,Amanda,Stanley,huntermatthew@example.com,Garciastad,SC,2025-08-10,Gold
-C0054,Patricia,Stevens,ryangross@example.net,Christinaside,WI,2026-05-31,Silver
-C0055,Timothy,Graham,marcus31@example.com,Sanchezmouth,OK,2026-02-05,Bronze
-C0056,Cheryl,Gray,snydermark@example.com,West Lauren,MA,2026-06-06,Platinum
-C0057,Joshua,Carlson,angela83@example.org,Lake Richard,OH,2024-12-08,Bronze
-C0058,Katherine,Vaughn,bwest@example.org,Jeffreybury,ME,2025-08-03,Silver
-C0059,Elizabeth,Wood,ronald85@example.com,Nelsonview,IN,2025-06-24,Silver
-C0060,David,Lee,newtonstephanie@example.net,East Javier,NJ,2025-04-15,Silver
+C0001,Randall,Rocha,ithomas@example.org,Juliechester,MH,2024-08-02,Gold
+C0002,Brandy,Cox,williamdavis@example.org,East Courtneychester,PA,2025-07-08,Gold
+C0003,Bryan,James,jrice@example.org,Lake Nicoleview,WI,2025-08-16,Silver
+C0004,Danielle,Rodriguez,amoore@example.net,Teresaburgh,NY,2024-09-17,Platinum
+C0005,Rita,Harrell,meagan89@example.org,West Kathryn,ND,2024-11-15,Bronze
+C0006,Stephanie,Nielsen,georgetracy@example.org,Natashaport,IA,2026-02-15,Gold
+C0007,Brian,Humphrey,millertodd@example.org,East Donna,OH,2025-03-13,Silver
+C0008,Frederick,Rose,ibrandt@example.net,Lake Larry,TN,2024-08-24,Silver
+C0009,Debra,Kim,omartinez@example.org,Andrewside,IN,2026-05-03,Gold
+C0010,Brianna,Smith,perezrebecca@example.com,New Johnfort,IL,2025-05-18,Bronze
+C0011,Amber,Cummings,esanchez@example.com,North Collin,NE,2025-05-13,Gold
+C0012,Michael,Jenkins,nuneztracey@example.org,South Jessicaville,IA,2024-12-06,Gold
+C0013,James,Herrera,robertramirez@example.org,South Lindseyside,CT,2026-05-18,Gold
+C0014,Brent,Kidd,novaksara@example.org,South Todd,IL,2025-01-02,Platinum
+C0015,Michelle,Barrera,nicholasgalloway@example.com,Mitchellside,TN,2025-01-30,Bronze
+C0016,Jennifer,Moore,jeff09@example.net,Lake Leeton,OR,2025-08-13,Silver
+C0017,Thomas,Calhoun,brianromero@example.org,New Carlosbury,MO,2025-07-19,Bronze
+C0018,David,Zamora,bethwilliams@example.org,Sandovalshire,NC,2026-03-06,Silver
+C0019,Leslie,Green,john62@example.net,Stephenland,AL,2024-12-09,Bronze
+C0020,Stephen,Murillo,jonesjason@example.com,West Nicole,FM,2024-09-09,Bronze
+C0021,John,Mitchell,tbass@example.com,Lake Lisaport,TN,2025-11-09,Silver
+C0022,Dale,Humphrey,darrell18@example.org,Juanborough,VT,2025-04-04,Bronze
+C0023,Matthew,Watts,william40@example.org,Calderonton,AL,2025-11-14,Platinum
+C0024,Matthew,Anderson,evan78@example.net,Hoffmanville,CA,2024-08-19,Bronze
+C0025,Sierra,Vazquez,amydavenport@example.net,South David,ME,2026-01-06,Bronze
+C0026,Michael,Fitzpatrick,nolanjason@example.org,West Kimberlychester,RI,2025-02-27,Gold
+C0027,Kara,Frost,michellecherry@example.org,Johnsonmouth,WY,2026-05-05,Bronze
+C0028,Sarah,Pham,josephcobb@example.org,Brennanfort,IN,2026-03-29,Bronze
+C0029,James,Sellers,kevin33@example.org,South Mark,VI,2025-12-12,Gold
+C0030,Chad,Ayala,darlene68@example.com,North Natalieview,HI,2024-11-18,Bronze
+C0031,Beverly,Terrell,rodriguezryan@example.net,Samuelhaven,DE,2024-11-01,Silver
+C0032,Paul,Ray,bradley60@example.net,West Ryan,TN,2025-09-21,Platinum
+C0033,Samantha,Hanson,cortezkevin@example.com,Nguyenport,OH,2025-05-11,Platinum
+C0034,David,Fisher,lbyrd@example.net,Richardtown,ME,2024-09-05,Platinum
+C0035,Justin,Jordan,steven73@example.net,Leonburgh,TN,2025-03-26,Gold
+C0036,Christopher,Robertson,clarence34@example.org,East Andrew,IA,2026-05-26,Platinum
+C0037,Tracey,Carr,gibsonolivia@example.net,Lake Heather,NM,2024-07-23,Bronze
+C0038,Reginald,Hernandez,staffordmichelle@example.org,Robinsonhaven,NH,2024-12-12,Bronze
+C0039,Brent,Wright,bryantlaurie@example.net,Stephaniemouth,RI,2024-08-25,Bronze
+C0040,Lisa,Mcclain,jrivas@example.com,Lake Michelle,NV,2024-10-21,Bronze
+C0041,Jonathon,Wright,katie87@example.net,West Scott,VT,2026-03-30,Gold
+C0042,Justin,Nelson,patricia12@example.org,South Heather,VT,2025-01-14,Bronze
+C0043,Jason,Perry,amy60@example.org,Priceshire,UT,2025-08-20,Gold
+C0044,Andrew,Gilmore,wwoods@example.com,Castanedachester,ND,2024-09-29,Bronze
+C0045,Julie,Payne,tracynelson@example.com,South Matthewfurt,VA,2025-08-28,Platinum
+C0046,Frederick,Mcdonald,tinaferguson@example.com,North Dawnberg,VI,2025-05-18,Platinum
+C0047,Steven,Williams,dmurphy@example.com,Kathleenfurt,KY,2024-08-05,Bronze
+C0048,Karen,Decker,mary70@example.net,West Jeffreyland,WI,2025-02-12,Silver
+C0049,Susan,Williams,herringjames@example.org,East David,TN,2024-12-13,Silver
+C0050,Danny,Gould,xlyons@example.com,New Catherine,WA,2026-01-24,Platinum
+C0051,Jennifer,Strickland,tamirodriguez@example.org,Barbarafurt,MO,2024-12-01,Gold
+C0052,Shelly,Gonzalez,curtisbarton@example.net,Port Tonyaton,MI,2024-09-01,Silver
+C0053,Amanda,Stanley,huntermatthew@example.com,Garciastad,SC,2025-08-11,Gold
+C0054,Patricia,Stevens,ryangross@example.net,Christinaside,WI,2026-06-01,Silver
+C0055,Timothy,Graham,marcus31@example.com,Sanchezmouth,OK,2026-02-06,Bronze
+C0056,Cheryl,Gray,snydermark@example.com,West Lauren,MA,2026-06-07,Platinum
+C0057,Joshua,Carlson,angela83@example.org,Lake Richard,OH,2024-12-09,Bronze
+C0058,Katherine,Vaughn,bwest@example.org,Jeffreybury,ME,2025-08-04,Silver
+C0059,Elizabeth,Wood,ronald85@example.com,Nelsonview,IN,2025-06-25,Silver
+C0060,David,Lee,newtonstephanie@example.net,East Javier,NJ,2025-04-16,Silver

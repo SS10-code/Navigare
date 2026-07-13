@@ -1,5 +1,5 @@
 {
-  "run_timestamp": "2026-07-11T23:43:22.062222",
+  "run_timestamp": "2026-07-12T23:21:11.517917",
   "original_rows": 25,
   "corrupted_rows": 26,
   "clean_rows": 25,
@@ -27,7 +27,7 @@
       "rows": [
         14
       ],
-      "value": "2026-07-17",
+      "value": "2026-07-18",
       "cause": "POS terminal clock drift"
     },
     "A5_stock_outlier": {

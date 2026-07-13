@@ -1,26 +1,26 @@
 Product_ID,SKU,Product_Name,Category,Cost_Price,Retail_Price,Margin_Pct,Current_Stock,Reorder_Level,Low_Stock_Flag,Last_Sold_Date,Dead_Stock_Flag,Supplier,Active,Days_Since_Sale
-1,CF-001,Croissant,Pastries,1.2,3.5,65.7,13,10,0,2026-07-03,0,"Rodriguez, Figueroa and Sanchez",YES,8
-2,CF-002,Muffin Blueberry,Pastries,0.8,2.75,70.9,2,10,1,2026-07-09,0,Doyle Ltd,YES,2
-3,CF-003,Cinnamon Roll,Pastries,1.1,3.25,66.2,1,10,1,2026-06-03,0,"Mcclain, Miller and Henderson",YES,38
-4,CF-004,Danish Almond,Pastries,1.3,3.75,65.3,35,10,0,2026-06-04,0,Davis and Sons,YES,37
-5,CF-005,Scone Cranberry,Pastries,0.9,2.5,64.0,5,10,1,2026-06-20,0,"Guzman, Hoffman and Baldwin",YES,21
-6,BR-001,Sourdough Loaf,Breads,2.5,7.5,66.7,5,10,1,2026-06-20,0,"Gardner, Robinson and Lawrence",YES,21
-7,BR-002,Baguette,Breads,1.0,3.5,71.4,21,10,0,2026-01-19,1,Blake and Sons,YES,173
-8,BR-003,Whole Wheat Loaf,Breads,2.2,6.5,66.2,6,10,1,2026-06-07,0,"Henderson, Ramirez and Lewis",YES,34
-9,BR-004,Rye Bread,Breads,2.8,7.0,60.0,2,10,1,2026-05-19,0,Garcia-James,YES,53
-10,BR-005,Focaccia Herb,Breads,2.0,6.0,66.7,6,10,1,2026-04-08,1,Abbott-Munoz,YES,94
-11,CK-001,Birthday Cake 8in,Cakes,8.0,32.0,75.0,5,10,1,2026-06-17,0,Blair PLC,YES,24
-12,CK-002,Cheesecake Slice,Cakes,3.0,7.5,60.0,68,10,0,2026-06-19,0,Dudley Group,YES,22
-13,CK-003,Carrot Cake,Cakes,3.5,7.25,51.7,74,10,0,2026-07-01,0,Arnold Ltd,YES,10
-14,CK-004,Red Velvet Slice,Cakes,3.2,7.0,54.3,30,10,0,2026-06-01,0,"Mcclure, Ward and Lee",YES,40
-15,CK-005,Tiramisu Cup,Cakes,2.5,6.0,58.3,4,10,1,2026-07-11,0,Williams and Sons,YES,0
-16,DR-001,Drip Coffee,Drinks,0.3,2.5,88.0,61,10,0,2026-02-24,1,Galloway-Wyatt,YES,137
-17,DR-002,Latte 16oz,Drinks,0.6,4.75,87.4,37,10,0,2026-05-31,0,James Group,YES,41
-18,DR-003,Matcha Latte,Drinks,0.8,5.5,85.5,28,10,0,2026-02-01,1,"Flowers, Martin and Kelly",YES,160
-19,DR-004,Cold Brew,Drinks,0.5,0.75,33.3,64,10,0,2026-07-03,0,"Adams, Zuniga and Wong",YES,8
-20,DR-005,Hot Chocolate,Drinks,0.7,4.0,82.5,8,10,1,2026-07-02,0,"Reid, Ferguson and Sanchez",YES,9
-21,SV-001,Quiche Lorraine,Savory,2.5,7.5,66.7,3,10,1,2026-06-03,0,Gray-Mayo,YES,38
-22,SV-002,Spinach Wrap,Savory,1.8,6.5,72.3,77,10,0,2026-05-17,0,"Watts, Robinson and Nguyen",YES,55
-23,SV-003,Turkey Panini,Savory,2.2,7.0,68.6,24,10,0,2026-06-20,0,Perez Inc,YES,21
-24,SV-004,Caprese Sandwich,Savory,2.0,6.75,70.4,0,10,1,2026-07-11,0,Morales-Jones,YES,0
-25,SV-005,Breakfast Burrito,Savory,1.9,6.25,69.6,5,10,1,2026-07-05,0,"Walter, Edwards and Rios",YES,6
+1,CF-001,Croissant,Pastries,1.2,3.5,65.7,13,10,0,2026-07-04,0,"Rodriguez, Figueroa and Sanchez",YES,8
+2,CF-002,Muffin Blueberry,Pastries,0.8,2.75,70.9,2,10,1,2026-07-10,0,Doyle Ltd,YES,2
+3,CF-003,Cinnamon Roll,Pastries,1.1,3.25,66.2,1,10,1,2026-06-04,0,"Mcclain, Miller and Henderson",YES,38
+4,CF-004,Danish Almond,Pastries,1.3,3.75,65.3,35,10,0,2026-06-05,0,Davis and Sons,YES,37
+5,CF-005,Scone Cranberry,Pastries,0.9,2.5,64.0,5,10,1,2026-06-21,0,"Guzman, Hoffman and Baldwin",YES,21
+6,BR-001,Sourdough Loaf,Breads,2.5,7.5,66.7,5,10,1,2026-06-21,0,"Gardner, Robinson and Lawrence",YES,21
+7,BR-002,Baguette,Breads,1.0,3.5,71.4,21,10,0,2026-01-20,1,Blake and Sons,YES,173
+8,BR-003,Whole Wheat Loaf,Breads,2.2,6.5,66.2,6,10,1,2026-06-08,0,"Henderson, Ramirez and Lewis",YES,34
+9,BR-004,Rye Bread,Breads,2.8,7.0,60.0,2,10,1,2026-05-20,0,Garcia-James,YES,53
+10,BR-005,Focaccia Herb,Breads,2.0,6.0,66.7,6,10,1,2026-04-09,1,Abbott-Munoz,YES,94
+11,CK-001,Birthday Cake 8in,Cakes,8.0,32.0,75.0,5,10,1,2026-06-18,0,Blair PLC,YES,24
+12,CK-002,Cheesecake Slice,Cakes,3.0,7.5,60.0,68,10,0,2026-06-20,0,Dudley Group,YES,22
+13,CK-003,Carrot Cake,Cakes,3.5,7.25,51.7,74,10,0,2026-07-02,0,Arnold Ltd,YES,10
+14,CK-004,Red Velvet Slice,Cakes,3.2,7.0,54.3,30,10,0,2026-06-02,0,"Mcclure, Ward and Lee",YES,40
+15,CK-005,Tiramisu Cup,Cakes,2.5,6.0,58.3,4,10,1,2026-07-12,0,Williams and Sons,YES,0
+16,DR-001,Drip Coffee,Drinks,0.3,2.5,88.0,61,10,0,2026-02-25,1,Galloway-Wyatt,YES,137
+17,DR-002,Latte 16oz,Drinks,0.6,4.75,87.4,37,10,0,2026-06-01,0,James Group,YES,41
+18,DR-003,Matcha Latte,Drinks,0.8,5.5,85.5,28,10,0,2026-02-02,1,"Flowers, Martin and Kelly",YES,160
+19,DR-004,Cold Brew,Drinks,0.5,0.75,33.3,64,10,0,2026-07-04,0,"Adams, Zuniga and Wong",YES,8
+20,DR-005,Hot Chocolate,Drinks,0.7,4.0,82.5,8,10,1,2026-07-03,0,"Reid, Ferguson and Sanchez",YES,9
+21,SV-001,Quiche Lorraine,Savory,2.5,7.5,66.7,3,10,1,2026-06-04,0,Gray-Mayo,YES,38
+22,SV-002,Spinach Wrap,Savory,1.8,6.5,72.3,77,10,0,2026-05-18,0,"Watts, Robinson and Nguyen",YES,55
+23,SV-003,Turkey Panini,Savory,2.2,7.0,68.6,24,10,0,2026-06-21,0,Perez Inc,YES,21
+24,SV-004,Caprese Sandwich,Savory,2.0,6.75,70.4,0,10,1,2026-07-12,0,Morales-Jones,YES,0
+25,SV-005,Breakfast Burrito,Savory,1.9,6.25,69.6,5,10,1,2026-07-06,0,"Walter, Edwards and Rios",YES,6

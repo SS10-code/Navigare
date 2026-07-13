@@ -1,11 +1,11 @@
 Feature,VIF,Status
-rolling_mean_7,18.1,❌ HIGH — consider drop/PCA
+rolling_mean_7,18.18,❌ HIGH — consider drop/PCA
 rolling_std_7,14.5,❌ HIGH — consider drop/PCA
-is_weekend,3.73,✅ OK
-lag_1,2.93,✅ OK
-sin_dow,2.62,✅ OK
+is_weekend,3.74,✅ OK
+lag_1,2.94,✅ OK
+sin_dow,2.66,✅ OK
 lag_7,2.27,✅ OK
-lag_14,2.23,✅ OK
+lag_14,2.22,✅ OK
 cos_dow,1.09,✅ OK
 cos_month,1.02,✅ OK
 sin_month,1.01,✅ OK
