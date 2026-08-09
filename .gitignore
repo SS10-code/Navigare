@@ -1,14 +1,37 @@
 # Python
 __pycache__/
 *.py[cod]
+*$py.class
 *.so
-.venv/
-venv/
+.Python
 env/
+venv/
+.venv/
+*.egg-info/
 
-# Secrets — never commit these
+# Streamlit
+.streamlit/
+
+# Data (generated)
+data/raw/
+data/clean/
+data/synthetic/
+*.csv
+*.json
+*.parquet
+
+# Node
+node_modules/
+.next/
+out/
+dist/
+build/
+
+# Environment / secrets — never commit these
 .env
-.env.*
+.env.local
+.env.*.local
+*.env
 *.pem
 *.key
 *.p12
@@ -16,12 +39,12 @@ env/
 id_rsa*
 *.p8
 
-# OS / editor
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swoop
+
+# OS
 .DS_Store
 Thumbs.db
-.idea/
-.vscode/
-*.swp
-
-# Streamlit
-.streamlit/secrets.toml
