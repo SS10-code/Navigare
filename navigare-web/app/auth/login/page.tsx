@@ -25,32 +25,45 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-paper text-text flex items-center justify-center p-6">
-      <div className="bg-panel border-2 border-border p-8 w-full max-w-sm relative" style={{ boxShadow: "8px 8px 0 0 #423A8E" }}>
-        <div className="absolute top-0 left-0 right-0 h-[4px] bg-gradient-to-r from-teal via-purple to-magenta" />
+    <div className="min-h-screen bg-paper text-ink flex items-center justify-center p-8">
+      <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <Icon name="logo" size={32} className="text-teal" />
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <Icon name="logo" size={32} className="text-accent" />
           </div>
-          <h1 className="text-3xl font-black uppercase tracking-tight">Navigare</h1>
-          <p className="label-mono text-[10px] text-muted mt-1">Sign in to your dashboard</p>
+          <h1 className="text-display text-2xl font-bold uppercase tracking-tight">Navigare</h1>
+          <p className="text-caption text-muted text-[10px] mt-1">Sign in to your dashboard</p>
         </div>
-        {error && (
-          <div className="bg-[#2E0A10] border-2 border-red text-red px-4 py-2 text-sm mb-4 font-mono">{error}</div>
-        )}
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label className="label-mono block text-[10px] font-bold text-muted mb-1.5">Email</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full" required />
-          </div>
-          <div>
-            <label className="label-mono block text-[10px] font-bold text-muted mb-1.5">Password</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full" required />
-          </div>
-          <button type="submit" className="btn-primary w-full">Log In</button>
-        </form>
-        <p className="text-center text-xs text-muted mt-4">
-          Don't have an account? <a href="/auth/signup" className="text-teal hover:underline">Sign up</a>
+        <div className="border-2 border-border bg-panel p-8">
+          {error && (
+            <div className="bg-accent/10 border-2 border-accent text-accent px-4 py-3 text-sm mb-6 font-mono">{error}</div>
+          )}
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div>
+              <label className="text-caption text-muted text-[10px] block mb-2">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full"
+                required
+              />
+            </div>
+            <div>
+              <label className="text-caption text-muted text-[10px] block mb-2">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full"
+                required
+              />
+            </div>
+            <button type="submit" className="btn-primary w-full">Log In</button>
+          </form>
+        </div>
+        <p className="text-center text-xs text-muted mt-6">
+          Don't have an account? <a href="/auth/signup" className="text-accent hover:underline font-semibold">Sign up</a>
         </p>
       </div>
     </div>

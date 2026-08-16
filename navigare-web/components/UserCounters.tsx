@@ -17,20 +17,20 @@ export default function UserCounters() {
   }, []);
 
   return (
-    <div className="px-3 py-2 border-t border-border mt-auto">
-      <div className="text-[9px] text-muted uppercase tracking-[0.2em] mb-2">Community</div>
+    <div className="px-3 py-3 border-t-2 border-border">
+      <div className="text-caption text-muted mb-2">Community</div>
       <div className="grid grid-cols-3 gap-2 text-center">
         <div>
-          <div className="text-sm font-black text-text">{counters.email_signups}</div>
-          <div className="text-[9px] text-muted uppercase">Email</div>
+          <div className="text-sm font-bold text-ink">{counters.email_signups}</div>
+          <div className="text-[9px] text-muted uppercase tracking-wider">Email</div>
         </div>
         <div>
-          <div className="text-sm font-black text-text">{counters.guest_sessions}</div>
-          <div className="text-[9px] text-muted uppercase">Guest</div>
+          <div className="text-sm font-bold text-ink">{counters.guest_sessions}</div>
+          <div className="text-[9px] text-muted uppercase tracking-wider">Guest</div>
         </div>
         <div>
-          <div className="text-sm font-black text-teal">{counters.total_users}</div>
-          <div className="text-[9px] text-muted uppercase">Total</div>
+          <div className="text-sm font-bold text-accent">{counters.total_users}</div>
+          <div className="text-[9px] text-muted uppercase tracking-wider">Total</div>
         </div>
       </div>
     </div>
