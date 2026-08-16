@@ -12,7 +12,9 @@ export default function Home() {
   const handleGuestMode = () => {
     document.cookie = "navigare_guest_mode=true; path=/; max-age=" + 7 * 24 * 60 * 60;
     analytics.track("guest_session_start");
-    router.push("/dashboard");
+    setTimeout(() => {
+      window.location.href = "/dashboard";
+    }, 100);
   };
 
   return (
