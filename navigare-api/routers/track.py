@@ -11,10 +11,10 @@ import httpx
 router = APIRouter()
 
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
-SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
+SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_KEY")
 
 if not SUPABASE_URL or not SUPABASE_KEY:
-    raise RuntimeError("SUPABASE_URL and SUPABASE_KEY environment variables must be set")
+    raise RuntimeError("SUPABASE_URL and SUPABASE_SERVICE_KEY environment variables must be set")
 
 
 @router.post("/track")
