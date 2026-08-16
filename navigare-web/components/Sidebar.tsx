@@ -9,15 +9,15 @@ import { isGuestMode } from "@/lib/auth";
 
 const PAGES: { label: string; href: string; icon: IconName }[] = [
   { label: "Overview", href: "/dashboard", icon: "chart" },
-  { label: "Inventory Health", href: "/dashboard/inventory", icon: "box" },
-  { label: "What Sells Together", href: "/dashboard/combos", icon: "cart" },
-  { label: "Customer Segments", href: "/dashboard/customers", icon: "users" },
-  { label: "Sales Forecast", href: "/dashboard/forecast", icon: "trending" },
-  { label: "SEO Auditor", href: "/dashboard/seo", icon: "search" },
-  { label: "Upload Data", href: "/dashboard/upload", icon: "upload" },
-  { label: "Profit Optimizer", href: "/dashboard/profit", icon: "cash" },
-  { label: "Weekly Digest", href: "/dashboard/digest", icon: "mail" },
-  { label: "Onboarding", href: "/dashboard/onboarding", icon: "rocket" },
+  { label: "Inventory", href: "/dashboard/inventory", icon: "box" },
+  { label: "Combos", href: "/dashboard/combos", icon: "cart" },
+  { label: "Customers", href: "/dashboard/customers", icon: "users" },
+  { label: "Forecast", href: "/dashboard/forecast", icon: "trending" },
+  { label: "SEO", href: "/dashboard/seo", icon: "search" },
+  { label: "Upload", href: "/dashboard/upload", icon: "upload" },
+  { label: "Profit", href: "/dashboard/profit", icon: "cash" },
+  { label: "Digest", href: "/dashboard/digest", icon: "mail" },
+  { label: "Setup", href: "/dashboard/onboarding", icon: "rocket" },
 ];
 
 export default function Sidebar() {
@@ -52,22 +52,22 @@ export default function Sidebar() {
     }
   }, [pathname]);
 
-  const wellnessColor = wellness == null ? "text-muted" : wellness >= 70 ? "text-green" : wellness >= 40 ? "text-amber" : "text-red";
-  const wellnessLabel = wellness == null ? "No data loaded" : wellness >= 70 ? "Store is Healthy" : wellness >= 40 ? "Needs attention" : "Critical - act now";
+  const wellnessColor = wellness == null ? "text-muted" : wellness >= 70 ? "text-accent" : wellness >= 40 ? "text-accent" : "text-accent";
+  const wellnessLabel = wellness == null ? "No data" : wellness >= 70 ? "Healthy" : wellness >= 40 ? "Attention" : "Critical";
 
   return (
-    <aside className="w-64 min-h-screen bg-panel border-r-[3px] border-border text-text flex flex-col fixed left-0 top-0 z-50">
-      <div className="p-6 pb-5 border-b-[3px] border-border">
-        <Link href="/dashboard" className="flex items-center gap-3">
-          <span className="text-blue"><Icon name="logo" size={30} /></span>
+    <aside className="w-64 h-screen bg-panel border-r-2 border-border flex flex-col fixed left-0 top-0 z-50">
+      <div className="p-6 border-b-2 border-border">
+        <Link href="/dashboard" className="flex items-center gap-3 no-underline">
+          <span className="text-accent"><Icon name="logo" size={28} /></span>
           <div>
-            <div className="text-xl font-black tracking-tight uppercase">Navigare</div>
+            <div className="text-xl font-bold uppercase tracking-tight text-ink" style={{ fontFamily: "Georgia, serif" }}>Navigare</div>
             <div className="text-[10px] text-muted tracking-[0.2em]">RETAIL ANALYTICS</div>
           </div>
         </Link>
       </div>
 
-      <nav className="flex-1 px-3 space-y-1 overflow-y-auto py-4">
+      <nav className="flex-1 px-3 py-4 overflow-y-auto">
         {!onboarding &&
           PAGES.map((p) => {
             const active = pathname === p.href;
@@ -76,57 +76,56 @@ export default function Sidebar() {
                 key={p.href}
                 href={p.href}
                 className={`
-                  flex items-center gap-3 px-3 py-2.5 border-2 transition-all duration-100
+                  flex items-center gap-3 px-3 py-2.5 mb-1 border-l-2 transition-all duration-75 no-underline
                   ${active
-                    ? "bg-blue text-white border-black shadow-[4px_4px_0_0_#000]"
-                    : "border-transparent text-muted hover:bg-paper hover:text-text hover:border-border"
+                    ? "bg-paper border-l-accent text-ink font-bold"
+                    : "border-l-transparent text-muted hover:bg-paper hover:text-ink hover:border-l-border"
                   }
                 `}
               >
-                <Icon name={p.icon} size={17} />
-                <span className="text-[12.5px] font-bold tracking-wide uppercase">{p.label}</span>
+                <Icon name={p.icon} size={16} />
+                <span className="text-[12px] font-semibold uppercase tracking-wide">{p.label}</span>
               </Link>
             );
           })
         }
         {onboarding && (
           <div className="px-3 py-4">
-            <div className="text-[11px] font-bold text-muted uppercase tracking-wider mb-3">Setup in progress</div>
-            <div className="text-xs text-muted leading-relaxed">
-              Please upload your data to unlock the full dashboard, or skip to continue with sample data.
-            </div>
+            <div className="text-caption text-muted mb-3">Setup in progress</div>
+            <p className="text-sm text-muted leading-relaxed">
+              Upload your data to unlock the full dashboard, or skip to continue with sample data.
+            </p>
           </div>
         )}
       </nav>
 
-      <div className="p-3 space-y-2 border-t-[3px] border-border">
-        <div className="bg-paper border-2 border-border p-3">
-          <div className="text-[9px] text-muted uppercase tracking-[0.2em] mb-1">Store Wellness Index</div>
-          <div className={`text-2xl font-black leading-none ${wellnessColor}`}>
+      <div className="p-4 border-t-2 border-border">
+        <div className="bg-paper border-2 border-border p-4 mb-3">
+          <div className="text-caption text-muted mb-2">Store Wellness</div>
+          <div className={`text-2xl font-bold leading-none ${wellnessColor}`}>
             {wellness != null ? `${wellness}/100` : "--/100"}
           </div>
           <div className="text-[10px] text-muted mt-1">{wellnessLabel}</div>
         </div>
 
-        <div className={`bg-paper border-2 p-3 ${alerts > 0 ? "border-red" : "border-border"}`}>
+        <div className={`bg-paper border-2 p-3 mb-3 ${alerts > 0 ? "border-accent" : "border-border"}`}>
           <div className="flex items-center gap-2">
-            {alerts > 0 && <Icon name="siren" size={14} className="text-red animate-pulse-soft" />}
-            <div className={`text-[11px] font-bold uppercase ${alerts > 0 ? "text-red" : "text-muted"}`}>
+            {alerts > 0 && <Icon name="siren" size={14} className="text-accent" />}
+            <div className={`text-[11px] font-bold uppercase ${alerts > 0 ? "text-accent" : "text-muted"}`}>
               {alerts} Priority {alerts === 1 ? "Alert" : "Alerts"}
             </div>
           </div>
-          <div className="text-[9.5px] text-muted mt-0.5">SKUs needing immediate action</div>
         </div>
 
         <UserCounters />
 
         {!onboarding && (
-          <Link href="/dashboard/onboarding" className="block text-center text-[10px] text-muted hover:text-text transition py-1">
+          <Link href="/dashboard/onboarding" className="block text-center text-[10px] text-muted hover:text-ink transition py-2 no-underline">
             Settings / Onboarding
           </Link>
         )}
-        <Link href="/legal" className="block text-center text-[10px] text-muted hover:text-text transition py-1">
-          Legal / Terms of Service
+        <Link href="/legal" className="block text-center text-[10px] text-muted hover:text-ink transition py-2 no-underline">
+          Legal / Terms
         </Link>
       </div>
     </aside>

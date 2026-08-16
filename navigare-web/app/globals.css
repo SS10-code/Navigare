@@ -3,19 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --ink: #1C1C3B;
+  --ink: #0A0A0A;
   --panel: #FFFFFF;
-  --paper: #F4F6FB;
-  --teal: #423A8E;
-  --magenta: #423A8E;
-  --amber: #F5A623;
-  --red: #D32F2F;
-  --green: #2E7D32;
-  --purple: #423A8E;
-  --blue: #1565C0;
-  --text: #1C1C3B;
-  --muted: #5A5A7A;
-  --border: #D8DCE8;
+  --paper: #F5F5F0;
+  --paperdark: #E8E8E0;
+  --accent: #D4380D;
+  --accent-hover: #B82E0A;
+  --text: #0A0A0A;
+  --muted: #6B6B6B;
+  --border: #D0D0C8;
+  --surface: #FFFFFF;
 }
 
 * {
@@ -29,15 +26,69 @@ html {
 body {
   background-color: var(--paper);
   color: var(--text);
-  font-family: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
 }
 
-/* Brutalist scrollbar */
+/* 8px Grid System */
+.space-1 { margin: 8px; }
+.space-2 { margin: 16px; }
+.space-3 { margin: 24px; }
+.space-4 { margin: 32px; }
+.space-5 { margin: 40px; }
+.space-6 { margin: 48px; }
+.space-8 { margin: 64px; }
+.space-10 { margin: 80px; }
+.space-12 { margin: 96px; }
+
+.p-1 { padding: 8px; }
+.p-2 { padding: 16px; }
+.p-3 { padding: 24px; }
+.p-4 { padding: 32px; }
+.p-5 { padding: 40px; }
+.p-6 { padding: 48px; }
+.p-8 { padding: 64px; }
+
+.gap-1 { gap: 8px; }
+.gap-2 { gap: 16px; }
+.gap-3 { gap: 24px; }
+.gap-4 { gap: 32px; }
+
+/* Typography Scale */
+.text-display {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.text-headline {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.text-body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.text-caption {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+/* Scrollbar - utilitarian */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
   background: var(--paper);
@@ -48,7 +99,7 @@ body {
   border: 2px solid var(--paper);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--teal);
+  background: var(--ink);
 }
 
 /* Animations */
@@ -76,10 +127,6 @@ body {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
 
 .animate-fade-in {
   animation: fadeIn 0.35s ease-out;
@@ -96,71 +143,37 @@ body {
 .animate-blink {
   animation: blink 1s steps(1) infinite;
 }
-.animate-marquee {
-  animation: marquee 22s linear infinite;
-}
 
 /* Skeleton */
 .skeleton {
-  background: linear-gradient(90deg, #e8eaf0 25%, #f1f3f7 50%, #e8eaf0 75%);
+  background: linear-gradient(90deg, #e0e0d8 25%, #e8e8e0 50%, #e0e0d8 75%);
   background-size: 200% 100%;
   animation: shimmer 1.4s infinite;
   border: 1px solid var(--border);
 }
 
-/* Brutalist card hover — hard offset shadow, no blur */
-.card-hover {
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
-}
-.card-hover:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 6px 6px 0 0 var(--teal);
-}
-
-/* Hard shadow utility */
-.hard-shadow {
-  box-shadow: 6px 6px 0 0 var(--teal);
-}
-.hard-shadow-magenta {
-  box-shadow: 6px 6px 0 0 var(--magenta);
-}
-.hard-shadow-amber {
-  box-shadow: 6px 6px 0 0 var(--amber);
-}
-.hard-shadow-black {
-  box-shadow: 5px 5px 0 0 #000;
-}
-
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(120deg, var(--red) 0%, var(--teal) 50%, var(--green) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Buttons */
+/* Buttons - sharp, utilitarian */
 .btn-primary {
-  background: var(--teal);
+  background: var(--accent);
   color: #FFFFFF;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-weight: 700;
   font-size: 12px;
-  border: 2px solid #000;
+  border: 2px solid var(--ink);
   border-radius: 0;
   padding: 10px 22px;
-  box-shadow: 4px 4px 0 0 #000;
+  box-shadow: 4px 4px 0 0 var(--ink);
   transition: all 0.1s ease;
   cursor: pointer;
+  letter-spacing: 0.02em;
 }
 .btn-primary:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 0 #000;
+  background: var(--accent-hover);
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 0 var(--ink);
 }
 .btn-primary:active {
   transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0 0 #000;
+  box-shadow: 1px 1px 0 0 var(--ink);
 }
 .btn-primary:disabled {
   opacity: 0.4;
@@ -172,14 +185,13 @@ body {
   background: transparent;
   border: 2px solid var(--ink);
   color: var(--ink);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-weight: 600;
   font-size: 12px;
   border-radius: 0;
   padding: 10px 22px;
   transition: all 0.1s ease;
   cursor: pointer;
+  letter-spacing: 0.02em;
 }
 .btn-secondary:hover {
   background: var(--ink);
@@ -190,20 +202,21 @@ body {
   cursor: not-allowed;
 }
 
-/* Inputs */
+/* Inputs - sharp, high contrast */
 input, textarea, select {
   background: var(--panel);
   border: 2px solid var(--border);
   color: var(--text);
   border-radius: 0;
-  padding: 8px 12px;
+  padding: 10px 12px;
   font-size: 14px;
   outline: none;
-  transition: border-color 0.1s ease;
+  transition: border-color 0.15s ease;
+  font-family: inherit;
 }
 input:focus, textarea:focus, select:focus {
-  border-color: var(--teal);
-  box-shadow: 3px 3px 0 0 rgba(66, 58, 142, 0.3);
+  border-color: var(--accent);
+  box-shadow: 3px 3px 0 0 rgba(212, 56, 13, 0.15);
 }
 input::placeholder, textarea::placeholder {
   color: var(--muted);
@@ -229,7 +242,7 @@ input::placeholder, textarea::placeholder {
 
 /* Section label */
 .label-mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   text-transform: uppercase;
   letter-spacing: 0.18em;
 }

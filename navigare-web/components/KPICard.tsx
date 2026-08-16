@@ -1,13 +1,8 @@
-type Accent = "teal" | "green" | "purple" | "amber" | "red" | "blue" | "magenta";
+type Accent = "default" | "accent";
 
 const ACCENT_COLORS: Record<Accent, string> = {
-  teal: "#423A8E",
-  green: "#2E7D32",
-  purple: "#423A8E",
-  amber: "#F5A623",
-  red: "#D32F2F",
-  blue: "#1565C0",
-  magenta: "#423A8E",
+  default: "#6B6B6B",
+  accent: "#D4380D",
 };
 
 interface Props {
@@ -19,28 +14,21 @@ interface Props {
   trend?: "up" | "down" | "neutral";
 }
 
-export default function KPICard({ label, value, sub, accent = "teal", icon, trend }: Props) {
+export default function KPICard({ label, value, sub, accent = "default", icon, trend }: Props) {
   const color = ACCENT_COLORS[accent];
   return (
     <div
-      className="bg-panel border-2 border-border p-5 relative overflow-hidden animate-fade-in card-hover"
-      style={{ boxShadow: `5px 5px 0 0 ${color}33` }}
+      className="border-2 border-border bg-panel p-5 relative overflow-hidden animate-fade-in"
     >
-      <div
-        className="absolute top-0 left-0 h-[3px] w-full"
-        style={{ background: color }}
-      />
-      <div className="relative">
-        <div className="flex items-center justify-between mb-2">
-          <div className="label-mono text-[10px] font-bold text-muted">{label}</div>
-          {icon && <div style={{ color }}>{icon}</div>}
-        </div>
-        <div className="text-3xl font-black text-text font-mono tracking-tight">{value}</div>
-        <div className="flex items-center gap-1 mt-1.5">
-          {trend === "up" && <span className="text-green text-xs font-bold">↑</span>}
-          {trend === "down" && <span className="text-red text-xs font-bold">↓</span>}
-          <div className="text-[11px] text-muted font-mono">{sub}</div>
-        </div>
+      <div className="flex items-center justify-between mb-3">
+        <div className="text-caption text-muted text-[10px]">{label}</div>
+        {icon && <div className="text-muted">{icon}</div>}
+      </div>
+      <div className="text-3xl font-bold text-ink tracking-tight mb-1" style={{ fontFamily: "Georgia, serif" }}>{value}</div>
+      <div className="flex items-center gap-1">
+        {trend === "up" && <span className="text-accent text-xs font-bold">&#8593;</span>}
+        {trend === "down" && <span className="text-accent text-xs font-bold">&#8595;</span>}
+        <div className="text-[11px] text-muted font-mono">{sub}</div>
       </div>
     </div>
   );
