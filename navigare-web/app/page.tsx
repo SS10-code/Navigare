@@ -10,10 +10,8 @@ export default function Home() {
   const router = useRouter();
 
   const handleGuestMode = () => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("navigare_guest_mode", "true");
-      analytics.track("guest_session_start");
-    }
+    document.cookie = "navigare_guest_mode=true; path=/; max-age=" + 7 * 24 * 60 * 60;
+    analytics.track("guest_session_start");
     router.push("/dashboard");
   };
 
