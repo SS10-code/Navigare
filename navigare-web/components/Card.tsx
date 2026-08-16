@@ -21,7 +21,7 @@ export default function Card({ children, className = "", padding = "lg", hover =
         bg-panel border-2 border-border
         ${accent ? "border-l-4 border-l-accent" : ""}
         ${paddingClasses[padding]}
-        ${hover ? "hover:bg-paper transition-colors cursor-pointer" : ""}
+        ${hover ? "hover:border-accent hover:shadow-[4px_4px_0_0_rgba(224,69,0,0.15)] transition-all cursor-pointer" : ""}
         ${className}
       `}
     >

@@ -34,7 +34,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <div className="min-h-screen bg-paper">
       <Sidebar />
-      <main className="ml-64">
+      <main className="ml-72">
         {isGuest && (
           <div className="bg-accent/10 border-l-4 border-accent text-accent text-xs font-mono px-6 py-3">
             Guest mode — create an account to unlock all features.

@@ -56,7 +56,7 @@ export default function Sidebar() {
   const wellnessLabel = wellness == null ? "No data" : wellness >= 70 ? "Healthy" : wellness >= 40 ? "Attention" : "Critical";
 
   return (
-    <aside className="w-64 h-screen bg-panel border-r-2 border-border flex flex-col fixed left-0 top-0 z-50">
+    <aside className="w-72 h-screen bg-panel border-r-2 border-border flex flex-col fixed left-0 top-0 z-50">
       <div className="p-6 border-b-2 border-border">
         <Link href="/dashboard" className="flex items-center gap-3 no-underline">
           <span className="text-accent"><Icon name="logo" size={28} /></span>
@@ -67,7 +67,7 @@ export default function Sidebar() {
         </Link>
       </div>
 
-      <nav className="flex-1 px-3 py-4 overflow-y-auto">
+      <nav className="flex-1 px-4 py-5 overflow-y-auto">
         {!onboarding &&
           PAGES.map((p) => {
             const active = pathname === p.href;
@@ -76,15 +76,15 @@ export default function Sidebar() {
                 key={p.href}
                 href={p.href}
                 className={`
-                  flex items-center gap-3 px-3 py-2.5 mb-1 border-l-2 transition-all duration-75 no-underline
+                  flex items-center gap-3 px-4 py-3 mb-1 border-l-2 transition-all duration-75 no-underline
                   ${active
                     ? "bg-paper border-l-accent text-ink font-bold"
                     : "border-l-transparent text-muted hover:bg-paper hover:text-ink hover:border-l-border"
                   }
                 `}
               >
-                <Icon name={p.icon} size={16} />
-                <span className="text-[12px] font-semibold uppercase tracking-wide">{p.label}</span>
+                <Icon name={p.icon} size={18} />
+                <span className="text-[13px] font-semibold uppercase tracking-wide">{p.label}</span>
               </Link>
             );
           })

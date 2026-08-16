@@ -157,10 +157,10 @@ body {
   background: var(--accent);
   color: #FFFFFF;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 13px;
   border: 2px solid var(--ink);
   border-radius: 0;
-  padding: 10px 22px;
+  padding: 12px 24px;
   box-shadow: 4px 4px 0 0 var(--ink);
   transition: all 0.1s ease;
   cursor: pointer;
@@ -186,9 +186,9 @@ body {
   border: 2px solid var(--ink);
   color: var(--ink);
   font-weight: 600;
-  font-size: 12px;
+  font-size: 13px;
   border-radius: 0;
-  padding: 10px 22px;
+  padding: 12px 24px;
   transition: all 0.1s ease;
   cursor: pointer;
   letter-spacing: 0.02em;
@@ -208,15 +208,16 @@ input, textarea, select {
   border: 2px solid var(--border);
   color: var(--text);
   border-radius: 0;
-  padding: 10px 12px;
+  padding: 12px 14px;
   font-size: 14px;
   outline: none;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
   font-family: inherit;
+  min-height: 44px;
 }
 input:focus, textarea:focus, select:focus {
   border-color: var(--accent);
-  box-shadow: 3px 3px 0 0 rgba(212, 56, 13, 0.15);
+  box-shadow: 3px 3px 0 0 rgba(224, 69, 0, 0.15);
 }
 input::placeholder, textarea::placeholder {
   color: var(--muted);
