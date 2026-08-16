@@ -7,7 +7,6 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir python-multipart && \
     pip install --no-cache-dir -r requirements.txt --no-cache-dir
 
-COPY .env .
 COPY . .
 
 EXPOSE 8000
