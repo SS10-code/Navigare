@@ -27,12 +27,12 @@ export async function middleware(request: NextRequest) {
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const authDisabled = process.env.NEXT_PUBLIC_AUTH_DISABLED === "true";
 
-  // Skip auth if Supabase is not configured
+  // Skip auth if Supabase is not configured or auth is disabled
   if (authDisabled || !supabaseUrl || !supabaseAnonKey) {
     return NextResponse.next();
   }
 
-  let supabaseResponse = NextResponse.next({ request });
+  // Supabase is configured — enforce auth
   const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
       get(key: string) {
@@ -40,13 +40,15 @@ export async function middleware(request: NextRequest) {
       },
       set(key: string, value: string, options: CookieOptions) {
         request.cookies.set(key, value);
-        supabaseResponse = NextResponse.next({ request });
-        supabaseResponse.cookies.set(key, value, options);
+        const response = NextResponse.next({ request });
+        response.cookies.set(key, value, options);
+        return response;
       },
       remove(key: string, options: CookieOptions) {
         request.cookies.set(key, "");
-        supabaseResponse = NextResponse.next({ request });
-        supabaseResponse.cookies.set(key, "", { ...options, maxAge: 0 });
+        const response = NextResponse.next({ request });
+        response.cookies.set(key, "", { ...options, maxAge: 0 });
+        return response;
       },
     },
   });
@@ -56,7 +58,7 @@ export async function middleware(request: NextRequest) {
   // Protect /dashboard routes — redirect to login if no session
   if (!session && pathname.startsWith("/dashboard")) {
     const redirectUrl = request.nextUrl.clone();
-    redirectUrl.pathname = "/login";
+    redirectUrl.pathname = "/auth/login";
     redirectUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(redirectUrl);
   }
