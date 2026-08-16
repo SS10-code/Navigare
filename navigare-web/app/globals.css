@@ -3,19 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --ink: #0F172A;
+  --ink: #1C1C3B;
   --panel: #FFFFFF;
-  --paper: #F8FAFC;
-  --teal: #00FFC8;
-  --magenta: #FF2E88;
-  --amber: #FFB800;
-  --red: #EF4444;
-  --green: #22C55E;
-  --purple: #7C5CFF;
-  --blue: #3B82F6;
-  --text: #0F172A;
-  --muted: #64748B;
-  --border: #E2E8F0;
+  --paper: #F4F6FB;
+  --teal: #423A8E;
+  --magenta: #423A8E;
+  --amber: #F5A623;
+  --red: #D32F2F;
+  --green: #2E7D32;
+  --purple: #423A8E;
+  --blue: #1565C0;
+  --text: #1C1C3B;
+  --muted: #5A5A7A;
+  --border: #D8DCE8;
 }
 
 * {
@@ -48,7 +48,7 @@ body {
   border: 2px solid var(--paper);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--blue);
+  background: var(--teal);
 }
 
 /* Animations */
@@ -102,7 +102,7 @@ body {
 
 /* Skeleton */
 .skeleton {
-  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background: linear-gradient(90deg, #e8eaf0 25%, #f1f3f7 50%, #e8eaf0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.4s infinite;
   border: 1px solid var(--border);
@@ -114,12 +114,12 @@ body {
 }
 .card-hover:hover {
   transform: translate(-3px, -3px);
-  box-shadow: 6px 6px 0 0 var(--blue);
+  box-shadow: 6px 6px 0 0 var(--teal);
 }
 
 /* Hard shadow utility */
 .hard-shadow {
-  box-shadow: 6px 6px 0 0 var(--blue);
+  box-shadow: 6px 6px 0 0 var(--teal);
 }
 .hard-shadow-magenta {
   box-shadow: 6px 6px 0 0 var(--magenta);
@@ -133,7 +133,7 @@ body {
 
 /* Gradient text */
 .gradient-text {
-  background: linear-gradient(120deg, var(--red) 0%, var(--blue) 50%, var(--green) 100%);
+  background: linear-gradient(120deg, var(--red) 0%, var(--teal) 50%, var(--green) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -141,7 +141,7 @@ body {
 
 /* Buttons */
 .btn-primary {
-  background: var(--blue);
+  background: var(--teal);
   color: #FFFFFF;
   font-weight: 800;
   text-transform: uppercase;
@@ -202,8 +202,8 @@ input, textarea, select {
   transition: border-color 0.1s ease;
 }
 input:focus, textarea:focus, select:focus {
-  border-color: var(--blue);
-  box-shadow: 3px 3px 0 0 rgba(59, 130, 246, 0.3);
+  border-color: var(--teal);
+  box-shadow: 3px 3px 0 0 rgba(66, 58, 142, 0.3);
 }
 input::placeholder, textarea::placeholder {
   color: var(--muted);

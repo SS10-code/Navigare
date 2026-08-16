@@ -42,9 +42,9 @@ export default function Home() {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 text-left" id="features">
           {[
-            { icon: "box" as const, color: "#00FFC8", title: "Inventory Health", desc: "H(x) scoring, ROP alerts, wellness index. Never run out of stock again." },
-            { icon: "trending" as const, color: "#FFB800", title: "Sales Forecast", desc: "Holt-Winters + EMA. Know what revenue to expect next week." },
-            { icon: "users" as const, color: "#FF2E88", title: "Customer Segments", desc: "RFM scoring. Find champions, re-engage at-risk buyers." },
+            { icon: "box" as const, color: "#1565C0", title: "Inventory Health", desc: "H(x) scoring, ROP alerts, wellness index. Never run out of stock again." },
+            { icon: "trending" as const, color: "#2E7D32", title: "Sales Forecast", desc: "Holt-Winters + EMA. Know what revenue to expect next week." },
+            { icon: "users" as const, color: "#D32F2F", title: "Customer Segments", desc: "RFM scoring. Find champions, re-engage at-risk buyers." },
           ].map((f) => (
             <div key={f.title} className="bg-panel border-2 border-border p-6 card-hover" style={{ borderTop: `4px solid ${f.color}` }}>
               <div className="mb-3" style={{ color: f.color }}>

@@ -11,7 +11,7 @@ import { apiFetch } from "@/lib/api";
 import { exportToCSV } from "@/lib/export";
 import Icon from "@/components/Icon";
 
-const COLORS = ["#00FFC8", "#FF2E88", "#7C5CFF", "#FFB800", "#00E676", "#FF3B3B", "#4DA3FF", "#FF6B00"];
+const COLORS = ["#423A8E", "#1565C0", "#2E7D32", "#F5A623", "#D32F2F", "#5A5A7A", "#423A8E", "#1565C0"];
 
 type KPIData = {
   label: string;
@@ -159,10 +159,10 @@ export default function OverviewPage() {
                 <Line
                   type="monotone"
                   dataKey="value"
-                  stroke="#00FFC8"
+                  stroke="#423A8E"
                   strokeWidth={3}
-                  dot={{ r: 4, fill: "#00FFC8", stroke: "#000", strokeWidth: 1.5 }}
-                  activeDot={{ r: 7, fill: "#FF2E88", stroke: "#000", strokeWidth: 2 }}
+                  dot={{ r: 4, fill: "#423A8E", stroke: "#000", strokeWidth: 1.5 }}
+                  activeDot={{ r: 7, fill: "#D32F2F", stroke: "#000", strokeWidth: 2 }}
                 />
               </LineChart>
             </ResponsiveContainer>
