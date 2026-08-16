@@ -39,3 +39,27 @@ export async function uploadFile(endpoint: string, file: File, fieldName: string
 
   return res.json();
 }
+
+export async function trackEmailSignup() {
+  try {
+    await apiFetch("/counters/email-signup", { method: "POST" });
+  } catch {
+    // ignore analytics errors
+  }
+}
+
+export async function trackGuestSession() {
+  try {
+    await apiFetch("/counters/guest-session", { method: "POST" });
+  } catch {
+    // ignore analytics errors
+  }
+}
+
+export async function getCounters() {
+  try {
+    return await apiFetch("/counters");
+  } catch {
+    return { email_signups: 0, guest_sessions: 0, total_users: 0 };
+  }
+}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Icon, { IconName } from "@/components/Icon";
+import UserCounters from "@/components/UserCounters";
 
 const PAGES: { label: string; href: string; icon: IconName }[] = [
   { label: "Overview", href: "/dashboard", icon: "chart" },
@@ -96,6 +97,8 @@ export default function Sidebar() {
           </div>
           <div className="text-[9.5px] text-muted mt-0.5">SKUs needing immediate action</div>
         </div>
+
+        <UserCounters />
 
         <Link href="/dashboard/onboarding" className="block text-center text-[10px] text-muted hover:text-text transition py-1">
           Settings / Onboarding

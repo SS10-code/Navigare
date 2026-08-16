@@ -27,6 +27,15 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
+    const onboarded = request.cookies.get("navigare_onboarded")?.value === "true";
+
+    if (!onboarded && pathname.startsWith("/dashboard") && !pathname.startsWith("/dashboard/upload")) {
+      const redirectUrl = request.nextUrl.clone();
+      redirectUrl.pathname = "/dashboard/upload";
+      redirectUrl.searchParams.set("onboarding", "true");
+      return NextResponse.redirect(redirectUrl);
+    }
+
     const { createServerClient } = await import("@supabase/ssr");
 
     const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {

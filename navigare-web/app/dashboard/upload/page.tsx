@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import Card from "@/components/Card";
 import Callout from "@/components/Callout";
 import SectionHeader from "@/components/SectionHeader";
 import Icon from "@/components/Icon";
 import { uploadFile } from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 type UploadStatus = { type: "success" | "error"; message: string } | null;
 
@@ -124,6 +125,19 @@ export default function UploadPage() {
   const [invFile, setInvFile] = useState<File | null>(null);
   const [status, setStatus] = useState<UploadStatus>(null);
   const [loading, setLoading] = useState(false);
+  const [onboarding, setOnboarding] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setOnboarding(window.location.search.includes("onboarding=true"));
+    }
+  }, []);
+
+  const markOnboarded = () => {
+    document.cookie = "navigare_onboarded=true; path=/; max-age=" + 30 * 24 * 60 * 60;
+    router.push("/dashboard");
+  };
 
   const handleUpload = async (file: File, type: "txn" | "inv") => {
     setLoading(true);
@@ -137,6 +151,9 @@ export default function UploadPage() {
       });
       if (type === "txn") setTxnFile(null);
       else setInvFile(null);
+      if (onboarding) {
+        setTimeout(() => markOnboarded(), 1500);
+      }
     } catch (e) {
       setStatus({ type: "error", message: e instanceof Error ? e.message : "Upload failed" });
     } finally {
@@ -146,8 +163,23 @@ export default function UploadPage() {
 
   return (
     <div>
-      <h1 className="text-[22px] font-extrabold text-text mb-1 tracking-tight">Upload Your Data</h1>
-      <p className="text-[13.5px] text-muted mb-6">Replace the sample data with your own sales and inventory CSVs.</p>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-[22px] font-extrabold text-text mb-1 tracking-tight">
+            {onboarding ? "Welcome to Navigare" : "Upload Your Data"}
+          </h1>
+          <p className="text-[13.5px] text-muted">
+            {onboarding
+              ? "Upload your sales and inventory data to unlock the full dashboard."
+              : "Replace the sample data with your own sales and inventory CSVs."}
+          </p>
+        </div>
+        {onboarding && (
+          <button onClick={markOnboarded} className="btn-secondary text-xs">
+            Skip for now
+          </button>
+        )}
+      </div>
 
       {status && (
         <Callout variant={status.type === "success" ? "good" : "danger"} className="mb-6 animate-fade-in">
