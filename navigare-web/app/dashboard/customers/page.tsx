@@ -94,11 +94,11 @@ export default function CustomersPage() {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-        <KPICard label="Customers" value={`${Object.values(segments).reduce((a, b) => a + b, 0) || 60}`} sub="All Stores" accent="teal" />
-        <KPICard label="Champions" value={`${segments["Champion"] ?? 0}`} sub="top buyers" accent="green" />
-        <KPICard label="Loyal" value={`${segments["Loyal"] ?? 0}`} sub="consistent" accent="purple" />
-        <KPICard label="Potential" value={`${segments["Potential"] ?? 0}`} sub="growing" accent="blue" />
-        <KPICard label="At Risk" value={`${segments["At Risk"] ?? 0}`} sub="need attention" accent="red" />
+        <KPICard label="Customers" value={`${Object.values(segments).reduce((a, b) => a + b, 0) || 60}`} sub="All Stores" accent="accent" />
+        <KPICard label="Champions" value={`${segments["Champion"] ?? 0}`} sub="top buyers" />
+        <KPICard label="Loyal" value={`${segments["Loyal"] ?? 0}`} sub="consistent" />
+        <KPICard label="Potential" value={`${segments["Potential"] ?? 0}`} sub="growing" />
+        <KPICard label="At Risk" value={`${segments["At Risk"] ?? 0}`} sub="need attention" accent="accent" />
       </div>
 
       <Callout variant="info" className="mb-6">
