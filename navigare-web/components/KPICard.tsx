@@ -1,13 +1,13 @@
 type Accent = "teal" | "green" | "purple" | "amber" | "red" | "blue" | "magenta";
 
 const ACCENT_COLORS: Record<Accent, string> = {
-  teal: "#00FFC8",
-  green: "#00E676",
-  purple: "#7C5CFF",
-  amber: "#FFB800",
-  red: "#FF3B3B",
-  blue: "#4DA3FF",
-  magenta: "#FF2E88",
+  teal: "#423A8E",
+  green: "#2E7D32",
+  purple: "#423A8E",
+  amber: "#F5A623",
+  red: "#D32F2F",
+  blue: "#1565C0",
+  magenta: "#423A8E",
 };
 
 interface Props {

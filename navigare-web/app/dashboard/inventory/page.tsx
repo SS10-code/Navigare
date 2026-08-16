@@ -11,7 +11,7 @@ import { apiFetch } from "@/lib/api";
 import { exportToCSV } from "@/lib/export";
 import Icon from "@/components/Icon";
 
-const COLORS = ["#00FFC8", "#FF2E88", "#7C5CFF", "#FFB800", "#00E676", "#FF3B3B", "#4DA3FF", "#FF6B00"];
+const COLORS = ["#423A8E", "#1565C0", "#2E7D32", "#F5A623", "#D32F2F", "#5A5A7A"];
 
 const STATUS_COLORS: Record<string, string> = {
   CRISIS: "#FF3B3B",
@@ -19,8 +19,8 @@ const STATUS_COLORS: Record<string, string> = {
   LOW: "#FFB800",
   WARNING: "#B8F73C",
   HEALTHY: "#00E676",
-  OPTIMAL: "#00FFC8",
-  OVERSTOCK: "#FF2E88",
+  OPTIMAL: "#2E7D32",
+  OVERSTOCK: "#F5A623",
 };
 
 type HealthRow = { name: string; score: number; status: string };

@@ -22,7 +22,7 @@ export default function Signup() {
 
   return (
     <div className="min-h-screen bg-paper text-text flex items-center justify-center p-6">
-      <div className="bg-panel border-2 border-border p-8 w-full max-w-sm relative" style={{ boxShadow: "8px 8px 0 0 #3B82F6" }}>
+      <div className="bg-panel border-2 border-border p-8 w-full max-w-sm relative" style={{ boxShadow: "8px 8px 0 0 #423A8E" }}>
         <div className="absolute top-0 left-0 right-0 h-[4px] bg-gradient-to-r from-teal via-purple to-magenta" />
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-2">

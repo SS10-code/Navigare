@@ -9,7 +9,7 @@ import Icon from "@/components/Icon";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ScatterChart, Scatter, Cell } from "recharts";
 import { apiFetch } from "@/lib/api";
 
-const COLORS = ["#7C5CFF", "#00FFC8", "#4DA3FF", "#FFB800", "#00E676", "#FF3B3B"];
+const COLORS = ["#423A8E", "#1565C0", "#2E7D32", "#F5A623", "#D32F2F", "#5A5A7A"];
 
 type SegmentCounts = Record<string, number>;
 type ScatterPoint = { x: number; y: number; segment: string; size: number };
