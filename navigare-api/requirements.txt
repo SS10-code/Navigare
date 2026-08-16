@@ -6,3 +6,4 @@ statsmodels
 scikit-learn
 python-dotenv
 resend
+httpx
