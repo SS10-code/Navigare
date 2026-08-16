@@ -1,0 +1,239 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #111113;
+  --panel: #17171B;
+  --paper: #F2F0E9;
+  --teal: #00FFC8;
+  --magenta: #FF2E88;
+  --amber: #FFB800;
+  --red: #FF3B3B;
+  --green: #00E676;
+  --purple: #7C5CFF;
+  --blue: #4DA3FF;
+  --text: #F2F0E9;
+  --muted: #8A8A93;
+  --border: #2A2A30;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--ink);
+  color: var(--text);
+  font-family: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image:
+    linear-gradient(rgba(124, 92, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 92, 255, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Brutalist scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--ink);
+  border-left: 1px solid var(--border);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--text);
+  border: 2px solid var(--ink);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--teal);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.35s ease-out;
+}
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+.animate-pulse-soft {
+  animation: pulse-soft 1.6s ease-in-out infinite;
+}
+.animate-spin-slow {
+  animation: spin-slow 1s linear infinite;
+}
+.animate-blink {
+  animation: blink 1s steps(1) infinite;
+}
+.animate-marquee {
+  animation: marquee 22s linear infinite;
+}
+
+/* Skeleton */
+.skeleton {
+  background: linear-gradient(90deg, #1f1f25 25%, #2c2c34 50%, #1f1f25 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border: 1px solid var(--border);
+}
+
+/* Brutalist card hover — hard offset shadow, no blur */
+.card-hover {
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.card-hover:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 6px 6px 0 0 var(--teal);
+}
+
+/* Hard shadow utility */
+.hard-shadow {
+  box-shadow: 6px 6px 0 0 rgba(0, 255, 200, 0.9);
+}
+.hard-shadow-magenta {
+  box-shadow: 6px 6px 0 0 var(--magenta);
+}
+.hard-shadow-amber {
+  box-shadow: 6px 6px 0 0 var(--amber);
+}
+.hard-shadow-black {
+  box-shadow: 5px 5px 0 0 #000;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(120deg, #00FFC8 0%, #7C5CFF 50%, #FF2E88 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Buttons */
+.btn-primary {
+  background: var(--teal);
+  color: #000;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  border: 2px solid #000;
+  border-radius: 0;
+  padding: 10px 22px;
+  box-shadow: 4px 4px 0 0 #000;
+  transition: all 0.1s ease;
+  cursor: pointer;
+}
+.btn-primary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 #000;
+}
+.btn-primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 0 #000;
+}
+.btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 2px solid var(--text);
+  color: var(--text);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 12px;
+  border-radius: 0;
+  padding: 10px 22px;
+  transition: all 0.1s ease;
+  cursor: pointer;
+}
+.btn-secondary:hover {
+  background: var(--text);
+  color: var(--ink);
+}
+.btn-secondary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Inputs */
+input, textarea, select {
+  background: var(--panel);
+  border: 2px solid var(--border);
+  color: var(--text);
+  border-radius: 0;
+  padding: 8px 12px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.1s ease;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--teal);
+  box-shadow: 3px 3px 0 0 rgba(0, 255, 200, 0.4);
+}
+input::placeholder, textarea::placeholder {
+  color: var(--muted);
+}
+
+/* Recharts tooltip */
+.recharts-default-tooltip {
+  border-radius: 0 !important;
+  border: 2px solid #000 !important;
+  background: var(--paper) !important;
+  color: #000 !important;
+  box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.8) !important;
+  font-family: ui-monospace, monospace !important;
+}
+.recharts-cartesian-axis-tick text {
+  fill: var(--muted) !important;
+  font-family: ui-monospace, monospace !important;
+  font-size: 10px !important;
+}
+.recharts-cartesian-grid line {
+  stroke: var(--border) !important;
+}
+
+/* Section label */
+.label-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}

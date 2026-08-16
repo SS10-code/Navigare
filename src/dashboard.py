@@ -26,6 +26,30 @@ from seo_engine import analyse_text, score_density, normalize
 from inventory_health import run_inventory_health_pipeline, H
 
 # ─────────────────────────────────────────────────────────────
+# AUTH GATE — must run before any other st.* calls
+# Uses a simple login form; blocks everything below until authenticated.
+# ─────────────────────────────────────────────────────────────
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
+
+if not st.session_state.authenticated:
+    st.markdown("""
+    <div style="display:flex;align-items:center;justify-content:center;min-height:80vh;flex-direction:column;gap:18px">
+      <div style="font-size:52px">🧭</div>
+      <div style="font-size:28px;font-weight:800;color:#423A8E">Navigare</div>
+      <div style="font-size:14px;color:#6B7280">Retail Analytics · Protected</div>
+    </div>""", unsafe_allow_html=True)
+    with st.form("login", clear_on_submit=True):
+        pw = st.text_input("Password", type="password", placeholder="Enter app password")
+        if st.form_submit_button("Log in", use_container_width=True, type="primary"):
+            if pw == os.environ.get("APP_PASSWORD", "navigare2025"):
+                st.session_state.authenticated = True
+                st.rerun()
+            else:
+                st.error("Wrong password")
+    st.stop()
+
+# ─────────────────────────────────────────────────────────────
 # BREEZE COLOR SYSTEM
 # ─────────────────────────────────────────────────────────────
 C = {
@@ -66,6 +90,11 @@ html, body, [data-testid="stAppViewContainer"] {{
 .main .block-container {{
     padding:1.8rem 2rem 3rem;
     max-width:1360px;
+}}
+@media (max-width: 768px) {{
+    .main .block-container {{ padding:1rem; max-width:100%; }}
+    .kpi-grid {{ flex-direction:column; }}
+    .kpi-card {{ min-width:100%; }}
 }}
 
 /* ── Sidebar nav ── */
@@ -349,6 +378,9 @@ with st.sidebar:
         "📈  Sales Forecast":      "forecast",
         "🔍  SEO Auditor":         "seo",
         "🔬  Under the Hood":      "features",
+        "📤  Upload Data":         "upload",
+        "💰  Profit Optimizer":    "profit",
+        "🚀  Onboarding":          "onboarding",
         "📖  Glossary":            "glossary",
     }
     if "page" not in st.session_state: st.session_state.page = "overview"
@@ -958,114 +990,224 @@ elif st.session_state.page == "seo":
 # ═════════════════════════════════════════════════════════════
 # UNDER THE HOOD
 # ═════════════════════════════════════════════════════════════
-elif st.session_state.page == "features":
-    st.markdown('<div class="pg-title">🔬 Under the Hood</div>', unsafe_allow_html=True)
-    st.markdown('<div class="pg-sub">The math behind the forecasting features. See the Glossary for plain-English definitions.</div>', unsafe_allow_html=True)
-    if not guard(feat_df,"feature data"): st.stop()
-    sel = st.selectbox("Jump to",["Normalisation (Z-Score & Min-Max)","Cyclic Time Encoding",
-                                   "Lag Features (Memory)","Stationarity & Differencing","VIF (Feature Redundancy)"])
-    st.markdown(f'<hr style="border-color:{C["border"]};margin:16px 0">', unsafe_allow_html=True)
+    elif st.session_state.page == "features":
+        st.markdown('<div class="pg-title">🔬 Under the Hood</div>', unsafe_allow_html=True)
+        st.markdown('<div class="pg-sub">The math behind the forecasting features. See the Glossary for plain-English definitions.</div>', unsafe_allow_html=True)
+        if not guard(feat_df,"feature data"): st.stop()
+        sel = st.selectbox("Jump to",["Normalisation (Z-Score & Min-Max)","Cyclic Time Encoding",
+                                       "Lag Features (Memory)","Stationarity & Differencing","VIF (Feature Redundancy)"])
+        st.markdown(f'<hr style="border-color:{C["border"]};margin:16px 0">', unsafe_allow_html=True)
 
-    if "Normalisation" in sel:
-        info("Normalisation removes scale bias so models don't treat $5,000 revenue days as more important than day-of-week (0–6) just because the numbers are bigger.")
-        fml("Z = (x − μ) / σ              ← Z-Score: centres at 0, units = std deviations\nX' = (x − min) / (max − min)  ← Min-Max: squeezes to [0, 1]")
-        mu=feat_df["Revenue_USD"].mean();sig=feat_df["Revenue_USD"].std();outs=(feat_df["Revenue_ZScore"].abs()>2).sum()
-        st.columns(3)[0].metric("Mean",f"${mu:,.2f}")
-        st.columns(3)[1].metric("Std Dev",f"${sig:,.2f}")
-        st.columns(3)[2].metric("Outlier days |z|>2",str(outs))
-        fig_n=make_subplots(rows=2,cols=1,subplot_titles=("Z-Score","Min-Max"),vertical_spacing=0.14)
-        fig_n.add_trace(go.Scatter(x=feat_df["Date"],y=feat_df["Revenue_ZScore"],
-            line=dict(color=C["purple"],width=1.5),fill="tozeroy",fillcolor=f"rgba(67,58,142,.07)"),row=1,col=1)
-        for lvl,col in [(2,C["red"]),(-2,C["red"]),(0,C["border"])]:
-            fig_n.add_hline(y=lvl,line_color=col,line_dash="dot" if abs(lvl)==2 else "dash",line_width=1,row=1,col=1)
-        fig_n.add_trace(go.Scatter(x=feat_df["Date"],y=feat_df["Revenue_MinMax"],
-            line=dict(color=C["teal"],width=1.5),fill="tozeroy",fillcolor=f"rgba(0,204,205,.07)"),row=2,col=1)
-        fig_n.update_layout(**PLT,height=380,showlegend=False,margin=dict(l=0,r=0,t=28,b=0))
-        fig_n.update_xaxes(gridcolor=C["border"]); fig_n.update_yaxes(gridcolor=C["border"])
-        st.plotly_chart(fig_n,use_container_width=True)
+        if "Normalisation" in sel:
+            info("Normalisation removes scale bias so models don't treat $5,000 revenue days as more important than day-of-week (0–6) just because the numbers are bigger.")
+            fml("Z = (x − μ) / σ              ← Z-Score: centres at 0, units = std deviations\nX' = (x − min) / (max − min)  ← Min-Max: squeezes to [0, 1]")
+            mu=feat_df["Revenue_USD"].mean();sig=feat_df["Revenue_USD"].std();outs=(feat_df["Revenue_ZScore"].abs()>2).sum()
+            st.columns(3)[0].metric("Mean",f"${mu:,.2f}")
+            st.columns(3)[1].metric("Std Dev",f"${sig:,.2f}")
+            st.columns(3)[2].metric("Outlier days |z|>2",str(outs))
+            fig_n=make_subplots(rows=2,cols=1,subplot_titles=("Z-Score","Min-Max"),vertical_spacing=0.14)
+            fig_n.add_trace(go.Scatter(x=feat_df["Date"],y=feat_df["Revenue_ZScore"],
+                line=dict(color=C["purple"],width=1.5),fill="tozeroy",fillcolor=f"rgba(67,58,142,.07)"),row=1,col=1)
+            for lvl,col in [(2,C["red"]),(-2,C["red"]),(0,C["border"])]:
+                fig_n.add_hline(y=lvl,line_color=col,line_dash="dot" if abs(lvl)==2 else "dash",line_width=1,row=1,col=1)
+            fig_n.add_trace(go.Scatter(x=feat_df["Date"],y=feat_df["Revenue_MinMax"],
+                line=dict(color=C["teal"],width=1.5),fill="tozeroy",fillcolor=f"rgba(0,204,205,.07)"),row=2,col=1)
+            fig_n.update_layout(**PLT,height=380,showlegend=False,margin=dict(l=0,r=0,t=28,b=0))
+            fig_n.update_xaxes(gridcolor=C["border"]); fig_n.update_yaxes(gridcolor=C["border"])
+            st.plotly_chart(fig_n,use_container_width=True)
 
-    elif "Cyclic" in sel:
-        info("Mon=1…Sun=7 tells a model Sunday is far from Monday. They're adjacent. Sine/cosine place days on a circle so every day is equidistant from its neighbours.")
-        fml("sin_dow = sin(2π × day / 7)\ncos_dow = cos(2π × day / 7)")
-        dc=feat_df.groupby("day_of_week")[["sin_dow","cos_dow"]].first()
-        dl=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
-        theta=np.linspace(0,2*np.pi,200)
-        fig_c=go.Figure()
-        fig_c.add_trace(go.Scatter(x=np.sin(theta),y=np.cos(theta),mode="lines",
-            line=dict(color=C["border"],width=1.5),showlegend=False))
-        dr_=feat_df.groupby("day_of_week")["Revenue_USD"].mean()
-        for i,(dow,row) in enumerate(dc.iterrows()):
-            fig_c.add_trace(go.Scatter(x=[row["sin_dow"]],y=[row["cos_dow"]],
-                mode="markers+text",marker=dict(size=20,color=COLORS[i],line=dict(color="white",width=2)),
-                text=[f"<b>{dl[dow]}</b>"],textposition="top center",
-                textfont=dict(color=COLORS[i],size=11),
-                name=f"{dl[dow]} (${dr_.get(dow,0):.0f}/day)"))
-        fig_c.update_layout(**PLT,height=420,
-            xaxis=dict(range=[-1.6,1.6],gridcolor=C["border"]),
-            yaxis=dict(range=[-1.6,1.6],gridcolor=C["border"]),
-            margin=dict(l=0,r=0,t=40,b=0),legend=dict(font=dict(size=10),x=1.02,y=1))
-        st.plotly_chart(fig_c,use_container_width=True)
+        elif "Cyclic" in sel:
+            info("Mon=1…Sun=7 tells a model Sunday is far from Monday. They're adjacent. Sine/cosine place days on a circle so every day is equidistant from its neighbours.")
+            fml("sin_dow = sin(2π × day / 7)\ncos_dow = cos(2π × day / 7)")
+            dc=feat_df.groupby("day_of_week")[["sin_dow","cos_dow"]].first()
+            dl=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
+            theta=np.linspace(0,2*np.pi,200)
+            fig_c=go.Figure()
+            fig_c.add_trace(go.Scatter(x=np.sin(theta),y=np.cos(theta),mode="lines",
+                line=dict(color=C["border"],width=1.5),showlegend=False))
+            dr_=feat_df.groupby("day_of_week")["Revenue_USD"].mean()
+            for i,(dow,row) in enumerate(dc.iterrows()):
+                fig_c.add_trace(go.Scatter(x=[row["sin_dow"]],y=[row["cos_dow"]],
+                    mode="markers+text",marker=dict(size=20,color=COLORS[i],line=dict(color="white",width=2)),
+                    text=[f"<b>{dl[dow]}</b>"],textposition="top center",
+                    textfont=dict(color=COLORS[i],size=11),
+                    name=f"{dl[dow]} (${dr_.get(dow,0):.0f}/day)"))
+            fig_c.update_layout(**PLT,height=420,
+                xaxis=dict(range=[-1.6,1.6],gridcolor=C["border"]),
+                yaxis=dict(range=[-1.6,1.6],gridcolor=C["border"]),
+                margin=dict(l=0,r=0,t=40,b=0),legend=dict(font=dict(size=10),x=1.02,y=1))
+            st.plotly_chart(fig_c,use_container_width=True)
 
-    elif "Lag" in sel:
-        info("A model sees one row at a time — no memory. Lag features copy past revenue into the current row so the model can 'look back'.")
-        warn("⚠️ <b>Data leakage:</b> forecasting 7 days ahead means Lag 1–6 don't exist yet at inference time. Minimum safe lag = 7.")
-        fml("Y_t = f(Y_{t-1}, Y_{t-7}, ...) + ε")
-        lm=st.slider("Lags to show",3,14,14)
-        lc=[f"lag_{i}" for i in range(1,lm+1)]
-        cv=[feat_df["Revenue_USD"].corr(feat_df[c]) for c in lc]
-        best=max(range(len(cv)),key=lambda i:abs(cv[i]))
-        fig_l=go.Figure(go.Bar(x=[f"Lag {i}" for i in range(1,lm+1)],y=cv,
-            marker_color=[C["green"] if i==best else (C["purple"] if v>=0 else C["red"]) for i,v in enumerate(cv)],
-            text=[f"{v:.3f}" for v in cv],textposition="outside"))
-        fig_l.add_hline(y=0,line_color=C["border"],line_width=1)
-        fig_l.update_layout(**PLT,height=300,
-            title=f"Lag {best+1} is the strongest predictor (r={cv[best]:.3f})",
-            yaxis=dict(gridcolor=C["border"]),xaxis=dict(gridcolor="rgba(0,0,0,0)"),
-            margin=dict(l=0,r=0,t=40,b=0))
-        st.plotly_chart(fig_l,use_container_width=True)
+        elif "Lag" in sel:
+            info("A model sees one row at a time — no memory. Lag features copy past revenue into the current row so the model can 'look back'.")
+            warn("⚠️ <b>Data leakage:</b> forecasting 7 days ahead means Lag 1–6 don't exist yet at inference time. Minimum safe lag = 7.")
+            fml("Y_t = f(Y_{t-1}, Y_{t-7}, ...) + ε")
+            lm=st.slider("Lags to show",3,14,14)
+            lc=[f"lag_{i}" for i in range(1,lm+1)]
+            cv=[feat_df["Revenue_USD"].corr(feat_df[c]) for c in lc]
+            best=max(range(len(cv)),key=lambda i:abs(cv[i]))
+            fig_l=go.Figure(go.Bar(x=[f"Lag {i}" for i in range(1,lm+1)],y=cv,
+                marker_color=[C["green"] if i==best else (C["purple"] if v>=0 else C["red"]) for i,v in enumerate(cv)],
+                text=[f"{v:.3f}" for v in cv],textposition="outside"))
+            fig_l.add_hline(y=0,line_color=C["border"],line_width=1)
+            fig_l.update_layout(**PLT,height=300,
+                title=f"Lag {best+1} is the strongest predictor (r={cv[best]:.3f})",
+                yaxis=dict(gridcolor=C["border"]),xaxis=dict(gridcolor="rgba(0,0,0,0)"),
+                margin=dict(l=0,r=0,t=40,b=0))
+            st.plotly_chart(fig_l,use_container_width=True)
 
-    elif "Stationarity" in sel:
-        info("ARIMA needs constant mean and variance. If revenue is trending up, we subtract yesterday from today — predicting change instead of level.")
-        fml("ΔY_t = Y_t − Y_{t-1}    ← predict change, not level")
-        if adf_df is not None:
-            c1_,c2_,c3_ = st.columns(3)
-            for col,(i,row) in zip([c1_,c2_,c3_],enumerate(adf_df.itertuples())):
-                ok="YES" in str(row.Stationary)
-                col.metric(row.Series,f"p={row.p_value:.4f}",
-                    delta="✅ Stationary" if ok else "⚠️ Not stationary",
-                    delta_color="normal" if ok else "inverse")
-        fig_d=make_subplots(rows=2,cols=1,subplot_titles=("Raw revenue","After differencing — bounded around 0"),vertical_spacing=0.14)
-        fig_d.add_trace(go.Scatter(x=feat_df["Date"],y=feat_df["Revenue_USD"],
-            line=dict(color=C["purple"],width=1.5),fill="tozeroy",fillcolor=f"rgba(67,58,142,.07)"),row=1,col=1)
-        fig_d.add_trace(go.Scatter(x=feat_df["Date"],y=feat_df["revenue_diff1"],
-            line=dict(color=C["teal"],width=1.5),fill="tozeroy",fillcolor=f"rgba(0,204,205,.07)"),row=2,col=1)
-        fig_d.add_hline(y=0,line_color=C["border"],line_dash="dash",row=2,col=1)
-        fig_d.update_layout(**PLT,height=380,showlegend=False,margin=dict(l=0,r=0,t=28,b=0))
-        fig_d.update_xaxes(gridcolor=C["border"]); fig_d.update_yaxes(gridcolor=C["border"])
-        st.plotly_chart(fig_d,use_container_width=True)
+        elif "Stationarity" in sel:
+            info("ARIMA needs constant mean and variance. If revenue is trending up, we subtract yesterday from today — predicting change instead of level.")
+            fml("ΔY_t = Y_t − Y_{t-1}    ← predict change, not level")
+            if adf_df is not None:
+                c1_,c2_,c3_ = st.columns(3)
+                for col,(i,row) in zip([c1_,c2_,c3_],enumerate(adf_df.itertuples())):
+                    ok="YES" in str(row.Stationary)
+                    col.metric(row.Series,f"p={row.p_value:.4f}",
+                        delta="✅ Stationary" if ok else "⚠️ Not stationary",
+                        delta_color="normal" if ok else "inverse")
+            fig_d=make_subplots(rows=2,cols=1,subplot_titles=("Raw revenue","After differencing — bounded around 0"),vertical_spacing=0.14)
+            fig_d.add_trace(go.Scatter(x=feat_df["Date"],y=feat_df["Revenue_USD"],
+                line=dict(color=C["purple"],width=1.5),fill="tozeroy",fillcolor=f"rgba(67,58,142,.07)"),row=1,col=1)
+            fig_d.add_trace(go.Scatter(x=feat_df["Date"],y=feat_df["revenue_diff1"],
+                line=dict(color=C["teal"],width=1.5),fill="tozeroy",fillcolor=f"rgba(0,204,205,.07)"),row=2,col=1)
+            fig_d.add_hline(y=0,line_color=C["border"],line_dash="dash",row=2,col=1)
+            fig_d.update_layout(**PLT,height=380,showlegend=False,margin=dict(l=0,r=0,t=28,b=0))
+            fig_d.update_xaxes(gridcolor=C["border"]); fig_d.update_yaxes(gridcolor=C["border"])
+            st.plotly_chart(fig_d,use_container_width=True)
 
-    elif "VIF" in sel:
-        info("VIF detects when two features say the same thing. High VIF (>10) = model can't decide which to trust. Drop or combine with PCA.")
-        fml("VIF = 1/(1−R²)  ·  >10 = redundant, consider dropping")
-        if vif_df is not None:
-            fig_v=go.Figure(go.Bar(x=vif_df["VIF"],y=vif_df["Feature"],orientation="h",
-                marker_color=["#ef4444" if v>10 else (C["amber"] if v>5 else C["green"]) for v in vif_df["VIF"]],
-                text=[f"{v:.1f}" for v in vif_df["VIF"]],textposition="outside"))
-            fig_v.add_vline(x=5, line_color=C["amber"],line_dash="dot",line_width=1.5)
-            fig_v.add_vline(x=10,line_color=C["red"],  line_dash="dot",line_width=1.5)
-            fig_v.update_layout(**PLT,height=380,
-                title="green=keep · yellow=watch · red=drop",
-                xaxis=dict(gridcolor=C["border"]),yaxis=dict(gridcolor="rgba(0,0,0,0)"),
-                margin=dict(l=0,r=60,t=40,b=0))
-            st.plotly_chart(fig_v,use_container_width=True)
+        elif "VIF" in sel:
+            info("VIF detects when two features say the same thing. High VIF (>10) = model can't decide which to trust. Drop or combine with PCA.")
+            fml("VIF = 1/(1−R²)  ·  >10 = redundant, consider dropping")
+            if vif_df is not None:
+                fig_v=go.Figure(go.Bar(x=vif_df["VIF"],y=vif_df["Feature"],orientation="h",
+                    marker_color=["#ef4444" if v>10 else (C["amber"] if v>5 else C["green"]) for v in vif_df["VIF"]],
+                    text=[f"{v:.1f}" for v in vif_df["VIF"]],textposition="outside"))
+                fig_v.add_vline(x=5, line_color=C["amber"],line_dash="dot",line_width=1.5)
+                fig_v.add_vline(x=10,line_color=C["red"],  line_dash="dot",line_width=1.5)
+                fig_v.update_layout(**PLT,height=380,
+                    title="green=keep · yellow=watch · red=drop",
+                    xaxis=dict(gridcolor=C["border"]),yaxis=dict(gridcolor="rgba(0,0,0,0)"),
+                    margin=dict(l=0,r=60,t=40,b=0))
+                st.plotly_chart(fig_v,use_container_width=True)
 
+    elif st.session_state.page == "upload":
+        st.markdown('<div class="pg-title">📤 Upload Your Data</div>', unsafe_allow_html=True)
+        st.markdown('<div class="pg-sub">Replace the sample data with your own sales and inventory CSVs.</div>', unsafe_allow_html=True)
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("**Sales / Transactions CSV**")
+            f = st.file_uploader("", type=["csv"], key="txn_upload")
+            if f:
+                df = pd.read_csv(f, parse_dates=["Transaction_Date"])
+                os.makedirs("data/raw", exist_ok=True)
+                df.to_csv("data/raw/transactions.csv", index=False)
+                st.cache_data.clear()
+                st.success(f"Saved {len(df):,} rows to data/raw/transactions.csv")
+        with col2:
+            st.markdown("**Inventory CSV**")
+            f2 = st.file_uploader("", type=["csv"], key="inv_upload")
+            if f2:
+                df2 = pd.read_csv(f2)
+                os.makedirs("data/raw", exist_ok=True)
+                df2.to_csv("data/raw/inventory.csv", index=False)
+                st.cache_data.clear()
+                st.success(f"Saved {len(df2):,} rows to data/raw/inventory.csv")
+        with st.expander("Required column names"):
+            st.code("Transactions: Transaction_Date, Transaction_ID, Customer_ID,\nProduct_ID, Product_Name, Quantity, Line_Total_USD, Category")
+            st.code("Inventory: Product_ID, Product_Name, Category,\nCurrent_Stock, Retail_Price, Cost_Price")
 
-# ═════════════════════════════════════════════════════════════
-# GLOSSARY
-# ═════════════════════════════════════════════════════════════
-elif st.session_state.page == "glossary":
-    st.markdown('<div class="pg-title">📖 Glossary</div>', unsafe_allow_html=True)
-    st.markdown('<div class="pg-sub">Plain-English definitions for every metric and concept. No prior knowledge required.</div>', unsafe_allow_html=True)
+    elif st.session_state.page == "profit":
+        st.markdown('<div class="pg-title">💰 Profit Margin Optimizer</div>', unsafe_allow_html=True)
+        st.markdown('<div class="pg-sub">Gross margin per product · dead stock cost · price simulator</div>', unsafe_allow_html=True)
+        if not guard(prod_df,"product metrics"): st.stop()
+
+        margin_sorted = prod_df.sort_values("Gross_Margin_Pct", ascending=False)
+        fig_m = go.Figure(go.Bar(
+            x=margin_sorted["Gross_Margin_Pct"], y=margin_sorted["Product_Name"],
+            orientation="h",
+            marker_color=[C["green"] if v>=40 else (C["amber"] if v>=20 else C["red"]) for v in margin_sorted["Gross_Margin_Pct"]],
+            text=[f"{v:.1f}%" for v in margin_sorted["Gross_Margin_Pct"]],
+            textposition="outside"))
+        fig_m.add_vline(x=40, line_color=C["green"], line_dash="dot", line_width=1.5, annotation_text="40%", annotation_font_color=C["muted"], annotation_font_size=10)
+        fig_m.add_vline(x=20, line_color=C["amber"], line_dash="dot", line_width=1.5, annotation_text="20%", annotation_font_color=C["muted"], annotation_font_size=10)
+        fig_m.update_layout(**PLT, height=500, margin=dict(l=0,r=60,t=10,b=0),
+            xaxis=dict(title="Gross Margin %", gridcolor=C["border"]),
+            yaxis=dict(tickfont=dict(size=10), gridcolor="rgba(0,0,0,0)"))
+        st.plotly_chart(fig_m, use_container_width=True)
+
+        st.markdown(f'<hr style="border-color:{C["border"]};margin:24px 0">', unsafe_allow_html=True)
+        sec("Dead Stock Cost Calculator")
+        dead = prod_df[prod_df["Sell_Through_Pct"] < 10].copy() if "Sell_Through_Pct" in prod_df.columns else pd.DataFrame()
+        if dead is not None and len(dead) > 0:
+            dead["Capital_Tied_Up"] = (dead["Current_Stock"] * dead["Cost_Price"]).round(2)
+            show = dead[["Product_Name","Current_Stock","Cost_Price","Capital_Tied_Up","Sell_Through_Pct"]].sort_values("Capital_Tied_Up", ascending=False)
+            st.dataframe(show, use_container_width=True)
+            warn(f"Total capital tied up in dead stock: <b>${show['Capital_Tied_Up'].sum():,.2f}</b>")
+        else:
+            good("No dead stock detected (sell-through > 10% on all products).")
+
+    elif st.session_state.page == "glossary":
+        st.markdown('<div class="pg-title">📖 Glossary</div>', unsafe_allow_html=True)
+        st.markdown('<div class="pg-sub">Plain-English definitions for every metric and concept. No prior knowledge required.</div>', unsafe_allow_html=True)
+
+    elif st.session_state.page == "onboarding":
+        st.markdown('<div class="pg-title">🚀 First-Time Setup</div>', unsafe_allow_html=True)
+        st.markdown('<div class="pg-sub">Get Navigare tailored to your store in 4 steps.</div>', unsafe_allow_html=True)
+
+        step = st.session_state.get("onboard_step", 1)
+
+        if step == 1:
+            st.markdown("**Step 1 — What kind of store are you?**")
+            stype = st.selectbox("Store Type", ["Retail", "Food/Bakery", "Service", "E-Commerce"])
+            sname = st.text_input("Store Name")
+            if st.button("Next →"):
+                st.session_state.store_type = stype
+                st.session_state.store_name = sname
+                st.session_state.onboard_step = 2
+                st.rerun()
+
+        elif step == 2:
+            st.markdown("**Step 2 — Upload your sales data**")
+            st.info("Download our sample CSV, fill it with your data, then upload it here.")
+            f = st.file_uploader("Transactions CSV", type=["csv"])
+            if f:
+                df = pd.read_csv(f, parse_dates=["Transaction_Date"])
+                df.to_csv("data/raw/transactions.csv", index=False)
+                st.cache_data.clear()
+                st.success(f"Saved {len(df):,} rows")
+            c1, c2 = st.columns(2)
+            with c1:
+                if st.button("← Back"): st.session_state.onboard_step = 1; st.rerun()
+            with c2:
+                if st.button("Next →"): st.session_state.onboard_step = 3; st.rerun()
+
+        elif step == 3:
+            st.markdown("**Step 3 — Set restock thresholds**")
+            threshold = st.slider("Alert me when stock falls below", 5, 50, 10)
+            st.session_state.reorder_threshold = threshold
+            c1, c2 = st.columns(2)
+            with c1:
+                if st.button("← Back"): st.session_state.onboard_step = 2; st.rerun()
+            with c2:
+                if st.button("Next →"): st.session_state.onboard_step = 4; st.rerun()
+
+        elif step == 4:
+            st.markdown("**Step 4 — Set up weekly digest**")
+            email = st.text_input("Digest Email")
+            day = st.selectbox("Day", ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"])
+            time = st.time_input("Time")
+            st.session_state.digest_email = email
+            c1, c2 = st.columns(2)
+            with c1:
+                if st.button("← Back"): st.session_state.onboard_step = 3; st.rerun()
+            with c2:
+                if st.button("Finish Setup", type="primary"):
+                    st.session_state.onboarded = True
+                    st.session_state.page = "overview"
+                    st.rerun()
+        st.markdown('<div class="pg-title">📖 Glossary</div>', unsafe_allow_html=True)
+        st.markdown('<div class="pg-sub">Plain-English definitions for every metric and concept. No prior knowledge required.</div>', unsafe_allow_html=True)
 
     G = [
         ("H(x) — Inventory Health Score","Asymmetric function per SKU. Score 0–100. Steep penalty near zero (stockout = sale loss + customer decay). Gentle penalty for overstock (holding cost).","H(x): 0→CRISIS·1-5→CRITICAL·6-10→LOW·11-20→WARNING·21-50→HEALTHY·51-100→OPTIMAL·>100→OVERSTOCK"),

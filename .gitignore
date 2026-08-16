@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+
+# Streamlit
+.streamlit/
+
+# Data
+data/raw/
+data/clean/
+data/synthetic/
+*.csv
+*.json
+*.parquet
+
+# Node
+node_modules/
+.next/
+out/
+dist/
+build/
+
+# Environment
+.env
+.env.local
+.env.*.local
+*.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swoop
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Kilo
+.kilo/worktrees/
