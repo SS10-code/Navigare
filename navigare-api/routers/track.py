@@ -5,16 +5,19 @@ Track router for logging guest and authenticated user events to Supabase.
 from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import JSONResponse
 from typing import Optional
+from dotenv import load_dotenv
 import os
 import httpx
 
+load_dotenv()  # Load .env file
+
 router = APIRouter()
 
-SUPABASE_URL = os.environ.get("SUPABASE_URL")
-SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_KEY")
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
 
 if not SUPABASE_URL or not SUPABASE_KEY:
-    raise RuntimeError("SUPABASE_URL and SUPABASE_SERVICE_KEY environment variables must be set")
+    raise RuntimeError("SUPABASE_URL and SUPABASE_SERVICE_KEY must be set in .env or environment variables")
 
 
 @router.post("/track")
