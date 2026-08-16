@@ -64,7 +64,7 @@ app.include_router(upload.router, prefix="/api", tags=["upload"], dependencies=[
 app.include_router(track.router, prefix="/api", tags=["track"])
 
 
-@app.get("/health")
+@app.get("/api/health")
 def health_check():
     return {"status": "ok", "service": "navigare-api"}
 
