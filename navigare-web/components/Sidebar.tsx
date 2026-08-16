@@ -41,17 +41,17 @@ export default function Sidebar() {
     }
   }, [pathname]);
 
-  const wellnessColor = wellness == null ? "text-white/40" : wellness >= 70 ? "text-teal" : wellness >= 40 ? "text-amber" : "text-red-300";
+  const wellnessColor = wellness == null ? "text-muted" : wellness >= 70 ? "text-green" : wellness >= 40 ? "text-amber" : "text-red";
   const wellnessLabel = wellness == null ? "No data loaded" : wellness >= 70 ? "Store is Healthy" : wellness >= 40 ? "Needs attention" : "Critical - act now";
 
   return (
-    <aside className="w-64 min-h-screen bg-[#111113] border-r-[3px] border-ink text-white flex flex-col fixed left-0 top-0 z-50">
-      <div className="p-6 pb-5 border-b-[3px] border-ink">
+    <aside className="w-64 min-h-screen bg-panel border-r-[3px] border-border text-text flex flex-col fixed left-0 top-0 z-50">
+      <div className="p-6 pb-5 border-b-[3px] border-border">
         <Link href="/dashboard" className="flex items-center gap-3">
-          <span className="text-teal"><Icon name="logo" size={30} /></span>
+          <span className="text-blue"><Icon name="logo" size={30} /></span>
           <div>
             <div className="text-xl font-black tracking-tight uppercase">Navigare</div>
-            <div className="text-[10px] text-white/50 tracking-[0.2em]">RETAIL ANALYTICS</div>
+            <div className="text-[10px] text-muted tracking-[0.2em]">RETAIL ANALYTICS</div>
           </div>
         </Link>
       </div>
@@ -66,8 +66,8 @@ export default function Sidebar() {
               className={`
                 flex items-center gap-3 px-3 py-2.5 border-2 transition-all duration-100
                 ${active
-                  ? "bg-teal text-black border-black shadow-[4px_4px_0_0_#000]"
-                  : "border-transparent text-white/70 hover:bg-white/10 hover:text-white hover:border-white/30"
+                  ? "bg-blue text-white border-black shadow-[4px_4px_0_0_#000]"
+                  : "border-transparent text-muted hover:bg-paper hover:text-text hover:border-border"
                 }
               `}
             >
@@ -78,26 +78,26 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div className="p-3 space-y-2 border-t-[3px] border-ink">
-        <div className="bg-[#1a1a1d] border-2 border-white/15 p-3">
-          <div className="text-[9px] text-white/45 uppercase tracking-[0.2em] mb-1">Store Wellness Index</div>
+      <div className="p-3 space-y-2 border-t-[3px] border-border">
+        <div className="bg-paper border-2 border-border p-3">
+          <div className="text-[9px] text-muted uppercase tracking-[0.2em] mb-1">Store Wellness Index</div>
           <div className={`text-2xl font-black leading-none ${wellnessColor}`}>
             {wellness != null ? `${wellness}/100` : "--/100"}
           </div>
-          <div className="text-[10px] text-white/50 mt-1">{wellnessLabel}</div>
+          <div className="text-[10px] text-muted mt-1">{wellnessLabel}</div>
         </div>
 
-        <div className={`bg-[#1a1a1d] border-2 p-3 ${alerts > 0 ? "border-red-500/60" : "border-white/15"}`}>
+        <div className={`bg-paper border-2 p-3 ${alerts > 0 ? "border-red" : "border-border"}`}>
           <div className="flex items-center gap-2">
-            {alerts > 0 && <Icon name="siren" size={14} className="text-red-400 animate-pulse-soft" />}
-            <div className={`text-[11px] font-bold uppercase ${alerts > 0 ? "text-red-300" : "text-white/60"}`}>
+            {alerts > 0 && <Icon name="siren" size={14} className="text-red animate-pulse-soft" />}
+            <div className={`text-[11px] font-bold uppercase ${alerts > 0 ? "text-red" : "text-muted"}`}>
               {alerts} Priority {alerts === 1 ? "Alert" : "Alerts"}
             </div>
           </div>
-          <div className="text-[9.5px] text-white/45 mt-0.5">SKUs needing immediate action</div>
+          <div className="text-[9.5px] text-muted mt-0.5">SKUs needing immediate action</div>
         </div>
 
-        <Link href="/dashboard/onboarding" className="block text-center text-[10px] text-white/40 hover:text-white/70 transition py-1">
+        <Link href="/dashboard/onboarding" className="block text-center text-[10px] text-muted hover:text-text transition py-1">
           Settings / Onboarding
         </Link>
       </div>

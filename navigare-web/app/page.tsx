@@ -18,7 +18,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-ink text-text flex items-center justify-center p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-paper text-text flex items-center justify-center p-6 relative overflow-hidden">
       <div className="max-w-3xl text-center relative z-10">
         <div className="inline-flex items-center gap-2 border-2 border-teal text-teal px-4 py-1.5 mb-8 label-mono text-[11px] font-bold">
           <span className="w-2 h-2 bg-teal animate-pulse-soft inline-block" />

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Card from "@/components/Card";
 import Callout from "@/components/Callout";
 import SectionHeader from "@/components/SectionHeader";
+import Icon from "@/components/Icon";
 
 const STORE_TYPES = ["Retail", "Food/Bakery", "Service", "E-Commerce"];
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -102,7 +103,7 @@ export default function OnboardingPage() {
               Download our sample CSV, fill it with your data, then upload it here.
             </Callout>
             <div className="border-2 border-dashed border-border rounded-xl p-8 text-center mb-6">
-              <div className="text-4xl mb-3">📄</div>
+              <div className="text-4xl mb-3 text-blue"><Icon name="file" size={40} /></div>
               <p className="text-sm text-muted mb-4">Drag & drop your CSV here</p>
               <input type="file" accept=".csv" className="block w-full text-sm text-muted mx-auto" />
             </div>
