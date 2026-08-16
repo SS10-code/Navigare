@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Icon, { IconName } from "@/components/Icon";
 import UserCounters from "@/components/UserCounters";
+import { isGuestMode } from "@/lib/auth";
 
 const PAGES: { label: string; href: string; icon: IconName }[] = [
   { label: "Overview", href: "/dashboard", icon: "chart" },
@@ -23,6 +24,15 @@ export default function Sidebar() {
   const pathname = usePathname();
   const [wellness, setWellness] = useState<number | null>(null);
   const [alerts, setAlerts] = useState(0);
+  const [isGuest, setIsGuest] = useState(false);
+  const [onboarding, setOnboarding] = useState(false);
+
+  useEffect(() => {
+    setIsGuest(isGuestMode());
+    if (typeof window !== "undefined") {
+      setOnboarding(!document.cookie.split("; ").some((c) => c.startsWith("navigare_onboarded=true")));
+    }
+  }, [pathname]);
 
   useEffect(() => {
     try {
@@ -58,25 +68,35 @@ export default function Sidebar() {
       </div>
 
       <nav className="flex-1 px-3 space-y-1 overflow-y-auto py-4">
-        {PAGES.map((p) => {
-          const active = pathname === p.href;
-          return (
-            <Link
-              key={p.href}
-              href={p.href}
-              className={`
-                flex items-center gap-3 px-3 py-2.5 border-2 transition-all duration-100
-                ${active
-                  ? "bg-blue text-white border-black shadow-[4px_4px_0_0_#000]"
-                  : "border-transparent text-muted hover:bg-paper hover:text-text hover:border-border"
-                }
-              `}
-            >
-              <Icon name={p.icon} size={17} />
-              <span className="text-[12.5px] font-bold tracking-wide uppercase">{p.label}</span>
-            </Link>
-          );
-        })}
+        {!onboarding &&
+          PAGES.map((p) => {
+            const active = pathname === p.href;
+            return (
+              <Link
+                key={p.href}
+                href={p.href}
+                className={`
+                  flex items-center gap-3 px-3 py-2.5 border-2 transition-all duration-100
+                  ${active
+                    ? "bg-blue text-white border-black shadow-[4px_4px_0_0_#000]"
+                    : "border-transparent text-muted hover:bg-paper hover:text-text hover:border-border"
+                  }
+                `}
+              >
+                <Icon name={p.icon} size={17} />
+                <span className="text-[12.5px] font-bold tracking-wide uppercase">{p.label}</span>
+              </Link>
+            );
+          })
+        }
+        {onboarding && (
+          <div className="px-3 py-4">
+            <div className="text-[11px] font-bold text-muted uppercase tracking-wider mb-3">Setup in progress</div>
+            <div className="text-xs text-muted leading-relaxed">
+              Please upload your data to unlock the full dashboard, or skip to continue with sample data.
+            </div>
+          </div>
+        )}
       </nav>
 
       <div className="p-3 space-y-2 border-t-[3px] border-border">
@@ -100,9 +120,11 @@ export default function Sidebar() {
 
         <UserCounters />
 
-        <Link href="/dashboard/onboarding" className="block text-center text-[10px] text-muted hover:text-text transition py-1">
-          Settings / Onboarding
-        </Link>
+        {!onboarding && (
+          <Link href="/dashboard/onboarding" className="block text-center text-[10px] text-muted hover:text-text transition py-1">
+            Settings / Onboarding
+          </Link>
+        )}
       </div>
     </aside>
   );

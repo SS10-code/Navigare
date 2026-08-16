@@ -4,7 +4,7 @@ import Sidebar from "@/components/Sidebar";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import Icon from "@/components/Icon";
-import { isGuestMode } from "@/lib/auth";
+import { isGuestMode, isOnboarded } from "@/lib/auth";
 
 const PAGE_TITLES: Record<string, string> = {
   "/dashboard": "Overview",
@@ -23,11 +23,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const pathname = usePathname();
   const [now, setNow] = useState("");
   const [isGuest, setIsGuest] = useState(false);
+  const [showOnboardingBanner, setShowOnboardingBanner] = useState(false);
 
   useEffect(() => {
     setNow(new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" }));
     setIsGuest(isGuestMode());
-  }, []);
+    setShowOnboardingBanner(!isOnboarded());
+  }, [pathname]);
 
   return (
     <div className="min-h-screen bg-paper">
@@ -36,6 +38,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         {isGuest && (
           <div className="bg-amber/10 border-2 border-amber text-amber text-xs font-mono px-4 py-2 text-center">
             You are in guest mode. Some features are disabled. Create an account to unlock all features.
+          </div>
+        )}
+        {showOnboardingBanner && (
+          <div className="bg-teal/10 border-2 border-teal text-teal text-xs font-mono px-4 py-2 text-center">
+            Complete setup to unlock all features: upload your data or skip to continue with sample data.
           </div>
         )}
         <div className="sticky top-0 z-40 bg-paper/90 backdrop-blur-md border-b-[3px] border-border px-8 py-3">

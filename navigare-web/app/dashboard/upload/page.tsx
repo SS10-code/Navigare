@@ -7,6 +7,7 @@ import SectionHeader from "@/components/SectionHeader";
 import Icon from "@/components/Icon";
 import { uploadFile } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import { setOnboarded } from "@/lib/auth";
 
 type UploadStatus = { type: "success" | "error"; message: string } | null;
 
@@ -130,12 +131,14 @@ export default function UploadPage() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setOnboarding(window.location.search.includes("onboarding=true"));
+      const urlOnboarding = window.location.search.includes("onboarding=true") || window.location.search.includes("guest=true");
+      const cookieOnboarding = !document.cookie.split("; ").some((c) => c.startsWith("navigare_onboarded=true"));
+      setOnboarding(urlOnboarding || cookieOnboarding);
     }
   }, []);
 
   const markOnboarded = () => {
-    document.cookie = "navigare_onboarded=true; path=/; max-age=" + 30 * 24 * 60 * 60;
+    setOnboarded(true);
     router.push("/dashboard");
   };
 
@@ -163,22 +166,15 @@ export default function UploadPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-[22px] font-extrabold text-text mb-1 tracking-tight">
-            {onboarding ? "Welcome to Navigare" : "Upload Your Data"}
-          </h1>
-          <p className="text-[13.5px] text-muted">
-            {onboarding
-              ? "Upload your sales and inventory data to unlock the full dashboard."
-              : "Replace the sample data with your own sales and inventory CSVs."}
-          </p>
-        </div>
-        {onboarding && (
-          <button onClick={markOnboarded} className="btn-secondary text-xs">
-            Skip for now
-          </button>
-        )}
+      <div className="mb-8">
+        <h1 className="text-[22px] font-extrabold text-text mb-1 tracking-tight">
+          {onboarding ? "Welcome! Upload your data" : "Upload Your Data"}
+        </h1>
+        <p className="text-[13.5px] text-muted">
+          {onboarding
+            ? "Upload your sales and inventory data to unlock the full dashboard. This only takes a minute."
+            : "Replace the sample data with your own sales and inventory CSVs."}
+        </p>
       </div>
 
       {status && (
@@ -208,31 +204,46 @@ export default function UploadPage() {
         />
       </div>
 
-      <Card hover>
-        <SectionHeader title="Required Column Names" />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Icon name="file" size={16} className="text-muted" />
-              <div className="text-xs font-semibold text-muted uppercase tracking-wider">Transactions</div>
+      {onboarding && (
+        <Card hover className="mb-8">
+          <SectionHeader title="Required Column Names" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Icon name="file" size={16} className="text-muted" />
+                <div className="text-xs font-semibold text-muted uppercase tracking-wider">Transactions</div>
+              </div>
+              <code className="block bg-bg p-4 rounded-xl text-xs text-text leading-relaxed border border-border">
+                Transaction_Date, Transaction_ID, Customer_ID,<br />
+                Product_ID, Product_Name, Quantity, Line_Total_USD, Category
+              </code>
             </div>
-            <code className="block bg-bg p-4 rounded-xl text-xs text-text leading-relaxed border border-border">
-              Transaction_Date, Transaction_ID, Customer_ID,<br />
-              Product_ID, Product_Name, Quantity, Line_Total_USD, Category
-            </code>
-          </div>
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Icon name="box" size={16} className="text-muted" />
-              <div className="text-xs font-semibold text-muted uppercase tracking-wider">Inventory</div>
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Icon name="box" size={16} className="text-muted" />
+                <div className="text-xs font-semibold text-muted uppercase tracking-wider">Inventory</div>
+              </div>
+              <code className="block bg-bg p-4 rounded-xl text-xs text-text leading-relaxed border border-border">
+                Product_ID, Product_Name, Category,<br />
+                Current_Stock, Retail_Price, Cost_Price, Reorder_Level
+              </code>
             </div>
-            <code className="block bg-bg p-4 rounded-xl text-xs text-text leading-relaxed border border-border">
-              Product_ID, Product_Name, Category,<br />
-              Current_Stock, Retail_Price, Cost_Price, Reorder_Level
-            </code>
           </div>
+        </Card>
+      )}
+
+      <div className="flex items-center justify-between">
+        <div className="text-xs text-muted">
+          {onboarding
+            ? "Don't have your data ready? You can skip and explore with sample data."
+            : "Download the sample CSVs above to see the expected format."}
         </div>
-      </Card>
+        {onboarding && (
+          <button onClick={markOnboarded} className="btn-secondary text-xs">
+            Skip for now
+          </button>
+        )}
+      </div>
     </div>
   );
 }
