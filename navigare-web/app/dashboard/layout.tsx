@@ -30,7 +30,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }, []);
 
   return (
-    <div className="min-h-screen bg-ink">
+    <div className="min-h-screen bg-paper">
       <Sidebar />
       <main className="ml-64">
         {isGuest && (
@@ -38,7 +38,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             You are in guest mode. Some features are disabled. Create an account to unlock all features.
           </div>
         )}
-        <div className="sticky top-0 z-40 bg-ink/90 backdrop-blur-md border-b-[3px] border-border px-8 py-3">
+        <div className="sticky top-0 z-40 bg-paper/90 backdrop-blur-md border-b-[3px] border-border px-8 py-3">
           <div className="flex items-center justify-between max-w-[1360px]">
             <div className="flex items-center gap-2 text-sm font-mono">
               <Icon name="logo" size={14} className="text-teal" />

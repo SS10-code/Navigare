@@ -150,7 +150,7 @@ export default function CombosPage() {
             </thead>
             <tbody>
               {combos.map((row, i) => (
-                <tr key={i} className="border-b border-border/50 hover:bg-ink/50 transition">
+                 <tr key={i} className="border-b border-border/50 hover:bg-paper transition">
                   <td className="py-3 px-4 font-medium text-text">{row.pair}</td>
                   <td className="py-3 px-4 text-muted">--</td>
                   <td className="py-3 px-4 text-muted">{(row.support * 100).toFixed(1)}%</td>

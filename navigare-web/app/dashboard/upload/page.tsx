@@ -4,6 +4,7 @@ import { useState, useRef, useCallback } from "react";
 import Card from "@/components/Card";
 import Callout from "@/components/Callout";
 import SectionHeader from "@/components/SectionHeader";
+import Icon from "@/components/Icon";
 import { uploadFile } from "@/lib/api";
 
 type UploadStatus = { type: "success" | "error"; message: string } | null;
@@ -29,9 +30,9 @@ function DownloadSampleCSV({ type }: { type: "transactions" | "inventory" }) {
   return (
     <button
       onClick={handleClick}
-      className="text-xs px-3 py-1.5 rounded-lg border border-border text-muted hover:text-purple hover:border-purple transition inline-flex items-center gap-1.5"
+      className="text-xs px-3 py-1.5 rounded-lg border border-border text-muted hover:text-blue hover:border-blue transition inline-flex items-center gap-1.5"
     >
-      <span>⬇</span> Download Sample
+      <Icon name="download" size={14} /> Download Sample
     </button>
   );
 }
@@ -45,7 +46,7 @@ function UploadZone({
   loading,
   label,
 }: {
-  icon: string;
+  icon: "file" | "box";
   title: string;
   file: File | null;
   onFile: (f: File) => void;
@@ -84,7 +85,7 @@ function UploadZone({
           dragActive ? "border-purple bg-purple/5 scale-[1.01]" : "border-border hover:border-purple/40 hover:bg-purple/5"
         }`}
       >
-        <div className={`text-4xl mb-3 transition-transform ${dragActive ? "scale-110" : ""}`}>{icon}</div>
+        <div className={`text-4xl mb-3 transition-transform text-muted ${dragActive ? "scale-110" : ""}`}><Icon name={icon} size={40} /></div>
         <p className="text-sm text-muted mb-2">{dragActive ? "Drop your CSV here!" : "Drag & drop your CSV, or click to browse"}</p>
         <p className="text-[11px] text-muted/60 mb-4">Max 10MB · .csv format only</p>
         <input
@@ -99,7 +100,7 @@ function UploadZone({
       {file && (
         <div className="mt-4 flex items-center justify-between gap-3 p-3 bg-bg rounded-xl border border-border animate-fade-in">
           <div className="flex items-center gap-2">
-            <span className="text-lg">📄</span>
+            <Icon name="file" size={20} className="text-muted" />
             <div>
               <div className="text-sm font-medium text-text">{file.name}</div>
               <div className="text-xs text-muted">{(file.size / 1024).toFixed(1)} KB</div>
@@ -156,7 +157,7 @@ export default function UploadPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <UploadZone
-          icon="📄"
+          icon="file"
           title="Sales / Transactions CSV"
           file={txnFile}
           onFile={setTxnFile}
@@ -165,7 +166,7 @@ export default function UploadPage() {
           label="Transactions"
         />
         <UploadZone
-          icon="📦"
+          icon="box"
           title="Inventory CSV"
           file={invFile}
           onFile={setInvFile}
@@ -180,7 +181,7 @@ export default function UploadPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span>📄</span>
+              <Icon name="file" size={16} className="text-muted" />
               <div className="text-xs font-semibold text-muted uppercase tracking-wider">Transactions</div>
             </div>
             <code className="block bg-bg p-4 rounded-xl text-xs text-text leading-relaxed border border-border">
@@ -190,7 +191,7 @@ export default function UploadPage() {
           </div>
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span>📦</span>
+              <Icon name="box" size={16} className="text-muted" />
               <div className="text-xs font-semibold text-muted uppercase tracking-wider">Inventory</div>
             </div>
             <code className="block bg-bg p-4 rounded-xl text-xs text-text leading-relaxed border border-border">
