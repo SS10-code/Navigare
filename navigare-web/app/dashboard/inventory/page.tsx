@@ -161,11 +161,11 @@ export default function InventoryPage() {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-        <KPICard label="Wellness Index μ" value={`${wellness}/100`} sub={wellness >= 70 ? "Store is Healthy" : "Needs attention"} accent="green" />
-        <KPICard label="SKUs Tracked" value={`${healthData.length}`} sub="products" accent="purple" />
-        <KPICard label="Crisis + Critical" value={`${(statusCounts["CRISIS"] || 0) + (statusCounts["CRITICAL"] || 0)}`} sub="expedite now" accent="red" />
-        <KPICard label="Low Stock" value={`${statusCounts["LOW"] || 0}`} sub="order now" accent="amber" />
-        <KPICard label="Healthy + Optimal" value={`${(statusCounts["HEALTHY"] || 0) + (statusCounts["OPTIMAL"] || 0)}`} sub="no action" accent="teal" />
+        <KPICard label="Wellness Index μ" value={`${wellness}/100`} sub={wellness >= 70 ? "Store is Healthy" : "Needs attention"} accent="accent" />
+        <KPICard label="SKUs Tracked" value={`${healthData.length}`} sub="products" />
+        <KPICard label="Crisis + Critical" value={`${(statusCounts["CRISIS"] || 0) + (statusCounts["CRITICAL"] || 0)}`} sub="expedite now" accent="accent" />
+        <KPICard label="Low Stock" value={`${statusCounts["LOW"] || 0}`} sub="order now" accent="accent" />
+        <KPICard label="Healthy + Optimal" value={`${(statusCounts["HEALTHY"] || 0) + (statusCounts["OPTIMAL"] || 0)}`} sub="no action" />
       </div>
 
       <Callout variant="info" className="mb-6">
