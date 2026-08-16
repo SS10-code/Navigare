@@ -8,9 +8,6 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.responses import JSONResponse
 import os
 import sys
-from dotenv import load_dotenv
-
-load_dotenv()
 
 sys.path.insert(0, os.path.dirname(__file__))
 
