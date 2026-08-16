@@ -17,7 +17,7 @@ type KPIData = {
   label: string;
   value: string;
   sub: string;
-  accent: "teal" | "green" | "purple" | "amber" | "red" | "blue";
+  accent?: "default" | "accent";
 };
 
 type RevenuePoint = { date: string; value: number };
@@ -44,11 +44,11 @@ const saveStored = (key: string, value: unknown) => {
 };
 
 const defaultKPIs: KPIData[] = [
-  { label: "Total Revenue", value: "$0", sub: "no data", accent: "teal" },
-  { label: "Total Orders", value: "0", sub: "no data", accent: "purple" },
-  { label: "Avg Order Value", value: "$0", sub: "no data", accent: "blue" },
-  { label: "Store Wellness", value: "0/100", sub: "no data", accent: "green" },
-  { label: "Priority Alerts", value: "0", sub: "no data", accent: "red" },
+  { label: "Total Revenue", value: "$0", sub: "no data", accent: "accent" },
+  { label: "Total Orders", value: "0", sub: "no data" },
+  { label: "Avg Order Value", value: "$0", sub: "no data" },
+  { label: "Store Wellness", value: "0/100", sub: "no data", accent: "accent" },
+  { label: "Priority Alerts", value: "0", sub: "no data", accent: "accent" },
 ];
 
 export default function OverviewPage() {
@@ -247,11 +247,11 @@ async function loadKPIs(): Promise<KPIData[]> {
     } catch { /* ignore */ }
 
     return [
-      { label: "Total Revenue", value: `$${totalRevenue.toLocaleString()}`, sub: "all channels", accent: "teal" },
-      { label: "Total Orders", value: `${totalOrders}`, sub: "transactions", accent: "purple" },
-      { label: "Avg Order Value", value: `$${aov.toFixed(2)}`, sub: "per checkout", accent: "blue" },
-      { label: "Store Wellness", value: `${wellness}/100`, sub: wellness >= 70 ? "healthy" : "needs attention", accent: wellness >= 70 ? "green" : wellness >= 40 ? "amber" : "red" },
-      { label: "Priority Alerts", value: `${alerts}`, sub: "need action now", accent: "red" },
+      { label: "Total Revenue", value: `$${totalRevenue.toLocaleString()}`, sub: "all channels", accent: "accent" },
+      { label: "Total Orders", value: `${totalOrders}`, sub: "transactions" },
+      { label: "Avg Order Value", value: `$${aov.toFixed(2)}`, sub: "per checkout" },
+      { label: "Store Wellness", value: `${wellness}/100`, sub: wellness >= 70 ? "healthy" : "needs attention", accent: "accent" },
+      { label: "Priority Alerts", value: `${alerts}`, sub: "need action now", accent: "accent" },
     ];
   } catch {
     return defaultKPIs;
