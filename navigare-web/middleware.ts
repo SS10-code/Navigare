@@ -20,6 +20,13 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
+    const guestMode = request.cookies.get("navigare_guest_mode")?.value === "true" ||
+                      request.nextUrl.searchParams.get("guest") === "true";
+
+    if (guestMode && pathname.startsWith("/dashboard")) {
+      return NextResponse.next();
+    }
+
     const { createServerClient } = await import("@supabase/ssr");
 
     const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
