@@ -23,17 +23,16 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  let supabaseResponse = NextResponse.next({ request });
-
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const authDisabled = process.env.NEXT_PUBLIC_AUTH_DISABLED === "true";
 
-  // Skip auth in local dev mode when auth is explicitly disabled or Supabase is not configured
-  if (authDisabled || !supabaseUrl || !supabaseAnonKey || supabaseUrl.startsWith("http://localhost")) {
+  // Skip auth if Supabase is not configured
+  if (authDisabled || !supabaseUrl || !supabaseAnonKey) {
     return NextResponse.next();
   }
 
+  let supabaseResponse = NextResponse.next({ request });
   const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
       get(key: string) {
