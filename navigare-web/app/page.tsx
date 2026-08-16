@@ -19,10 +19,15 @@ export default function Home() {
           one dashboard. zero fluff.
         </p>
 
-        <div className="flex gap-4 justify-center mb-16">
-          <Link href="/auth/login" className="btn-primary inline-block">Log In</Link>
-          <a href="#features" className="btn-secondary inline-block">See Features</a>
-        </div>
+          <div className="flex gap-4 justify-center mb-16">
+            <Link href="/auth/signup" className="btn-primary inline-block">Sign Up</Link>
+            <Link href="/auth/login" className="btn-secondary inline-block">Log In</Link>
+            <Link href="/dashboard" className="btn-secondary inline-block" onClick={() => {
+              if (typeof window !== "undefined") {
+                localStorage.setItem("navigare_guest_mode", "true");
+              }
+            }}>Use Without Account</Link>
+          </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 text-left" id="features">
           {[
