@@ -1,123 +1,231 @@
 # 🧭 Navigare — Local Retail Analytics
 
-> **Empowering small business owners to spend less time on admin and more time growing their business.**
+> **The ops person local business owners can't afford to hire.**
 
-![Phase](https://img.shields.io/badge/Phase-4%20Frontend-423A8E?style=flat-square)
-![Python](https://img.shields.io/badge/Python-3.10+-00CCCD?style=flat-square&logo=python&logoColor=white)
-![Streamlit](https://img.shields.io/badge/Streamlit-1.x-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)
+![Phase](https://img.shields.io/badge/Phase-Production%20Ready-423A8E?style=flat-square)
+![Python](https://img.shields.io/badge/Python-3.11+-00CCCD?style=flat-square&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-00CCCD?style=flat-square)
+![Next.js](https://img.shields.io/badge/Next.js-Frontend-000000?style=flat-square&logo=next.js&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-Auth%20%2B%20DB-3ECF8E?style=flat-square&logo=supabase&logoColor=white)
 
 ---
 
 ## 📌 Problem Statement
 
-Small business owners spend **30–50% of their time** on administrative operations — tracking finances, managing paperwork, organizing inventory, and making routine operational decisions — rather than focusing on their craft.
+Small business owners spend **30–50% of their time** on admin — tracking finances, managing inventory, making routine decisions — instead of doing the work that earns revenue. They have no dedicated ops staff, no analytics tools built for their scale, and no time to learn enterprise software like Shopify or Square.
 
-Without access to simple analytics tools, many owners are forced to **manage their stores blindly**. Lacking actionable insights, these small businesses face disproportionately high closure rates, threatening local economic independence.
-
----
-
-## 💡 Solution & Impact
-
-### Immediate Impact
-- **Unified Business Dashboard** — real-time visibility into sales, expenses, and key metrics
-- **Data-Driven Inventory** — MAD, Safety Stock, and Reorder Point calculations per SKU
-- **SEO Auditor** — instant local search optimisation feedback on any web copy
-
-### Future Impact
-- **Predictive Forecasting** — XGBoost demand forecasting before shortages happen
-- **Automated Local SEO** — algorithmic suggestions to maximise local search visibility
-- **Profitability Engine** — waste reduction and margin optimisation
+Navigare's job is to be the ops person they can't afford to hire.
 
 ---
 
-## Features
+## 🏗️ Architecture
 
-| Feature | Status | Description |
-|---|---|---|
-| Business Overview | Live | Revenue, orders, AOV, channel split, top products |
-| Inventory Health H(x) | Live | Asymmetric health score per SKU, wellness index, priority alerts |
-| Reorder Alerts | Live | MAD + Safety Stock + ROP + boolean mask dispatch |
-| Market Basket | Live | Support, Confidence, Lift for product pair recommendations |
-| Customer Segments | Live | RFM scoring — Champion to At Risk |
-| Sales Forecast | Live | SMA + EMA + Holt-Winters with 14-day projection |
-| SEO Auditor | Live | Text normalisation, sliding window N-gram, piecewise scoring |
-| Feature Engineering | Live | Z-Score, cyclic encoding, lag features, VIF, ADF stationarity |
-| Glossary | Live | 30-term plain-English reference, searchable |
-| Chaos Monkey | Live | 7 anomaly types at 2%, pipeline resilience verified |
-| RAM Caching Layer | Live | @st.cache_data — disk I/O once, sidebar flush button |
-| Filter Isolation | Live | Store and date filter flows through all derived metrics |
-| XGBoost Forecasting | Planned Week 9+ | Tabular feature transformer |
-| Firebase Auth | Future | Multi-user account tracking |
-| Vercel Deployment | In Progress | Frontend hosted on Vercel |
+```
+┌─────────────────────────────────────────────────────┐
+│ VERCEL (Next.js / React)                            │
+│ - All UI pages, charts, tables                      │
+│ - Supabase Auth (login/logout)                      │
+│ - File upload → Supabase Storage                    │
+│ - Calls Railway API for analytics                   │
+└──────────────────────┬──────────────────────────────┘
+                       │ REST API calls
+┌──────────────────────▼──────────────────────────────┐
+│ RAILWAY (FastAPI — Python)                          │
+│ - inventory_health.py → /api/inventory              │
+│ - RFM logic → /api/customers                        │
+│ - Holt-Winters → /api/forecast                      │
+│ - Market basket → /api/combos                       │
+│ - seo_engine.py → /api/seo                         │
+│ - Weekly digest → /api/digest                       │
+└──────────────────────┬──────────────────────────────┘
+                       │ reads/writes data
+┌──────────────────────▼──────────────────────────────┐
+│ SUPABASE                                            │
+│ - Auth (JWT, email/password)                        │
+│ - Postgres (transactions, inventory, customers)      │
+│ - Storage (uploaded CSVs)                           │
+└─────────────────────────────────────────────────────┘
+```
+
+**Free tier stack:**
+- Vercel hobby — unlimited deployments
+- Render — free web service (no credit card)
+- Supabase free — 500MB DB, 1GB storage, 50k MAU
+- Resend free — 3,000 emails/month
+
+> Note: Railway is no longer free. Use Render instead — it requires no credit card and supports Docker.
 
 ---
 
-## Tech Stack
+## 🚀 Quick Start
 
-| Layer | Technology |
-|---|---|
-| Frontend | Streamlit (Python) migrating to Vercel |
-| Backend | Python 3.10+ |
-| Analytics | Pandas, NumPy, Statsmodels, Plotly |
-| Database | CSV-based flat file storage |
-| Forecasting | Holt-Winters (Tier 1), XGBoost (Tier 2, upcoming) |
-| SEO Engine | Rule-based: regex normalisation + sliding window N-gram |
-| Caching | @st.cache_data RAM layer |
-
----
-
-## Getting Started
+### Option A: Run the Streamlit Prototype (local)
 
 ```bash
-pip install streamlit pandas numpy faker statsmodels plotly
+# Clone the repo
 git clone https://github.com/SS10-code/Navigare.git
-cd Navigare
+cd Navigare/src
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run in order
+python generate_mock_data.py    # Seed raw data
+python business_metrics.py      # Compute metrics
+streamlit run dashboard.py      # Launch dashboard
 ```
 
-Run in order:
-```bash
-python generate_mock_data.py    # 1. Seed raw data
-python schema_mapper.py         # 2. Merge Olist BRL + UCI GBP to USD
-python chaos_monkey.py          # 3. Test pipeline resilience
-python feature_engineering.py   # 4. Build feature matrix
-python business_metrics.py      # 5. Compute all business metrics
-streamlit run dashboard.py      # 6. Launch dashboard
-```
+Default password: `navigare2025`
+
+### Option B: Deploy the Production Stack
+
+#### 1. Supabase Setup
+1. Create a project at [supabase.com](https://supabase.com)
+2. Go to SQL Editor and run `supabase-schema.sql`
+3. Enable Email auth in Authentication → Providers
+4. Copy your project URL and anon key
+
+#### 2. Render Backend (free, no credit card)
+1. Create a project at [render.com](https://render.com)
+2. Connect your GitHub repo
+3. Select `navigare-api/` as the root directory
+4. Render auto-detects the Dockerfile
+5. Add environment variables:
+   - `APP_SECRET` — shared secret for API auth
+   - `SUPABASE_URL` — from Supabase
+   - `SUPABASE_SERVICE_KEY` — from Supabase (Settings → API)
+   - `RESEND_API_KEY` — from resend.com (optional, for digests)
+6. Deploy — your API will be at `https://navigare-api.onrender.com`
+
+#### 3. Vercel Frontend
+1. Create a project at [vercel.com](https://vercel.com)
+2. Connect your GitHub repo
+3. Select `navigare-web/` as the root directory
+4. Add environment variables:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `NEXT_PUBLIC_RAILWAY_API_URL` — use your Render URL
+5. Deploy
 
 ---
 
-## File Structure
+## 📁 Project Structure
 
 ```
 Navigare/
-├── dashboard.py              Streamlit app (8 pages, Breeze color scheme)
-├── generate_mock_data.py     Seeds raw CSV files
-├── schema_mapper.py          Merges Olist + UCI into unified USD schema
-├── chaos_monkey.py           7 anomaly injection types, resilience test
-├── feature_engineering.py    EMA, Z-Score, cyclic encoding, lags, VIF, ADF
-├── business_metrics.py       MAD, Safety Stock, ROP, RFM, Market Basket
-├── inventory_health.py       H(x), wellness index mu, boolean mask M
-├── seo_engine.py             Text normalisation, N-gram, piecewise scoring
+├── src/                                    # Streamlit prototype
+│   ├── dashboard.py                        # 8-page app (v6, Phase 4)
+│   ├── requirements.txt
+│   ├── config.toml
+│   ├── inventory_health.py                 # H(x) asymmetric scoring
+│   ├── business_metrics.py                 # MAD, ROP, RFM, Market Basket
+│   ├── feature_engineering.py              # EMA, Z-Score, lags, VIF, ADF
+│   ├── seo_engine.py                       # N-gram keyword density
+│   ├── chaos_monkey.py                     # Anomaly injection + cleaning
+│   ├── generate_mock_data.py               # Data seeder
+│   └── schema_mapper.py                    # Olist + UCI → unified USD
 │
-└── data/
-    ├── raw/                  inventory.csv, transactions.csv, customers.csv
-    └── clean/                unified_transactions.csv, features.csv,
-                              inventory_metrics.csv, customer_rfm.csv,
-                              combo_pairs.csv, ema_forecast.csv, ...
+├── navigare-api/                           # FastAPI backend (Render)
+│   ├── main.py                             # CORS, auth, routing
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   ├── .env.example
+│   ├── routers/
+│   │   ├── inventory.py                    # POST /api/inventory
+│   │   ├── customers.py                    # POST /api/customers
+│   │   ├── forecast.py                     # POST /api/forecast
+│   │   ├── combos.py                       # POST /api/combos
+│   │   ├── seo.py                          # POST /api/seo
+│   │   └── digest.py                       # POST /api/digest
+│   ├── inventory_health.py                 # Copied from src/
+│   ├── business_metrics.py                 # Copied from src/
+│   ├── seo_engine.py                       # Copied from src/
+│   ├── feature_engineering.py              # Copied from src/
+│   └── ...
+│
+├── navigare-web/                           # Next.js frontend (Vercel)
+│   ├── app/
+│   │   ├── layout.tsx                      # Root layout
+│   │   ├── page.tsx                        # Landing page
+│   │   ├── auth/login/page.tsx             # Supabase login
+│   │   └── dashboard/
+│   │       ├── layout.tsx                  # Protected sidebar
+│   │       ├── page.tsx                    # Overview
+│   │       ├── inventory/page.tsx          # Inventory Health
+│   │       ├── customers/page.tsx          # RFM Segments
+│   │       ├── combos/page.tsx             # Market Basket
+│   │       ├── forecast/page.tsx           # Sales Forecast
+│   │       ├── seo/page.tsx                # SEO Auditor
+│   │       ├── upload/page.tsx             # CSV Upload
+│   │       ├── profit/page.tsx             # Margin Optimizer
+│   │       ├── onboarding/page.tsx         # 4-step wizard
+│   │       └── digest/page.tsx             # Email setup
+│   ├── components/
+│   │   ├── Sidebar.tsx
+│   │   ├── KPICard.tsx
+│   │   └── ...
+│   ├── lib/
+│   │   ├── supabase/client.ts
+│   │   ├── supabase/server.ts
+│   │   └── api.ts
+│   ├── package.json
+│   └── tailwind.config.ts
+│
+└── supabase-schema.sql                     # Database schema
 ```
 
 ---
 
-## Key Algorithms
+## 📊 Features
+
+| Feature | Streamlit | Production API | Production UI |
+|---|---|---|---|
+| Revenue Dashboard | ✅ Live | ✅ /api/forecast | ✅ |
+| Inventory Health H(x) | ✅ Live | ✅ /api/inventory | ✅ |
+| Market Basket Analysis | ✅ Live | ✅ /api/combos | ✅ |
+| Customer RFM Segments | ✅ Live | ✅ /api/customers | ✅ |
+| Sales Forecast (HW) | ✅ Live | ✅ /api/forecast | ✅ |
+| SEO Auditor | ✅ Live | ✅ /api/seo | ✅ |
+| Feature Engineering | ✅ Live | ✅ | ✅ |
+| Upload Data | ✅ Fixed | ✅ | ✅ |
+| Login Screen | ✅ Fixed | ✅ Supabase Auth | ✅ |
+| Profit Margin Optimizer | ✅ New | 🔄 Planned | ✅ |
+| Onboarding Flow | ✅ New | 🔄 Planned | ✅ |
+| Weekly Email Digest | ✅ API | ✅ /api/digest | ✅ |
+| Mobile Alerts | 🔄 CSS tweaks | 🔄 | 🔄 |
+
+---
+
+## 🔑 Environment Variables
+
+### Vercel (`navigare-web/.env.local`)
+```
+NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
+NEXT_PUBLIC_RAILWAY_API_URL=https://navigare-api.onrender.com
+```
+
+### Render (`navigare-api/.env`)
+```
+APP_SECRET=your-api-secret
+SUPABASE_URL=https://xxx.supabase.co
+SUPABASE_SERVICE_KEY=eyJ...
+RESEND_API_KEY=re_...
+PORT=8000
+```
+
+---
+
+## 🧮 Key Algorithms
 
 ### H(x) Asymmetric Inventory Health
 ```python
-# Row-wise per SKU. Score 0-100. Steep left side (stockout >> overstock cost)
+# Row-wise per SKU. Score 0-100. Steep penalty near zero.
 mu = (1/N) * sum(H(xi))   # Store Wellness Index
 M_i = 1 if status in {CRISIS, CRITICAL, LOW} else 0  # Boolean Mask
 ```
 
-### MAD to Safety Stock to ROP
+### MAD → Safety Stock → ROP
 ```python
 MAD          = mean(|daily_demand - avg_demand|)
 Safety_Stock = Z * MAD * sqrt(Lead_Time)    # Z=1.65 for 95% service level
@@ -133,7 +241,7 @@ else:                  score = max(0, int(100 - (excess * 15))) # Stuffing penal
 
 ---
 
-## Color System (Breeze Palette)
+## 🎨 Color System (Breeze Palette)
 
 | Role | Hex | Usage |
 |---|---|---|
@@ -146,28 +254,24 @@ else:                  score = max(0, int(100 - (excess * 15))) # Stuffing penal
 
 ---
 
-## Data Sources
+## 📈 Roadmap
 
-| Dataset | Source | Currency |
+| Week | Milestone | Status |
 |---|---|---|
-| Olist Brazilian E-Commerce | kaggle.com/datasets/olistbr/brazilian-ecommerce | BRL x 0.20 = USD |
-| UCI Online Retail II | kaggle.com/datasets/mashlyn/online-retail-ii-uci | GBP x 1.27 = USD |
+| 1–2 | Fix Streamlit bugs (login, upload) | ✅ Done |
+| 2–4 | FastAPI backend + Next.js frontend | ✅ Done |
+| 3–4 | Migrate pages one by one | ✅ Done |
+| 5 | Onboarding + Profit Optimizer + Email Digest | ✅ Done |
+| 6 | Polish, landing page, deploy | 🔄 In Progress |
+| 7+ | Competitor benchmarking, GBP integration | Planned |
 
 ---
 
-## Project Timeline
+## 🤝 Contributing
 
-| Weeks | Phase | Status |
-|---|---|---|
-| 1-3 | Concept, Charter, Scope | Complete |
-| 4-6 | Data Schema & Source | Complete |
-| 7-9 | Back-end Algorithm Engineering | Complete |
-| 9-11 | Front-end Dashboard | In Progress |
-| 12-14 | System Optimisation | Planned |
-| 14-15 | Final Demo Prep | Planned |
-| 16 | Presentation & Impact | Planned |
+This is a portfolio project. For issues or feature requests, open a GitHub issue.
 
 ---
 
-*Built with Python, Streamlit, Pandas, Plotly, Statsmodels*
+*Built with Python, Streamlit, FastAPI, Next.js, Supabase*
 *github.com/SS10-code/Navigare*
