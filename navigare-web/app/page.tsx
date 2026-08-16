@@ -16,7 +16,7 @@ export default function Home() {
     analytics.track("guest_session_start");
     trackGuestSession();
     setTimeout(() => {
-      window.location.href = "/dashboard/upload?guest=true";
+      window.location.href = "/dashboard/upload?onboarding=true&guest=true";
     }, 100);
   };
 

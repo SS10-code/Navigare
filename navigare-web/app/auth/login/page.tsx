@@ -20,7 +20,7 @@ export default function Login() {
     if (error) setError(error.message);
     else {
       await trackEmailSignup();
-      router.push("/dashboard/upload");
+      router.push("/dashboard/upload?onboarding=true");
     }
   };
 

@@ -13,3 +13,17 @@ export const setGuestMode = (enabled: boolean): void => {
     document.cookie = "navigare_guest_mode=; path=/; max-age=0";
   }
 };
+
+export const isOnboarded = (): boolean => {
+  if (typeof window === "undefined") return false;
+  return document.cookie.split("; ").some((c) => c.startsWith("navigare_onboarded=true"));
+};
+
+export const setOnboarded = (enabled: boolean): void => {
+  if (typeof window === "undefined") return;
+  if (enabled) {
+    document.cookie = "navigare_onboarded=true; path=/; max-age=" + 30 * 24 * 60 * 60;
+  } else {
+    document.cookie = "navigare_onboarded=; path=/; max-age=0";
+  }
+};

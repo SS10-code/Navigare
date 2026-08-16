@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
     const guestMode = request.cookies.get("navigare_guest_mode")?.value === "true" ||
                       request.nextUrl.searchParams.get("guest") === "true";
 
-    if (guestMode && pathname.startsWith("/dashboard")) {
+    if (guestMode && pathname === "/dashboard/upload") {
       return NextResponse.next();
     }
 
@@ -33,7 +33,14 @@ export async function middleware(request: NextRequest) {
       const redirectUrl = request.nextUrl.clone();
       redirectUrl.pathname = "/dashboard/upload";
       redirectUrl.searchParams.set("onboarding", "true");
+      if (guestMode) {
+        redirectUrl.searchParams.set("guest", "true");
+      }
       return NextResponse.redirect(redirectUrl);
+    }
+
+    if (guestMode && pathname.startsWith("/dashboard")) {
+      return NextResponse.next();
     }
 
     const { createServerClient } = await import("@supabase/ssr");
