@@ -25,10 +25,10 @@ export default function Home() {
         <div className="grid grid-cols-12 gap-8">
           <div className="col-span-7">
             <div className="text-caption text-muted mb-6">RETAIL ANALYTICS</div>
-            <h1 className="text-display text-[64px] mb-6 leading-none">
+            <h1 className="text-display text-[72px] mb-6 leading-none">
               NAVI<span className="text-accent">GARE</span>
             </h1>
-            <p className="text-body text-lg text-muted max-w-lg mb-10">
+            <p className="text-body text-lg text-muted max-w-lg mb-10 leading-relaxed">
               Retail analytics for local business owners. Inventory, forecast, margins, churn — one dashboard, zero fluff.
             </p>
             <div className="flex gap-3">
@@ -45,9 +45,9 @@ export default function Home() {
               { icon: "trending" as const, title: "Sales Forecast", desc: "Holt-Winters + EMA. Know what revenue to expect next week." },
               { icon: "users" as const, title: "Customer Segments", desc: "RFM scoring. Find champions, re-engage at-risk buyers." },
             ].map((f, i) => (
-              <div key={f.title} className="border-2 border-border p-6 bg-panel" style={{ borderTop: `4px solid ${i === 0 ? "var(--accent)" : "var(--border)"}` }}>
+              <div key={f.title} className="border-2 border-border p-6 bg-panel hover:border-accent transition-colors" style={{ borderTop: `4px solid ${i === 0 ? "var(--accent)" : "var(--border)"}` }}>
                 <div className="flex items-start gap-4">
-                  <div className="text-muted"><Icon name={f.icon} size={24} /></div>
+                  <div className="text-accent"><Icon name={f.icon} size={24} /></div>
                   <div>
                     <h3 className="text-headline text-base font-bold uppercase tracking-wide mb-1">{f.title}</h3>
                     <p className="text-body text-sm text-muted leading-relaxed">{f.desc}</p>
