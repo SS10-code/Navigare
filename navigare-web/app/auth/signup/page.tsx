@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Icon from "@/components/Icon";
+import { trackEmailSignup } from "@/lib/api";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -17,7 +18,10 @@ export default function Signup() {
     setError("");
     const { error } = await supabase.auth.signUp({ email, password });
     if (error) setError(error.message);
-    else router.push("/auth/login");
+    else {
+      await trackEmailSignup();
+      router.push("/dashboard/upload");
+    }
   };
 
   return (

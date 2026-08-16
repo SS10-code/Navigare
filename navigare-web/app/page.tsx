@@ -5,13 +5,16 @@ import Icon from "@/components/Icon";
 import { analytics } from "@/lib/analytics";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { trackGuestSession } from "@/lib/api";
 
 export default function Home() {
   const router = useRouter();
 
   const handleGuestMode = () => {
     document.cookie = "navigare_guest_mode=true; path=/; max-age=" + 7 * 24 * 60 * 60;
+    document.cookie = "navigare_onboarded=false; path=/; max-age=" + 7 * 24 * 60 * 60;
     analytics.track("guest_session_start");
+    trackGuestSession();
     setTimeout(() => {
       window.location.href = "/dashboard/upload?guest=true";
     }, 100);
