@@ -13,7 +13,7 @@ export default function Home() {
     document.cookie = "navigare_guest_mode=true; path=/; max-age=" + 7 * 24 * 60 * 60;
     analytics.track("guest_session_start");
     setTimeout(() => {
-      window.location.href = "/dashboard";
+      window.location.href = "/dashboard/upload?guest=true";
     }, 100);
   };
 
