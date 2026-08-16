@@ -125,6 +125,9 @@ export default function Sidebar() {
             Settings / Onboarding
           </Link>
         )}
+        <Link href="/legal" className="block text-center text-[10px] text-muted hover:text-text transition py-1">
+          Legal / Terms of Service
+        </Link>
       </div>
     </aside>
   );
