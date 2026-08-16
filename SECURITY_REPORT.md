@@ -74,7 +74,25 @@ Tested with the exact dependency set in `requirements.txt` (Python 3.11):
 
 ---
 
-## 7. What Goes Public vs Stays Local
+## 7. Guest Mode Data Handling
+
+Guest sessions are tracked using a random UUID stored in `localStorage`. No PII is collected.
+
+| Item | Storage | Retention |
+|---|---|---|
+| Guest UUID | `localStorage` (client) | Until session expiry (24h) |
+| Usage metrics | `guest_analytics` table | 30 days, then purged |
+| Uploaded files | Supabase Storage (`guest-uploads` bucket) | Deleted with session |
+| API logs | Server logs (anonymized) | 7 days |
+
+**Privacy controls:**
+- Guests cannot access other guests' data.
+- Row-level security ensures data isolation.
+- No cross-session tracking.
+
+---
+
+## 8. What Goes Public vs Stays Local
 
 | Goes public (committed) | Stays local (never committed) |
 |---|---|

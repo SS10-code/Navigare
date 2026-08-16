@@ -6,6 +6,7 @@ import Callout from "@/components/Callout";
 import SectionHeader from "@/components/SectionHeader";
 import Icon from "@/components/Icon";
 import { apiFetch } from "@/lib/api";
+import { isFeatureEnabled } from "@/lib/features";
 
 type SEOResult = {
   keyword: string;
@@ -39,6 +40,18 @@ export default function SEPage() {
   const [result, setResult] = useState<SEOResult[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  if (!isFeatureEnabled("seo_auditor")) {
+    return (
+      <div>
+        <h1 className="text-[28px] font-black uppercase tracking-tight text-text mb-1">SEO Auditor</h1>
+        <p className="text-[13px] text-muted font-mono mb-6">keyword density, N-gram scoring, page health</p>
+        <Callout variant="warn">
+          SEO auditing is disabled in guest mode. Create an account to unlock this feature.
+        </Callout>
+      </div>
+    );
+  }
 
   const runAudit = async () => {
     setLoading(true);

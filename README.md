@@ -189,10 +189,28 @@ Navigare/
 | Feature Engineering | ✅ Live | ✅ | ✅ |
 | Upload Data | ✅ Fixed | ✅ | ✅ |
 | Login Screen | ✅ Fixed | ✅ Supabase Auth | ✅ |
+| Guest Mode | N/A | ✅ | ✅ |
 | Profit Margin Optimizer | ✅ New | 🔄 Planned | ✅ |
 | Onboarding Flow | ✅ New | 🔄 Planned | ✅ |
 | Weekly Email Digest | ✅ API | ✅ /api/digest | ✅ |
 | Mobile Alerts | 🔄 CSS tweaks | 🔄 | 🔄 |
+
+---
+
+## 👤 Guest Mode
+
+Guest mode lets visitors use the dashboard without signing up. It is intended for demos and exploration.
+
+### How to use
+- Click **"Continue as Guest"** on the login screen.
+- A temporary session is created with limited access.
+
+### Limitations
+- **No persistent data.** Guest uploads are not saved after the session ends.
+- **No email digest.** Guests cannot configure weekly reports.
+- **Rate limits.** Guest sessions have stricter API usage caps.
+- **Feature gating.** Some advanced analytics may be disabled for guests.
+- **Session expiry.** Guest sessions expire after 24 hours.
 
 ---
 

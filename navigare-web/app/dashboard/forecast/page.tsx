@@ -7,6 +7,7 @@ import SectionHeader from "@/components/SectionHeader";
 import Icon from "@/components/Icon";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, BarChart, Bar, Cell } from "recharts";
 import { apiFetch } from "@/lib/api";
+import { isFeatureEnabled } from "@/lib/features";
 
 type ForecastData = {
   dates: string[];
@@ -102,15 +103,21 @@ export default function ForecastPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-[28px] font-black uppercase tracking-tight text-text mb-1">Sales Forecast</h1>
-          <p className="text-[13px] text-muted font-mono">sma, ema, and holt-winters projections</p>
-        </div>
-        <button onClick={loadData} className="btn-primary flex items-center gap-2">
-          <Icon name="refresh" size={14} /> Refresh
-        </button>
-      </div>
+       <div className="flex items-center justify-between mb-6">
+         <div>
+           <h1 className="text-[28px] font-black uppercase tracking-tight text-text mb-1">Sales Forecast</h1>
+           <p className="text-[13px] text-muted font-mono">sma, ema, and holt-winters projections</p>
+         </div>
+         {isFeatureEnabled("forecast") ? (
+           <button onClick={loadData} className="btn-primary flex items-center gap-2">
+             <Icon name="refresh" size={14} /> Refresh
+           </button>
+         ) : (
+           <Callout variant="warn" className="text-xs py-1 px-2">
+             Forecast is disabled in guest mode.
+           </Callout>
+         )}
+       </div>
 
       {error && (
         <Callout variant="danger" className="mb-6">

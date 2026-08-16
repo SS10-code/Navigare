@@ -10,6 +10,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { apiFetch } from "@/lib/api";
 import { exportToCSV } from "@/lib/export";
 import Icon from "@/components/Icon";
+import { isFeatureEnabled } from "@/lib/features";
 
 const COLORS = ["#00FFC8", "#FF2E88", "#7C5CFF", "#FFB800", "#00E676", "#FF3B3B", "#4DA3FF", "#FF6B00"];
 
@@ -139,18 +140,33 @@ export default function InventoryPage() {
           <p className="text-[13px] text-muted font-mono">H(x) applied to every SKU · store wellness index μ · priority alert dispatch</p>
         </div>
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => exportToCSV("inventory_health", healthData)}
-            className="btn-secondary flex items-center gap-2"
-          >
-            <Icon name="download" size={14} /> Export CSV
-          </button>
-          <button
-            onClick={loadData}
-            className="btn-primary flex items-center gap-2"
-          >
-            <span className={loading ? "animate-spin-slow inline-block" : ""}><Icon name="refresh" size={14} /></span> Refresh
-          </button>
+           {isFeatureEnabled("export") ? (
+             <button
+               onClick={() => exportToCSV("inventory_health", healthData)}
+               className="btn-secondary flex items-center gap-2"
+             >
+               <Icon name="download" size={14} /> Export CSV
+             </button>
+           ) : (
+             <button
+               className="btn-secondary flex items-center gap-2 opacity-50 cursor-not-allowed"
+               title="Export is disabled in guest mode"
+             >
+               <Icon name="download" size={14} /> Export CSV
+             </button>
+           )}
+           {isFeatureEnabled("inventory") ? (
+             <button
+               onClick={loadData}
+               className="btn-primary flex items-center gap-2"
+             >
+               <span className={loading ? "animate-spin-slow inline-block" : ""}><Icon name="refresh" size={14} /></span> Refresh
+             </button>
+           ) : (
+             <Callout variant="warn" className="text-xs py-1 px-2">
+               Inventory analysis is disabled in guest mode.
+             </Callout>
+           )}
         </div>
       </div>
 

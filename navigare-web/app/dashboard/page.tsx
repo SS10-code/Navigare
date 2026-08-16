@@ -10,6 +10,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { apiFetch } from "@/lib/api";
 import { exportToCSV } from "@/lib/export";
 import Icon from "@/components/Icon";
+import { isFeatureEnabled } from "@/lib/features";
 
 const COLORS = ["#00FFC8", "#FF2E88", "#7C5CFF", "#FFB800", "#00E676", "#FF3B3B", "#4DA3FF", "#FF6B00"];
 
@@ -115,20 +116,29 @@ export default function OverviewPage() {
           <h1 className="text-[28px] font-black uppercase tracking-tight text-text mb-1">Store Overview</h1>
           <p className="text-[13px] text-muted font-mono">your retail analytics at a glance{lastUpdated && <span className="text-[11px] text-muted"> · updated {lastUpdated}</span>}</p>
         </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => exportToCSV("overview_products", topProducts)}
-            className="btn-secondary flex items-center gap-2"
-          >
-            <Icon name="download" size={14} /> Export CSV
-          </button>
-          <button
-            onClick={refresh}
-            className="btn-primary flex items-center gap-2"
-          >
-            <span className={loading ? "animate-spin-slow inline-block" : ""}><Icon name="refresh" size={14} /></span> Refresh
-          </button>
-        </div>
+         <div className="flex items-center gap-2">
+           {isFeatureEnabled("export") ? (
+             <button
+               onClick={() => exportToCSV("overview_products", topProducts)}
+               className="btn-secondary flex items-center gap-2"
+             >
+               <Icon name="download" size={14} /> Export CSV
+             </button>
+           ) : (
+             <button
+               className="btn-secondary flex items-center gap-2 opacity-50 cursor-not-allowed"
+               title="Export is disabled in guest mode"
+             >
+               <Icon name="download" size={14} /> Export CSV
+             </button>
+           )}
+           <button
+             onClick={refresh}
+             className="btn-primary flex items-center gap-2"
+           >
+             <span className={loading ? "animate-spin-slow inline-block" : ""}><Icon name="refresh" size={14} /></span> Refresh
+           </button>
+         </div>
       </div>
 
       {error && (

@@ -11,7 +11,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 
-from routers import inventory, customers, forecast, combos, seo, digest, upload
+from routers import inventory, customers, forecast, combos, seo, digest, upload, track
 from auth import verify_token, rate_limiter
 
 app = FastAPI(
@@ -61,6 +61,7 @@ app.include_router(combos.router, prefix="/api", tags=["combos"], dependencies=[
 app.include_router(seo.router, prefix="/api", tags=["seo"], dependencies=[Depends(rate_limiter)])
 app.include_router(digest.router, prefix="/api", tags=["digest"], dependencies=[Depends(rate_limiter)])
 app.include_router(upload.router, prefix="/api", tags=["upload"], dependencies=[Depends(rate_limiter)])
+app.include_router(track.router, prefix="/api", tags=["track"])
 
 
 @app.get("/health")

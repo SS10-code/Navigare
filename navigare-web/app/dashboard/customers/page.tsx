@@ -8,6 +8,7 @@ import SectionHeader from "@/components/SectionHeader";
 import Icon from "@/components/Icon";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ScatterChart, Scatter, Cell } from "recharts";
 import { apiFetch } from "@/lib/api";
+import { isFeatureEnabled } from "@/lib/features";
 
 const COLORS = ["#7C5CFF", "#00FFC8", "#4DA3FF", "#FFB800", "#00E676", "#FF3B3B"];
 
@@ -77,15 +78,21 @@ export default function CustomersPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-[28px] font-black uppercase tracking-tight text-text mb-1">Customer Segments</h1>
-          <p className="text-[13px] text-muted font-mono">rfm scoring — recency, frequency, monetary</p>
-        </div>
-        <button onClick={loadData} className="btn-primary flex items-center gap-2">
-          <Icon name="refresh" size={14} /> Refresh
-        </button>
-      </div>
+       <div className="flex items-center justify-between mb-6">
+         <div>
+           <h1 className="text-[28px] font-black uppercase tracking-tight text-text mb-1">Customer Segments</h1>
+           <p className="text-[13px] text-muted font-mono">rfm scoring — recency, frequency, monetary</p>
+         </div>
+         {isFeatureEnabled("rfm") ? (
+           <button onClick={loadData} className="btn-primary flex items-center gap-2">
+             <Icon name="refresh" size={14} /> Refresh
+           </button>
+         ) : (
+           <Callout variant="warn" className="text-xs py-1 px-2">
+             RFM analysis is disabled in guest mode.
+           </Callout>
+         )}
+       </div>
 
       {error && (
         <Callout variant="danger" className="mb-6">

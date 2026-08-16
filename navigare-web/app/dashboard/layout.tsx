@@ -4,6 +4,7 @@ import Sidebar from "@/components/Sidebar";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import Icon from "@/components/Icon";
+import { analytics } from "@/lib/analytics";
 
 const PAGE_TITLES: Record<string, string> = {
   "/dashboard": "Overview",
@@ -21,10 +22,23 @@ const PAGE_TITLES: Record<string, string> = {
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [now, setNow] = useState("");
+  const [isGuest, setIsGuest] = useState(false);
 
-  useEffect(() => {
-    setNow(new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" }));
-  }, []);
+   useEffect(() => {
+     setNow(new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" }));
+     setIsGuest(localStorage.getItem("navigare_guest_mode") === "true");
+   }, []);
+
+   useEffect(() => {
+     if (pathname) {
+       const title = PAGE_TITLES[pathname] || "Dashboard";
+       analytics.track("page_view", {
+         page: pathname,
+         title,
+         guest: isGuest,
+       });
+     }
+   }, [pathname, isGuest]);
 
   return (
     <div className="min-h-screen bg-ink">
@@ -41,6 +55,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <div className="text-xs text-muted font-mono">{now}</div>
           </div>
         </div>
+        {isGuest && (
+          <div className="bg-amber/10 border-2 border-amber text-amber text-xs font-mono px-4 py-2 text-center">
+            You are in guest mode. Some features are disabled. Create an account to unlock all features.
+          </div>
+        )}
         <div className="max-w-[1360px] p-8">
           {children}
         </div>

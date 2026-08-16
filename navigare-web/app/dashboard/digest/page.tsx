@@ -5,6 +5,7 @@ import Card from "@/components/Card";
 import Callout from "@/components/Callout";
 import SectionHeader from "@/components/SectionHeader";
 import { apiFetch } from "@/lib/api";
+import { getFeatureTooltip } from "@/lib/features";
 
 type DigestResponse = {
   status: string;
@@ -103,13 +104,14 @@ export default function DigestPage() {
               className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple"
             />
           </div>
-          <button
-            onClick={handleSend}
-            disabled={loading || !email}
-            className="bg-purple text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-opacity-90 transition w-full disabled:opacity-50"
-          >
-            {loading ? "Sending..." : "Send Test Digest"}
-          </button>
+      <button
+        onClick={handleSend}
+        disabled={loading || !email}
+        className="bg-purple text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-opacity-90 transition w-full disabled:opacity-50"
+        title={getFeatureTooltip("email_digest") || undefined}
+      >
+        {loading ? "Sending..." : "Send Test Digest"}
+      </button>
           {saved && (
             <Callout variant="good">
               Test digest sent! Check your inbox. You&apos;ll receive your digest every week.
