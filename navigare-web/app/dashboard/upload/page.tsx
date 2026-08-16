@@ -139,7 +139,9 @@ export default function UploadPage() {
 
   const markOnboarded = () => {
     setOnboarded(true);
-    router.push("/dashboard");
+    setTimeout(() => {
+      window.location.href = "/dashboard";
+    }, 150);
   };
 
   const handleUpload = async (file: File, type: "txn" | "inv") => {
