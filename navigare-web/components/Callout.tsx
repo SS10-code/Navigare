@@ -3,10 +3,10 @@ import { ReactNode } from "react";
 type Variant = "info" | "warn" | "good" | "danger";
 
 const VARIANT_STYLES: Record<Variant, { bg: string; border: string; text: string }> = {
-  info:  { bg: "bg-[#1B1730]", border: "border-purple", text: "text-purple" },
-  warn:  { bg: "bg-[#2A2105]", border: "border-amber", text: "text-amber" },
-  good:  { bg: "bg-[#04281A]", border: "border-green", text: "text-green" },
-  danger:{ bg: "bg-[#2E0A10]", border: "border-red", text: "text-red" },
+  info:  { bg: "bg-blue/10", border: "border-blue", text: "text-blue" },
+  warn:  { bg: "bg-amber/10", border: "border-amber", text: "text-amber" },
+  good:  { bg: "bg-green/10", border: "border-green", text: "text-green" },
+  danger:{ bg: "bg-red/10", border: "border-red", text: "text-red" },
 };
 
 interface CalloutProps {
