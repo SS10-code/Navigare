@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Icon, { IconName } from "@/components/Icon";
-import UserCounters from "@/components/UserCounters";
+
 import { isGuestMode } from "@/lib/auth";
 
 const PAGES: { label: string; href: string; icon: IconName }[] = [
@@ -117,7 +117,6 @@ export default function Sidebar() {
           </div>
         </div>
 
-        <UserCounters />
 
         {!onboarding && (
           <Link href="/dashboard/onboarding" className="block text-center text-[10px] text-muted hover:text-ink transition py-2 no-underline">

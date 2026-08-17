@@ -1,19 +1,20 @@
 """
-Counters router — tracks signup and guest-mode usage.
+Counters router — tracks business clients and regular clients.
 """
 
 import os
 import json
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 
 router = APIRouter()
 
 COUNTERS_FILE = os.environ.get("COUNTERS_FILE", "/app/counters.json")
+ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "")
 
 DEFAULT_COUNTERS = {
-    "email_signups": 0,
-    "guest_sessions": 0,
+    "business_clients": 0,
+    "clients": 0,
 }
 
 
@@ -38,21 +39,32 @@ def save_counters(counters: dict) -> None:
 @router.get("/counters")
 def get_counters():
     counters = load_counters()
-    counters["total_users"] = counters.get("email_signups", 0) + counters.get("guest_sessions", 0)
+    counters["total_clients"] = counters.get("business_clients", 0) + counters.get("clients", 0)
     return counters
 
 
-@router.post("/counters/email-signup")
-def increment_email_signup():
+@router.post("/counters/business-client")
+def increment_business_client():
     counters = load_counters()
-    counters["email_signups"] = counters.get("email_signups", 0) + 1
+    counters["business_clients"] = counters.get("business_clients", 0) + 1
     save_counters(counters)
-    return {"email_signups": counters["email_signups"]}
+    return {"business_clients": counters["business_clients"]}
 
 
-@router.post("/counters/guest-session")
-def increment_guest_session():
+@router.post("/counters/client")
+def increment_client():
     counters = load_counters()
-    counters["guest_sessions"] = counters.get("guest_sessions", 0) + 1
+    counters["clients"] = counters.get("clients", 0) + 1
     save_counters(counters)
-    return {"guest_sessions": counters["guest_sessions"]}
+    return {"clients": counters["clients"]}
+
+
+@router.post("/counters/reset")
+def reset_counters():
+    if not ADMIN_TOKEN:
+        raise HTTPException(status_code=404, detail="Not found")
+    token = os.environ.get("ADMIN_TOKEN", "")
+    if not token:
+        raise HTTPException(status_code=500, detail="Admin token not configured")
+    save_counters(DEFAULT_COUNTERS.copy())
+    return {"status": "reset"}

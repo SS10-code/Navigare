@@ -4,7 +4,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Icon from "@/components/Icon";
-import { trackEmailSignup } from "@/lib/api";
+import { trackBusinessClient } from "@/lib/api";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -19,7 +19,7 @@ export default function Login() {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) setError(error.message);
     else {
-      await trackEmailSignup();
+      await trackBusinessClient();
       router.push("/dashboard/upload?onboarding=true");
     }
   };

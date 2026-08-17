@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
-    if (pathname.startsWith("/auth") || pathname === "/api/proxy" || pathname.startsWith("/api/") || pathname.startsWith("/legal")) {
+    if (pathname.startsWith("/auth") || pathname === "/api/proxy" || pathname.startsWith("/api/") || pathname.startsWith("/legal") || pathname.startsWith("/admin")) {
       return NextResponse.next();
     }
 

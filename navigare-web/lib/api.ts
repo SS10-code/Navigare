@@ -40,17 +40,17 @@ export async function uploadFile(endpoint: string, file: File, fieldName: string
   return res.json();
 }
 
-export async function trackEmailSignup() {
+export async function trackBusinessClient() {
   try {
-    await apiFetch("/counters/email-signup", { method: "POST" });
+    await apiFetch("/counters/business-client", { method: "POST" });
   } catch {
     // ignore analytics errors
   }
 }
 
-export async function trackGuestSession() {
+export async function trackClient() {
   try {
-    await apiFetch("/counters/guest-session", { method: "POST" });
+    await apiFetch("/counters/client", { method: "POST" });
   } catch {
     // ignore analytics errors
   }
@@ -60,6 +60,6 @@ export async function getCounters() {
   try {
     return await apiFetch("/counters");
   } catch {
-    return { email_signups: 0, guest_sessions: 0, total_users: 0 };
+    return { business_clients: 0, clients: 0, total_clients: 0 };
   }
 }
