@@ -9,7 +9,7 @@ from fastapi.responses import JSONResponse
 
 router = APIRouter()
 
-COUNTERS_FILE = os.environ.get("COUNTERS_FILE", "/app/counters.json")
+COUNTERS_FILE = os.environ.get("COUNTERS_FILE", "counters.json")
 ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "")
 
 DEFAULT_COUNTERS = {
@@ -31,7 +31,9 @@ def load_counters() -> dict:
 
 
 def save_counters(counters: dict) -> None:
-    os.makedirs(os.path.dirname(COUNTERS_FILE), exist_ok=True)
+    dir_name = os.path.dirname(COUNTERS_FILE)
+    if dir_name:
+        os.makedirs(dir_name, exist_ok=True)
     with open(COUNTERS_FILE, "w") as f:
         json.dump(counters, f, indent=2)
 
