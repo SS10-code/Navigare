@@ -16,7 +16,17 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
-    if (pathname.startsWith("/auth") || pathname === "/api/proxy" || pathname.startsWith("/api/") || pathname.startsWith("/legal") || pathname.startsWith("/admin")) {
+    if (pathname.startsWith("/auth") || pathname === "/api/proxy" || pathname.startsWith("/api/") || pathname.startsWith("/legal")) {
+      return NextResponse.next();
+    }
+
+    if (pathname.startsWith("/admin")) {
+      const host = request.headers.get("host") || "";
+      if (!host.includes("localhost") && !host.includes("127.0.0.1")) {
+        const redirectUrl = request.nextUrl.clone();
+        redirectUrl.pathname = "/";
+        return NextResponse.redirect(redirectUrl);
+      }
       return NextResponse.next();
     }
 
