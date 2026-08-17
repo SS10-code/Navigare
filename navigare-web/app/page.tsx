@@ -9,11 +9,11 @@ import { trackClient } from "@/lib/api";
 export default function Home() {
   const router = useRouter();
 
-  const handleGuestMode = () => {
+  const handleGuestMode = async () => {
     document.cookie = "navigare_guest_mode=true; path=/; max-age=" + 7 * 24 * 60 * 60;
     document.cookie = "navigare_onboarded=false; path=/; max-age=" + 7 * 24 * 60 * 60;
     analytics.track("guest_session_start");
-    trackClient();
+    await trackClient();
     setTimeout(() => {
       window.location.href = "/dashboard/upload?onboarding=true&guest=true";
     }, 100);
