@@ -107,7 +107,7 @@ export default function ProfitPage() {
               max={10}
               step={0.25}
               value={price}
-              onChange={(e) => setPrice(Number(e.target.value))}
+              onChange={(e) => setPrice(Math.max(2, Math.min(10, Number(e.target.value) || 2)))}
               className="w-full"
             />
           </div>

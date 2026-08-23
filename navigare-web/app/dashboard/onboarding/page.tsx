@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import Card from "@/components/Card";
 import Callout from "@/components/Callout";
 import SectionHeader from "@/components/SectionHeader";
+import Icon from "@/components/Icon";
+import { apiFetch } from "@/lib/api";
 
 const STORE_TYPES = ["Retail", "Food/Bakery", "Service", "E-Commerce"];
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -20,18 +22,41 @@ export default function OnboardingPage() {
 
   const canNext = step === 1 ? !!(storeType && storeName) : true;
 
+  useEffect(() => {
+    const draft = localStorage.getItem("navigare_draft");
+    if (draft) {
+      try {
+        const d = JSON.parse(draft);
+        setStep(d.step || 1);
+        setStoreType(d.storeType || "");
+        setStoreName(d.storeName || "");
+        setThreshold(d.threshold || 10);
+        setEmail(d.email || "");
+        setDay(d.day || "Monday");
+        setTime(d.time || "08:00");
+      } catch {}
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("navigare_draft", JSON.stringify({
+      step, storeType, storeName, threshold, email, day, time
+    }));
+  }, [step, storeType, storeName, threshold, email, day, time]);
+
   const savePreferences = async () => {
     setSaving(true);
     try {
-      await fetch("/api/onboarding", {
+      await apiFetch("/onboarding", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ storeType, storeName, threshold, email, day, time }),
       });
       localStorage.setItem("navigare_onboarded", "true");
+      localStorage.removeItem("navigare_draft");
       alert("Setup complete! Welcome to Navigare.");
     } catch {
       localStorage.setItem("navigare_onboarded", "true");
+      localStorage.removeItem("navigare_draft");
       alert("Setup complete! Welcome to Navigare.");
     } finally {
       setSaving(false);
@@ -132,7 +157,7 @@ export default function OnboardingPage() {
               min="5"
               max="50"
               value={threshold}
-              onChange={(e) => setThreshold(Number(e.target.value))}
+              onChange={(e) => setThreshold(Math.max(5, Math.min(50, Number(e.target.value) || 5)))}
               className="w-full mb-8"
             />
             <div className="flex gap-3">
