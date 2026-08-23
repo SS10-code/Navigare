@@ -24,6 +24,50 @@ class ForecastRequest(BaseModel):
     seasonal_period: int = 7
 
 
+@router.get("/forecast")
+def forecast_demo():
+    dates = ["2026-07-01", "2026-07-02", "2026-07-03", "2026-07-04", "2026-07-05", "2026-07-06", "2026-07-07"]
+    actuals = [4200, 3800, 5100, 4600, 6200, 7800, 5500]
+    return {
+        "dates": dates,
+        "actuals": actuals,
+        "sma": [4200, 4000, 4367, 4567, 5167, 5867, 5500],
+        "ema": [4200, 4100, 4433, 4575, 4962, 5738, 5619],
+        "hw_ok": True,
+        "hw_fitted": [4200, 3900, 4800, 4600, 5900, 7200, 5800],
+        "hw_forecast": [
+            {"date": "2026-07-08", "value": 6100},
+            {"date": "2026-07-09", "value": 6300},
+            {"date": "2026-07-10", "value": 5900},
+            {"date": "2026-07-11", "value": 6200},
+            {"date": "2026-07-12", "value": 6500},
+        ],
+        "hw_mae": 245.0,
+        "sma_mae": 180.0,
+        "ema_mae": 155.0,
+    }
+
+
+@router.get("/inventory")
+def inventory_demo():
+    return {
+        "dates": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+        "actuals": [35, 8, 42, 12, 28],
+    }
+
+
+@router.get("/customers")
+def customers_demo():
+    return {
+        "segments": [
+            {"name": "Champions", "value": 45, "count": 18},
+            {"name": "Loyal", "value": 25, "count": 15},
+            {"name": "At Risk", "value": 15, "count": 7},
+            {"name": "New", "value": 10, "count": 5},
+        ],
+    }
+
+
 @router.post("/forecast")
 def forecast(payload: ForecastRequest, token: str = Depends(verify_token)):
     if not payload.rows:

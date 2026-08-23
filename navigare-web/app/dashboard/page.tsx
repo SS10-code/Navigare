@@ -229,7 +229,10 @@ export default function OverviewPage() {
 async function loadKPIs(): Promise<KPIData[]> {
   try {
     const data = await apiFetch("/api/forecast");
-    const totalRevenue = data.actuals?.reduce((sum: number, d: { actual?: number; value?: number }) => sum + (d.actual ?? d.value ?? 0), 0) || 0;
+    const totalRevenue = data.actuals?.reduce((sum: number, d: { actual?: number; value?: number } | number) => {
+      if (typeof d === "number") return sum + d;
+      return sum + (d.actual ?? d.value ?? 0);
+    }, 0) || 0;
     const totalOrders = Math.max(1, Math.floor(totalRevenue / 150));
     const aov = totalRevenue / totalOrders;
 
