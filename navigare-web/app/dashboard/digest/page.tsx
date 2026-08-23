@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import Card from "@/components/Card";
 import Callout from "@/components/Callout";
 import SectionHeader from "@/components/SectionHeader";
+import Icon from "@/components/Icon";
 import { apiFetch } from "@/lib/api";
-import { getFeatureTooltip } from "@/lib/features";
 
 type DigestResponse = {
   status: string;
@@ -104,14 +104,13 @@ export default function DigestPage() {
               className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple"
             />
           </div>
-      <button
-        onClick={handleSend}
-        disabled={loading || !email}
-        className="bg-purple text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-opacity-90 transition w-full disabled:opacity-50"
-        title={getFeatureTooltip("email_digest") || undefined}
-      >
-        {loading ? "Sending..." : "Send Test Digest"}
-      </button>
+          <button
+            onClick={handleSend}
+            disabled={loading || !email}
+            className="bg-purple text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-opacity-90 transition w-full disabled:opacity-50"
+          >
+            {loading ? "Sending..." : "Send Test Digest"}
+          </button>
           {saved && (
             <Callout variant="good">
               Test digest sent! Check your inbox. You&apos;ll receive your digest every week.
@@ -124,15 +123,15 @@ export default function DigestPage() {
         <SectionHeader title="What You'll Receive" />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
           {[
-            { icon: "💰", title: "Revenue Summary", desc: "This week vs last week with % change" },
-            { icon: "🚨", title: "Priority Alerts", desc: "CRISIS/CRITICAL SKUs with reorder suggestions" },
-            { icon: "👥", title: "At-Risk Customers", desc: "Who hasn't purchased in 30+ days" },
-            { icon: "🛒", title: "Top Combo", desc: "Best product pair this week" },
-            { icon: "📈", title: "7-Day Forecast", desc: "Holt-Winters revenue projection" },
-            { icon: "🔍", title: "SEO Tip", desc: "One keyword to add to your listing" },
+            { icon: "cash" as const, title: "Revenue Summary", desc: "This week vs last week with % change" },
+            { icon: "siren" as const, title: "Priority Alerts", desc: "CRISIS/CRITICAL SKUs with reorder suggestions" },
+            { icon: "users" as const, title: "At-Risk Customers", desc: "Who hasn't purchased in 30+ days" },
+            { icon: "cart" as const, title: "Top Combo", desc: "Best product pair this week" },
+            { icon: "trending" as const, title: "7-Day Forecast", desc: "Holt-Winters revenue projection" },
+            { icon: "search" as const, title: "SEO Tip", desc: "One keyword to add to your listing" },
           ].map((item, i) => (
             <div key={i} className="flex items-start gap-3 p-4 bg-bg rounded-xl border border-border">
-              <div className="text-2xl">{item.icon}</div>
+              <div className="text-2xl text-blue"><Icon name={item.icon} size={24} /></div>
               <div>
                 <div className="text-sm font-semibold text-text">{item.title}</div>
                 <div className="text-xs text-muted mt-1">{item.desc}</div>

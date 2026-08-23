@@ -5,7 +5,6 @@ import Card from "@/components/Card";
 import Callout from "@/components/Callout";
 import SectionHeader from "@/components/SectionHeader";
 import Icon from "@/components/Icon";
-import { apiFetch } from "@/lib/api";
 
 const STORE_TYPES = ["Retail", "Food/Bakery", "Service", "E-Commerce"];
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -18,48 +17,21 @@ export default function OnboardingPage() {
   const [email, setEmail] = useState("");
   const [day, setDay] = useState("Monday");
   const [time, setTime] = useState("08:00");
-  const [saving, setSaving] = useState(false);
 
   const canNext = step === 1 ? !!(storeType && storeName) : true;
 
-  useEffect(() => {
-    const draft = localStorage.getItem("navigare_draft");
-    if (draft) {
-      try {
-        const d = JSON.parse(draft);
-        setStep(d.step || 1);
-        setStoreType(d.storeType || "");
-        setStoreName(d.storeName || "");
-        setThreshold(d.threshold || 10);
-        setEmail(d.email || "");
-        setDay(d.day || "Monday");
-        setTime(d.time || "08:00");
-      } catch {}
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("navigare_draft", JSON.stringify({
-      step, storeType, storeName, threshold, email, day, time
-    }));
-  }, [step, storeType, storeName, threshold, email, day, time]);
-
   const savePreferences = async () => {
-    setSaving(true);
     try {
-      await apiFetch("/onboarding", {
+      await fetch("/api/onboarding", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ storeType, storeName, threshold, email, day, time }),
       });
       localStorage.setItem("navigare_onboarded", "true");
-      localStorage.removeItem("navigare_draft");
       alert("Setup complete! Welcome to Navigare.");
     } catch {
       localStorage.setItem("navigare_onboarded", "true");
-      localStorage.removeItem("navigare_draft");
       alert("Setup complete! Welcome to Navigare.");
-    } finally {
-      setSaving(false);
     }
   };
 
@@ -131,7 +103,7 @@ export default function OnboardingPage() {
               Download our sample CSV, fill it with your data, then upload it here.
             </Callout>
             <div className="border-2 border-dashed border-border rounded-xl p-8 text-center mb-6">
-              <div className="text-4xl mb-3">📄</div>
+              <div className="text-4xl mb-3 text-blue"><Icon name="file" size={40} /></div>
               <p className="text-sm text-muted mb-4">Drag & drop your CSV here</p>
               <input type="file" accept=".csv" className="block w-full text-sm text-muted mx-auto" />
             </div>
@@ -157,7 +129,7 @@ export default function OnboardingPage() {
               min="5"
               max="50"
               value={threshold}
-              onChange={(e) => setThreshold(Math.max(5, Math.min(50, Number(e.target.value) || 5)))}
+              onChange={(e) => setThreshold(Number(e.target.value))}
               className="w-full mb-8"
             />
             <div className="flex gap-3">
@@ -211,8 +183,8 @@ export default function OnboardingPage() {
               <button onClick={() => setStep(3)} className="flex-1 border border-border px-6 py-2.5 rounded-xl font-semibold text-muted hover:text-text transition">
                 ← Back
               </button>
-              <button onClick={savePreferences} className="flex-1 bg-purple text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-opacity-90 transition" disabled={saving}>
-                {saving ? "Saving..." : "Finish Setup"}
+              <button onClick={savePreferences} className="flex-1 bg-purple text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-opacity-90 transition">
+                Finish Setup
               </button>
             </div>
           </div>

@@ -1,10 +1,13 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import Card from "@/components/Card";
 import Callout from "@/components/Callout";
 import SectionHeader from "@/components/SectionHeader";
+import Icon from "@/components/Icon";
 import { uploadFile } from "@/lib/api";
+import { useRouter } from "next/navigation";
+import { setOnboarded } from "@/lib/auth";
 
 type UploadStatus = { type: "success" | "error"; message: string } | null;
 
@@ -29,9 +32,9 @@ function DownloadSampleCSV({ type }: { type: "transactions" | "inventory" }) {
   return (
     <button
       onClick={handleClick}
-      className="text-xs px-3 py-1.5 rounded-lg border border-border text-muted hover:text-purple hover:border-purple transition inline-flex items-center gap-1.5"
+      className="text-xs px-3 py-2 border-2 border-border text-muted hover:text-accent hover:border-accent transition no-underline"
     >
-      <span>⬇</span> Download Sample
+      <Icon name="download" size={14} className="inline mr-1" /> Sample
     </button>
   );
 }
@@ -45,7 +48,7 @@ function UploadZone({
   loading,
   label,
 }: {
-  icon: string;
+  icon: "file" | "box";
   title: string;
   file: File | null;
   onFile: (f: File) => void;
@@ -67,9 +70,9 @@ function UploadZone({
   );
 
   return (
-    <Card hover>
-      <div className="flex items-center justify-between mb-4">
-        <SectionHeader title={title} className="mt-0 mb-0" />
+    <div className="border-2 border-border bg-panel">
+      <div className="flex items-center justify-between p-4 border-b-2 border-border">
+        <h3 className="text-headline text-sm font-bold uppercase tracking-wide">{title}</h3>
         <DownloadSampleCSV type={title.includes("Sales") || title.includes("Transactions") ? "transactions" : "inventory"} />
       </div>
       <div
@@ -80,13 +83,13 @@ function UploadZone({
         onDragLeave={() => setDragActive(false)}
         onDrop={handleDrop}
         onClick={() => inputRef.current?.click()}
-        className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${
-          dragActive ? "border-purple bg-purple/5 scale-[1.01]" : "border-border hover:border-purple/40 hover:bg-purple/5"
+        className={`p-8 text-center cursor-pointer transition-colors border-l-4 ${
+          dragActive ? "border-l-accent bg-paper" : "border-l-transparent hover:bg-paper"
         }`}
       >
-        <div className={`text-4xl mb-3 transition-transform ${dragActive ? "scale-110" : ""}`}>{icon}</div>
-        <p className="text-sm text-muted mb-2">{dragActive ? "Drop your CSV here!" : "Drag & drop your CSV, or click to browse"}</p>
-        <p className="text-[11px] text-muted/60 mb-4">Max 10MB · .csv format only</p>
+        <div className="text-muted mb-3"><Icon name={icon} size={36} /></div>
+        <p className="text-body text-sm text-ink mb-1 font-medium">{dragActive ? "Drop CSV here" : "Drag & drop or click to browse"}</p>
+        <p className="text-caption text-muted text-[10px]">Max 10MB · CSV only</p>
         <input
           ref={inputRef}
           type="file"
@@ -94,27 +97,27 @@ function UploadZone({
           onChange={(e) => e.target.files?.[0] && onFile(e.target.files[0])}
           className="hidden"
         />
-        {!file && <div className="text-sm font-medium text-purple opacity-60">No file selected</div>}
+        {!file && <div className="text-xs text-muted mt-3 font-mono">No file selected</div>}
       </div>
       {file && (
-        <div className="mt-4 flex items-center justify-between gap-3 p-3 bg-bg rounded-xl border border-border animate-fade-in">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">📄</span>
+        <div className="p-4 bg-paper border-t-2 border-border flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Icon name="file" size={18} className="text-muted" />
             <div>
-              <div className="text-sm font-medium text-text">{file.name}</div>
-              <div className="text-xs text-muted">{(file.size / 1024).toFixed(1)} KB</div>
+              <div className="text-sm font-semibold text-ink">{file.name}</div>
+              <div className="text-xs text-muted font-mono">{(file.size / 1024).toFixed(1)} KB</div>
             </div>
           </div>
           <button
             onClick={onUpload}
             disabled={loading}
-            className="btn-primary text-sm disabled:opacity-50"
+            className="btn-primary text-xs"
           >
             {loading ? "Uploading..." : `Upload ${label}`}
           </button>
         </div>
       )}
-    </Card>
+    </div>
   );
 }
 
@@ -124,6 +127,23 @@ export default function UploadPage() {
   const [status, setStatus] = useState<UploadStatus>(null);
   const [txnLoading, setTxnLoading] = useState(false);
   const [invLoading, setInvLoading] = useState(false);
+  const [onboarding, setOnboarding] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const urlOnboarding = window.location.search.includes("onboarding=true") || window.location.search.includes("guest=true");
+      const cookieOnboarding = !document.cookie.split("; ").some((c) => c.startsWith("navigare_onboarded=true"));
+      setOnboarding(urlOnboarding || cookieOnboarding);
+    }
+  }, []);
+
+  const markOnboarded = () => {
+    setOnboarded(true);
+    setTimeout(() => {
+      window.location.href = "/dashboard";
+    }, 150);
+  };
 
   const handleUpload = async (file: File, type: "txn" | "inv") => {
     if (type === "txn") setTxnLoading(true);
@@ -134,10 +154,13 @@ export default function UploadPage() {
       await uploadFile(endpoint, file, "file");
       setStatus({
         type: "success",
-        message: `${type === "txn" ? "Transactions" : "Inventory"} uploaded successfully: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`,
+        message: `${type === "txn" ? "Transactions" : "Inventory"} uploaded: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`,
       });
       if (type === "txn") setTxnFile(null);
       else setInvFile(null);
+      if (onboarding) {
+        setTimeout(() => markOnboarded(), 1500);
+      }
     } catch (e) {
       setStatus({ type: "error", message: e instanceof Error ? e.message : "Upload failed" });
     } finally {
@@ -148,19 +171,27 @@ export default function UploadPage() {
 
   return (
     <div>
-      <h1 className="text-[22px] font-extrabold text-text mb-1 tracking-tight">Upload Your Data</h1>
-      <p className="text-[13.5px] text-muted mb-6">Replace the sample data with your own sales and inventory CSVs.</p>
+      <div className="mb-8">
+        <h1 className="text-display text-3xl font-bold uppercase tracking-tight mb-2">
+          {onboarding ? "Upload your data" : "Upload"}
+        </h1>
+        <p className="text-body text-sm text-muted max-w-lg">
+          {onboarding
+            ? "Upload your sales and inventory data to unlock the full dashboard. This only takes a minute."
+            : "Replace the sample data with your own sales and inventory CSVs."}
+        </p>
+      </div>
 
       {status && (
-        <Callout variant={status.type === "success" ? "good" : "danger"} className="mb-6 animate-fade-in">
+        <Callout variant={status.type === "success" ? "good" : "danger"} className="mb-6">
           {status.message}
         </Callout>
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <UploadZone
-          icon="📄"
-          title="Sales / Transactions CSV"
+          icon="file"
+          title="Sales / Transactions"
           file={txnFile}
           onFile={setTxnFile}
           onUpload={() => txnFile && handleUpload(txnFile, "txn")}
@@ -168,8 +199,8 @@ export default function UploadPage() {
           label="Transactions"
         />
         <UploadZone
-          icon="📦"
-          title="Inventory CSV"
+          icon="box"
+          title="Inventory"
           file={invFile}
           onFile={setInvFile}
           onUpload={() => invFile && handleUpload(invFile, "inv")}
@@ -178,31 +209,40 @@ export default function UploadPage() {
         />
       </div>
 
-      <Card hover>
-        <SectionHeader title="Required Column Names" />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span>📄</span>
-              <div className="text-xs font-semibold text-muted uppercase tracking-wider">Transactions</div>
+      {onboarding && (
+        <Card className="mb-8">
+          <SectionHeader title="Required columns" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <div className="text-caption text-muted mb-2">Transactions</div>
+              <code className="block bg-paper p-4 text-xs text-ink leading-relaxed border-2 border-border">
+                Transaction_Date, Transaction_ID, Customer_ID,<br />
+                Product_ID, Product_Name, Quantity, Line_Total_USD, Category
+              </code>
             </div>
-            <code className="block bg-bg p-4 rounded-xl text-xs text-text leading-relaxed border border-border">
-              Transaction_Date, Transaction_ID, Customer_ID,<br />
-              Product_ID, Product_Name, Quantity, Line_Total_USD, Category
-            </code>
-          </div>
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span>📦</span>
-              <div className="text-xs font-semibold text-muted uppercase tracking-wider">Inventory</div>
+            <div>
+              <div className="text-caption text-muted mb-2">Inventory</div>
+              <code className="block bg-paper p-4 text-xs text-ink leading-relaxed border-2 border-border">
+                Product_ID, Product_Name, Category,<br />
+                Current_Stock, Retail_Price, Cost_Price, Reorder_Level
+              </code>
             </div>
-            <code className="block bg-bg p-4 rounded-xl text-xs text-text leading-relaxed border border-border">
-              Product_ID, Product_Name, Category,<br />
-              Current_Stock, Retail_Price, Cost_Price, Reorder_Level
-            </code>
           </div>
+        </Card>
+      )}
+
+      <div className="flex items-center justify-between pt-4 border-t-2 border-border">
+        <div className="text-xs text-muted">
+          {onboarding
+            ? "Don't have your data ready? Skip to explore with sample data."
+            : "Download the sample CSVs above to see the expected format."}
         </div>
-      </Card>
+        {onboarding && (
+          <button onClick={markOnboarded} className="btn-secondary text-xs">
+            Skip for now
+          </button>
+        )}
+      </div>
     </div>
   );
 }

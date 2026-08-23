@@ -5,7 +5,6 @@ import Card from "@/components/Card";
 import Callout from "@/components/Callout";
 import SectionHeader from "@/components/SectionHeader";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
-import { isFeatureEnabled } from "@/lib/features";
 
 const DEMO_MARGINS = [
   { name: "Latte", margin: 72.1, cost: 0.6, retail: 4.75 },
@@ -25,18 +24,6 @@ export default function ProfitPage() {
   const [price, setPrice] = useState(4.75);
 
   const getMarginColor = (m: number) => m >= 40 ? "#198754" : m >= 20 ? "#FFC107" : "#DC3545";
-
-  if (!isFeatureEnabled("profit_optimizer")) {
-    return (
-      <div>
-        <h1 className="text-[22px] font-extrabold text-text mb-1 tracking-tight">Profit Margin Optimizer</h1>
-        <p className="text-[13.5px] text-muted mb-6">Gross margin per product · dead stock cost · price simulator</p>
-        <Callout variant="warn">
-          Profit optimization is disabled in guest mode. Create an account to unlock this feature.
-        </Callout>
-      </div>
-    );
-  }
 
   return (
     <div>
@@ -107,7 +94,7 @@ export default function ProfitPage() {
               max={10}
               step={0.25}
               value={price}
-              onChange={(e) => setPrice(Math.max(2, Math.min(10, Number(e.target.value) || 2)))}
+              onChange={(e) => setPrice(Number(e.target.value))}
               className="w-full"
             />
           </div>

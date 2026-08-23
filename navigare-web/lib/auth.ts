@@ -1,23 +1,29 @@
 "use client";
 
-/**
- * Check if the user is in guest mode via localStorage.
- * @returns {boolean} True if guest mode is enabled.
- */
 export const isGuestMode = (): boolean => {
   if (typeof window === "undefined") return false;
-  return localStorage.getItem("navigare_guest_mode") === "true";
+  return document.cookie.split("; ").some((c) => c.startsWith("navigare_guest_mode=true"));
 };
 
-/**
- * Enable or disable guest mode.
- * @param {boolean} enabled - Whether to enable guest mode.
- */
 export const setGuestMode = (enabled: boolean): void => {
   if (typeof window === "undefined") return;
   if (enabled) {
-    localStorage.setItem("navigare_guest_mode", "true");
+    document.cookie = "navigare_guest_mode=true; path=/; max-age=" + 7 * 24 * 60 * 60;
   } else {
-    localStorage.removeItem("navigare_guest_mode");
+    document.cookie = "navigare_guest_mode=; path=/; max-age=0";
+  }
+};
+
+export const isOnboarded = (): boolean => {
+  if (typeof window === "undefined") return false;
+  return document.cookie.split("; ").some((c) => c.startsWith("navigare_onboarded=true"));
+};
+
+export const setOnboarded = (enabled: boolean): void => {
+  if (typeof window === "undefined") return;
+  if (enabled) {
+    document.cookie = "navigare_onboarded=true; path=/; max-age=" + 30 * 24 * 60 * 60;
+  } else {
+    document.cookie = "navigare_onboarded=; path=/; max-age=0";
   }
 };

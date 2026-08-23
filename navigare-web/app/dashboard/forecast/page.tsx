@@ -7,7 +7,6 @@ import SectionHeader from "@/components/SectionHeader";
 import Icon from "@/components/Icon";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, BarChart, Bar, Cell } from "recharts";
 import { apiFetch } from "@/lib/api";
-import { isFeatureEnabled } from "@/lib/features";
 
 type ForecastData = {
   dates: string[];
@@ -103,21 +102,15 @@ export default function ForecastPage() {
 
   return (
     <div>
-       <div className="flex items-center justify-between mb-6">
-         <div>
-           <h1 className="text-[28px] font-black uppercase tracking-tight text-text mb-1">Sales Forecast</h1>
-           <p className="text-[13px] text-muted font-mono">sma, ema, and holt-winters projections</p>
-         </div>
-         {isFeatureEnabled("forecast") ? (
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-[28px] font-black uppercase tracking-tight text-text mb-1">Sales Forecast</h1>
+          <p className="text-[13px] text-muted font-mono">sma, ema, and holt-winters projections</p>
+        </div>
             <button onClick={loadData} disabled={loading} className="btn-primary flex items-center gap-2">
               {loading ? <><Icon name="loading" size={14} className="animate-spin" /> Loading...</> : <><Icon name="refresh" size={14} /> Refresh</>}
             </button>
-         ) : (
-           <Callout variant="warn" className="text-xs py-1 px-2">
-             Forecast is disabled in guest mode.
-           </Callout>
-         )}
-       </div>
+      </div>
 
       {error && (
         <Callout variant="danger" className="mb-6">
@@ -168,12 +161,12 @@ export default function ForecastPage() {
               <YAxis stroke="#8A8A93" fontSize={12} tickFormatter={(v) => `$${v}`} />
               <Tooltip />
               <Legend wrapperStyle={{ fontSize: 12 }} />
-              <Line type="monotone" dataKey="actual" stroke="#7C5CFF" strokeWidth={2} name="Actual" dot={{ r: 4, fill: "#7C5CFF" }} />
-              <Line type="monotone" dataKey="sma" stroke="#FFB800" strokeWidth={2} strokeDasharray="5 5" name="SMA-7" dot={{ r: 4, fill: "#FFB800" }} />
-              <Line type="monotone" dataKey="ema" stroke="#00FFC8" strokeWidth={2} name="EMA-7" dot={{ r: 4, fill: "#00FFC8" }} />
-              {data.hw_fitted && data.hw_fitted.length > 0 && (
-                <Line type="monotone" dataKey="hw_fitted" stroke="#00E676" strokeWidth={2} name="HW Fitted" dot={{ r: 4, fill: "#00E676" }} connectNulls />
-              )}
+               <Line type="monotone" dataKey="actual" stroke="#423A8E" strokeWidth={2} name="Actual" dot={{ r: 4, fill: "#423A8E" }} />
+               <Line type="monotone" dataKey="sma" stroke="#F5A623" strokeWidth={2} strokeDasharray="5 5" name="SMA-7" dot={{ r: 4, fill: "#F5A623" }} />
+               <Line type="monotone" dataKey="ema" stroke="#1565C0" strokeWidth={2} name="EMA-7" dot={{ r: 4, fill: "#1565C0" }} />
+               {data.hw_fitted && data.hw_fitted.length > 0 && (
+                 <Line type="monotone" dataKey="hw_fitted" stroke="#2E7D32" strokeWidth={2} name="HW Fitted" dot={{ r: 4, fill: "#2E7D32" }} connectNulls />
+               )}
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -190,7 +183,7 @@ export default function ForecastPage() {
                 <YAxis stroke="#8A8A93" fontSize={12} tickFormatter={(v) => `$${v}`} />
                 <Tooltip />
                 <Legend wrapperStyle={{ fontSize: 12 }} />
-                <Line type="monotone" dataKey="value" stroke="#00FFC8" strokeWidth={2.5} strokeDasharray="5 5" name="HW Forecast +7d" dot={{ r: 5, fill: "#00FFC8" }} />
+                <Line type="monotone" dataKey="value" stroke="#1565C0" strokeWidth={2.5} strokeDasharray="5 5" name="HW Forecast +7d" dot={{ r: 5, fill: "#1565C0" }} />
               </LineChart>
             </ResponsiveContainer>
           </div>

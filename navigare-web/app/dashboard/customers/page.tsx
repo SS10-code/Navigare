@@ -8,9 +8,8 @@ import SectionHeader from "@/components/SectionHeader";
 import Icon from "@/components/Icon";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ScatterChart, Scatter, Cell } from "recharts";
 import { apiFetch } from "@/lib/api";
-import { isFeatureEnabled } from "@/lib/features";
 
-const COLORS = ["#7C5CFF", "#00FFC8", "#4DA3FF", "#FFB800", "#00E676", "#FF3B3B"];
+const COLORS = ["#423A8E", "#1565C0", "#2E7D32", "#F5A623", "#D32F2F", "#5A5A7A"];
 
 type SegmentCounts = Record<string, number>;
 type ScatterPoint = { x: number; y: number; segment: string; size: number };
@@ -78,21 +77,15 @@ export default function CustomersPage() {
 
   return (
     <div>
-       <div className="flex items-center justify-between mb-6">
-         <div>
-           <h1 className="text-[28px] font-black uppercase tracking-tight text-text mb-1">Customer Segments</h1>
-           <p className="text-[13px] text-muted font-mono">rfm scoring — recency, frequency, monetary</p>
-         </div>
-         {isFeatureEnabled("rfm") ? (
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-[28px] font-black uppercase tracking-tight text-text mb-1">Customer Segments</h1>
+          <p className="text-[13px] text-muted font-mono">rfm scoring — recency, frequency, monetary</p>
+        </div>
             <button onClick={loadData} disabled={loading} className="btn-primary flex items-center gap-2">
               {loading ? <><Icon name="loading" size={14} className="animate-spin" /> Loading...</> : <><Icon name="refresh" size={14} /> Refresh</>}
             </button>
-         ) : (
-           <Callout variant="warn" className="text-xs py-1 px-2">
-             RFM analysis is disabled in guest mode.
-           </Callout>
-         )}
-       </div>
+      </div>
 
       {error && (
         <Callout variant="danger" className="mb-6">
@@ -101,11 +94,11 @@ export default function CustomersPage() {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-        <KPICard label="Customers" value={`${Object.values(segments).reduce((a, b) => a + b, 0) || 60}`} sub="All Stores" accent="teal" />
-        <KPICard label="Champions" value={`${segments["Champion"] ?? 0}`} sub="top buyers" accent="green" />
-        <KPICard label="Loyal" value={`${segments["Loyal"] ?? 0}`} sub="consistent" accent="purple" />
-        <KPICard label="Potential" value={`${segments["Potential"] ?? 0}`} sub="growing" accent="blue" />
-        <KPICard label="At Risk" value={`${segments["At Risk"] ?? 0}`} sub="need attention" accent="red" />
+        <KPICard label="Customers" value={`${Object.values(segments).reduce((a, b) => a + b, 0) || 60}`} sub="All Stores" accent="accent" />
+        <KPICard label="Champions" value={`${segments["Champion"] ?? 0}`} sub="top buyers" />
+        <KPICard label="Loyal" value={`${segments["Loyal"] ?? 0}`} sub="consistent" />
+        <KPICard label="Potential" value={`${segments["Potential"] ?? 0}`} sub="growing" />
+        <KPICard label="At Risk" value={`${segments["At Risk"] ?? 0}`} sub="need attention" accent="accent" />
       </div>
 
       <Callout variant="info" className="mb-6">

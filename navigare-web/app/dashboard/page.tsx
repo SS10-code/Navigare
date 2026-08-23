@@ -10,15 +10,14 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { apiFetch } from "@/lib/api";
 import { exportToCSV } from "@/lib/export";
 import Icon from "@/components/Icon";
-import { isFeatureEnabled } from "@/lib/features";
 
-const COLORS = ["#00FFC8", "#FF2E88", "#7C5CFF", "#FFB800", "#00E676", "#FF3B3B", "#4DA3FF", "#FF6B00"];
+const COLORS = ["#423A8E", "#1565C0", "#2E7D32", "#F5A623", "#D32F2F", "#5A5A7A", "#423A8E", "#1565C0"];
 
 type KPIData = {
   label: string;
   value: string;
   sub: string;
-  accent: "teal" | "green" | "purple" | "amber" | "red" | "blue";
+  accent?: "default" | "accent";
 };
 
 type RevenuePoint = { date: string; value: number };
@@ -45,11 +44,11 @@ const saveStored = (key: string, value: unknown) => {
 };
 
 const defaultKPIs: KPIData[] = [
-  { label: "Total Revenue", value: "$0", sub: "no data", accent: "teal" },
-  { label: "Total Orders", value: "0", sub: "no data", accent: "purple" },
-  { label: "Avg Order Value", value: "$0", sub: "no data", accent: "blue" },
-  { label: "Store Wellness", value: "0/100", sub: "no data", accent: "green" },
-  { label: "Priority Alerts", value: "0", sub: "no data", accent: "red" },
+  { label: "Total Revenue", value: "$0", sub: "no data", accent: "accent" },
+  { label: "Total Orders", value: "0", sub: "no data" },
+  { label: "Avg Order Value", value: "$0", sub: "no data" },
+  { label: "Store Wellness", value: "0/100", sub: "no data", accent: "accent" },
+  { label: "Priority Alerts", value: "0", sub: "no data", accent: "accent" },
 ];
 
 export default function OverviewPage() {
@@ -116,30 +115,21 @@ export default function OverviewPage() {
           <h1 className="text-[28px] font-black uppercase tracking-tight text-text mb-1">Store Overview</h1>
           <p className="text-[13px] text-muted font-mono">your retail analytics at a glance{lastUpdated && <span className="text-[11px] text-muted"> · updated {lastUpdated}</span>}</p>
         </div>
-         <div className="flex items-center gap-2">
-           {isFeatureEnabled("export") ? (
-             <button
-               onClick={() => exportToCSV("overview_products", topProducts)}
-               className="btn-secondary flex items-center gap-2"
-             >
-               <Icon name="download" size={14} /> Export CSV
-             </button>
-           ) : (
-             <button
-               className="btn-secondary flex items-center gap-2 opacity-50 cursor-not-allowed"
-               title="Export is disabled in guest mode"
-             >
-               <Icon name="download" size={14} /> Export CSV
-             </button>
-           )}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => exportToCSV("overview_products", topProducts)}
+            className="btn-secondary flex items-center gap-2"
+          >
+            <Icon name="download" size={14} /> Export CSV
+          </button>
           <button
             onClick={refresh}
             disabled={loading}
             className="btn-primary flex items-center gap-2"
           >
-             <span className={loading ? "animate-spin-slow inline-block" : ""}><Icon name="refresh" size={14} /></span> Refresh
-           </button>
-         </div>
+            {loading ? <><Icon name="loading" size={14} className="animate-spin" /> Loading...</> : <><Icon name="refresh" size={14} /> Refresh</>}
+          </button>
+        </div>
       </div>
 
       {error && (
@@ -170,10 +160,10 @@ export default function OverviewPage() {
                 <Line
                   type="monotone"
                   dataKey="value"
-                  stroke="#00FFC8"
+                  stroke="#423A8E"
                   strokeWidth={3}
-                  dot={{ r: 4, fill: "#00FFC8", stroke: "#000", strokeWidth: 1.5 }}
-                  activeDot={{ r: 7, fill: "#FF2E88", stroke: "#000", strokeWidth: 2 }}
+                  dot={{ r: 4, fill: "#423A8E", stroke: "#000", strokeWidth: 1.5 }}
+                  activeDot={{ r: 7, fill: "#D32F2F", stroke: "#000", strokeWidth: 2 }}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -258,11 +248,11 @@ async function loadKPIs(): Promise<KPIData[]> {
     } catch { /* ignore */ }
 
     return [
-      { label: "Total Revenue", value: `$${totalRevenue.toLocaleString()}`, sub: "all channels", accent: "teal" },
-      { label: "Total Orders", value: `${totalOrders}`, sub: "transactions", accent: "purple" },
-      { label: "Avg Order Value", value: `$${aov.toFixed(2)}`, sub: "per checkout", accent: "blue" },
-      { label: "Store Wellness", value: `${wellness}/100`, sub: wellness >= 70 ? "healthy" : "needs attention", accent: wellness >= 70 ? "green" : wellness >= 40 ? "amber" : "red" },
-      { label: "Priority Alerts", value: `${alerts}`, sub: "need action now", accent: "red" },
+      { label: "Total Revenue", value: `$${totalRevenue.toLocaleString()}`, sub: "all channels", accent: "accent" },
+      { label: "Total Orders", value: `${totalOrders}`, sub: "transactions" },
+      { label: "Avg Order Value", value: `$${aov.toFixed(2)}`, sub: "per checkout" },
+      { label: "Store Wellness", value: `${wellness}/100`, sub: wellness >= 70 ? "healthy" : "needs attention", accent: "accent" },
+      { label: "Priority Alerts", value: `${alerts}`, sub: "need action now", accent: "accent" },
     ];
   } catch {
     return defaultKPIs;

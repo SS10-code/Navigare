@@ -8,7 +8,7 @@ import Icon from "@/components/Icon";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { apiFetch } from "@/lib/api";
 
-const COLORS = ["#7C5CFF", "#00FFC8", "#4DA3FF", "#FFB800", "#00E676", "#FF3B3B"];
+const COLORS = ["#423A8E", "#1565C0", "#2E7D32", "#F5A623", "#D32F2F", "#5A5A7A"];
 
 type ComboRow = { pair: string; lift: number; support: number; confidence: number };
 
@@ -150,12 +150,12 @@ export default function CombosPage() {
             </thead>
             <tbody>
               {combos.map((row, i) => (
-                <tr key={i} className="border-b border-border/50 hover:bg-ink/50 transition">
+                 <tr key={i} className="border-b border-border/50 hover:bg-paper transition">
                   <td className="py-3 px-4 font-medium text-text">{row.pair}</td>
                   <td className="py-3 px-4 text-muted">--</td>
                   <td className="py-3 px-4 text-muted">{(row.support * 100).toFixed(1)}%</td>
                   <td className="py-3 px-4 text-muted">{(row.confidence * 100).toFixed(0)}%</td>
-                  <td className="py-3 px-4 font-bold" style={{ color: row.lift >= 2 ? "#00E676" : row.lift >= 1.5 ? "#00FFC8" : "#7C5CFF" }}>
+                   <td className="py-3 px-4 font-bold" style={{ color: row.lift >= 2 ? "#2E7D32" : row.lift >= 1.5 ? "#1565C0" : "#423A8E" }}>
                     {row.lift.toFixed(2)}×
                   </td>
                 </tr>

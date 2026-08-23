@@ -26,7 +26,7 @@ export type IconName =
   | "arrowUp"
   | "arrowDown"
   | "settings"
-   | "sun"
+  | "sun"
   | "bolt"
   | "loading";
 
@@ -210,7 +210,7 @@ const PATHS: Record<IconName, React.ReactNode> = {
       <path d="M12 2 L12 5 M12 19 L12 22 M2 12 L5 12 M19 12 L22 12 M4.5 4.5 L6.5 6.5 M17.5 17.5 L19.5 19.5 M19.5 4.5 L17.5 6.5 M6.5 17.5 L4.5 19.5" />
     </>
   ),
-   bolt: (
+  bolt: (
     <>
       <path d="M13 2 L5 14 L11 14 L10 22 L19 9 L13 9 Z" />
     </>
