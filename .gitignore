@@ -17,8 +17,10 @@ data/raw/
 data/clean/
 data/synthetic/
 *.csv
-*.json
 *.parquet
+counters.json
+**/counters.json
+navigare-api/routers/counters.json
 
 # Node
 node_modules/
