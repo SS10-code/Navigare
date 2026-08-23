@@ -35,7 +35,6 @@ export default function Home() {
 
         <div className="flex gap-4 justify-center mb-16">
           <Link href="/auth/login" className="btn-primary inline-block">Log In</Link>
-          <Link href="/auth/signup" className="btn-secondary inline-block">Sign Up</Link>
           <button
             onClick={handleGuestMode}
             className="btn-secondary inline-block"
