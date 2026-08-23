@@ -1,8 +1,19 @@
 import Link from "next/link";
 import Icon from "@/components/Icon";
 import { analytics } from "@/lib/analytics";
+import { useRouter } from "next/navigation";
+import { trackClient } from "@/lib/api";
 
 export default function Home() {
+  const router = useRouter();
+
+  const handleGuestMode = async () => {
+    localStorage.setItem("navigare_guest_mode", "true");
+    analytics.track("guest_session_start");
+    await trackClient();
+    router.push("/dashboard?guest=true");
+  };
+
   return (
     <div className="min-h-screen bg-ink text-text flex items-center justify-center p-6 relative overflow-hidden">
       <div className="max-w-3xl text-center relative z-10">
@@ -20,15 +31,16 @@ export default function Home() {
           one dashboard. zero fluff.
         </p>
 
-          <div className="flex gap-4 justify-center mb-16">
-            <Link href="/auth/login" className="btn-primary inline-block">Log In</Link>
-            <Link href="/dashboard" className="btn-secondary inline-block" onClick={() => {
-              if (typeof window !== "undefined") {
-                localStorage.setItem("navigare_guest_mode", "true");
-                analytics.track("guest_session_start");
-              }
-            }}>Use Without Account</Link>
-          </div>
+        <div className="flex gap-4 justify-center mb-16">
+          <Link href="/auth/login" className="btn-primary inline-block">Log In</Link>
+          <Link href="/auth/signup" className="btn-secondary inline-block">Sign Up</Link>
+          <button
+            onClick={handleGuestMode}
+            className="btn-secondary inline-block"
+          >
+            Use Without Account
+          </button>
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 text-left" id="features">
           {[

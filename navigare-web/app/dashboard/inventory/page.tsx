@@ -156,12 +156,13 @@ export default function InventoryPage() {
              </button>
            )}
            {isFeatureEnabled("inventory") ? (
-             <button
-               onClick={loadData}
-               className="btn-primary flex items-center gap-2"
-             >
-               <span className={loading ? "animate-spin-slow inline-block" : ""}><Icon name="refresh" size={14} /></span> Refresh
-             </button>
+              <button
+                onClick={loadData}
+                disabled={loading}
+                className="btn-primary flex items-center gap-2"
+              >
+                {loading ? <><Icon name="loading" size={14} className="animate-spin" /> Loading...</> : <><Icon name="refresh" size={14} /> Refresh</>}
+              </button>
            ) : (
              <Callout variant="warn" className="text-xs py-1 px-2">
                Inventory analysis is disabled in guest mode.

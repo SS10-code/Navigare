@@ -109,9 +109,9 @@ export default function ForecastPage() {
            <p className="text-[13px] text-muted font-mono">sma, ema, and holt-winters projections</p>
          </div>
          {isFeatureEnabled("forecast") ? (
-           <button onClick={loadData} className="btn-primary flex items-center gap-2">
-             <Icon name="refresh" size={14} /> Refresh
-           </button>
+            <button onClick={loadData} disabled={loading} className="btn-primary flex items-center gap-2">
+              {loading ? <><Icon name="loading" size={14} className="animate-spin" /> Loading...</> : <><Icon name="refresh" size={14} /> Refresh</>}
+            </button>
          ) : (
            <Callout variant="warn" className="text-xs py-1 px-2">
              Forecast is disabled in guest mode.

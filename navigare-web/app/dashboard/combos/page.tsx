@@ -67,8 +67,8 @@ export default function CombosPage() {
           <h1 className="text-[28px] font-black uppercase tracking-tight text-text mb-1">What Sells Together</h1>
           <p className="text-[13px] text-muted font-mono">market basket analysis — lift, confidence, support</p>
         </div>
-        <button onClick={loadData} className="btn-primary flex items-center gap-2">
-          <Icon name="refresh" size={14} /> Refresh
+        <button onClick={loadData} disabled={loading} className="btn-primary flex items-center gap-2">
+          {loading ? <><Icon name="loading" size={14} className="animate-spin" /> Loading...</> : <><Icon name="refresh" size={14} /> Refresh</>}
         </button>
       </div>
 

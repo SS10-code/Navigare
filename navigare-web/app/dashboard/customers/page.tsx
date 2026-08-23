@@ -84,9 +84,9 @@ export default function CustomersPage() {
            <p className="text-[13px] text-muted font-mono">rfm scoring — recency, frequency, monetary</p>
          </div>
          {isFeatureEnabled("rfm") ? (
-           <button onClick={loadData} className="btn-primary flex items-center gap-2">
-             <Icon name="refresh" size={14} /> Refresh
-           </button>
+            <button onClick={loadData} disabled={loading} className="btn-primary flex items-center gap-2">
+              {loading ? <><Icon name="loading" size={14} className="animate-spin" /> Loading...</> : <><Icon name="refresh" size={14} /> Refresh</>}
+            </button>
          ) : (
            <Callout variant="warn" className="text-xs py-1 px-2">
              RFM analysis is disabled in guest mode.

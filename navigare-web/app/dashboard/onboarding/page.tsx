@@ -16,10 +16,12 @@ export default function OnboardingPage() {
   const [email, setEmail] = useState("");
   const [day, setDay] = useState("Monday");
   const [time, setTime] = useState("08:00");
+  const [saving, setSaving] = useState(false);
 
   const canNext = step === 1 ? !!(storeType && storeName) : true;
 
   const savePreferences = async () => {
+    setSaving(true);
     try {
       await fetch("/api/onboarding", {
         method: "POST",
@@ -31,6 +33,8 @@ export default function OnboardingPage() {
     } catch {
       localStorage.setItem("navigare_onboarded", "true");
       alert("Setup complete! Welcome to Navigare.");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -182,8 +186,8 @@ export default function OnboardingPage() {
               <button onClick={() => setStep(3)} className="flex-1 border border-border px-6 py-2.5 rounded-xl font-semibold text-muted hover:text-text transition">
                 ← Back
               </button>
-              <button onClick={savePreferences} className="flex-1 bg-purple text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-opacity-90 transition">
-                Finish Setup
+              <button onClick={savePreferences} className="flex-1 bg-purple text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-opacity-90 transition" disabled={saving}>
+                {saving ? "Saving..." : "Finish Setup"}
               </button>
             </div>
           </div>

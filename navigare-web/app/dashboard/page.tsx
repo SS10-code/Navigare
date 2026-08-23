@@ -132,10 +132,11 @@ export default function OverviewPage() {
                <Icon name="download" size={14} /> Export CSV
              </button>
            )}
-           <button
-             onClick={refresh}
-             className="btn-primary flex items-center gap-2"
-           >
+          <button
+            onClick={refresh}
+            disabled={loading}
+            className="btn-primary flex items-center gap-2"
+          >
              <span className={loading ? "animate-spin-slow inline-block" : ""}><Icon name="refresh" size={14} /></span> Refresh
            </button>
          </div>

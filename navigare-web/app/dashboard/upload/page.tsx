@@ -122,10 +122,12 @@ export default function UploadPage() {
   const [txnFile, setTxnFile] = useState<File | null>(null);
   const [invFile, setInvFile] = useState<File | null>(null);
   const [status, setStatus] = useState<UploadStatus>(null);
-  const [loading, setLoading] = useState(false);
+  const [txnLoading, setTxnLoading] = useState(false);
+  const [invLoading, setInvLoading] = useState(false);
 
   const handleUpload = async (file: File, type: "txn" | "inv") => {
-    setLoading(true);
+    if (type === "txn") setTxnLoading(true);
+    else setInvLoading(true);
     setStatus(null);
     try {
       const endpoint = type === "txn" ? "/api/upload/transactions" : "/api/upload/inventory";
@@ -139,7 +141,8 @@ export default function UploadPage() {
     } catch (e) {
       setStatus({ type: "error", message: e instanceof Error ? e.message : "Upload failed" });
     } finally {
-      setLoading(false);
+      if (type === "txn") setTxnLoading(false);
+      else setInvLoading(false);
     }
   };
 
@@ -161,7 +164,7 @@ export default function UploadPage() {
           file={txnFile}
           onFile={setTxnFile}
           onUpload={() => txnFile && handleUpload(txnFile, "txn")}
-          loading={loading}
+          loading={txnLoading}
           label="Transactions"
         />
         <UploadZone
@@ -170,7 +173,7 @@ export default function UploadPage() {
           file={invFile}
           onFile={setInvFile}
           onUpload={() => invFile && handleUpload(invFile, "inv")}
-          loading={loading}
+          loading={invLoading}
           label="Inventory"
         />
       </div>
