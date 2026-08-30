@@ -48,3 +48,9 @@ Thumbs.db
 # Kilo
 .kilo/worktrees/
 Api Keys
+
+# Automation/Utility scripts
+utils-data.js
+analytics-helper.js
+config-check.js
+session-log.js
