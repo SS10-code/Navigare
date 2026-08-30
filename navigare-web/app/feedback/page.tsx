@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Icon from "@/components/Icon";
 import Link from "next/link";
 import { submitFeedback } from "@/lib/api";
+import { createClient } from "@/lib/supabase/client";
 
 const PLACEHOLDER_MESSAGES = new Set([
   "enter your message",
@@ -22,6 +23,17 @@ export default function Feedback() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const getUserEmail = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user?.email) {
+        setEmail(user.email);
+      }
+    };
+    getUserEmail();
+  }, []);
 
   const isPlaceholderText = (val: string) => {
     const normalized = val.trim().toLowerCase();

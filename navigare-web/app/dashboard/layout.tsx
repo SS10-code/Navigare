@@ -41,8 +41,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
         )}
         {showOnboardingBanner && (
-          <div className="bg-paper border-l-4 border-accent text-ink text-xs font-mono px-6 py-3">
-            Complete setup: upload your data or skip to continue with sample data.
+          <div className="bg-accent/20 border-l-4 border-accent text-accent px-6 py-4">
+            <div className="flex items-center gap-3">
+              <Icon name="alert" size={18} />
+              <div>
+                <span className="font-bold text-sm">DEMO DATA — Upload your CSV to see real insights.</span>
+                <span className="ml-2 text-xs opacity-90">Currently viewing sample data. All charts, KPIs, and predictions are simulations.</span>
+              </div>
+            </div>
           </div>
         )}
         <div className="sticky top-0 z-40 bg-paper border-b-2 border-border px-8 py-4">
