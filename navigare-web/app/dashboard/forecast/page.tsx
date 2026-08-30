@@ -6,7 +6,7 @@ import Callout from "@/components/Callout";
 import SectionHeader from "@/components/SectionHeader";
 import Icon from "@/components/Icon";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, BarChart, Bar, Cell } from "recharts";
-import { apiFetch } from "@/lib/api";
+import { apiFetch, isEmptyApiResponse } from "@/lib/api";
 
 type ForecastData = {
   dates: string[];
@@ -115,6 +115,12 @@ export default function ForecastPage() {
       {error && (
         <Callout variant="danger" className="mb-6">
           {error} — showing demo data.
+        </Callout>
+      )}
+
+      {data && isEmptyApiResponse(data) && !loading && !error && (
+        <Callout variant="info" className="mb-6">
+          No data available. Upload transaction data to populate this view.
         </Callout>
       )}
 

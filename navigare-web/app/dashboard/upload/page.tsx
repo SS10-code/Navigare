@@ -5,9 +5,39 @@ import Card from "@/components/Card";
 import Callout from "@/components/Callout";
 import SectionHeader from "@/components/SectionHeader";
 import Icon from "@/components/Icon";
-import { uploadFile } from "@/lib/api";
+import { uploadFile, validateCSV } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { setOnboarded } from "@/lib/auth";
+
+const PLACEHOLDER_PATTERNS = ["example", "test", "placeholder", "lorem", "n/a", "none", "todo", "fixme"];
+
+function CSVPreview({ file }: { file: File }) {
+  const [content, setContent] = useState<string | null>(null);
+  const [isInvalid, setIsInvalid] = useState(false);
+
+  useEffect(() => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const text = (e.target?.result as string) ?? "";
+      setContent(text.slice(0, 200));
+      const normalized = text.trim().toLowerCase();
+      const isEmpty = text.trim().length < 20;
+      const isPlaceholder =
+        PLACEHOLDER_PATTERNS.some((p) => normalized.includes(p)) ||
+        text.split("\n").slice(1).every((line) => line.trim() === "");
+      setIsInvalid(isEmpty || isPlaceholder);
+    };
+    reader.readAsText(file);
+  }, [file]);
+
+  if (!isInvalid) return null;
+
+  return (
+    <Callout variant="danger" className="mt-2 text-xs">
+      No data available — the CSV appears to contain placeholder or empty content.
+    </Callout>
+  );
+}
 
 type UploadStatus = { type: "success" | "error"; message: string } | null;
 
@@ -97,7 +127,10 @@ function UploadZone({
           onChange={(e) => e.target.files?.[0] && onFile(e.target.files[0])}
           className="hidden"
         />
-        {!file && <div className="text-xs text-muted mt-3 font-mono">No file selected</div>}
+         {!file && <div className="text-xs text-muted mt-3 font-mono">No file selected</div>}
+        {file && (
+          <CSVPreview file={file} />
+        )}
       </div>
       {file && (
         <div className="p-4 bg-paper border-t-2 border-border flex items-center justify-between">
@@ -188,12 +221,16 @@ export default function UploadPage() {
         </Callout>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <UploadZone
           icon="file"
           title="Sales / Transactions"
           file={txnFile}
-          onFile={setTxnFile}
+          onFile={(f) => {
+            const err = validateCSV(f);
+            if (err) setStatus({ type: "error", message: err });
+            else { setTxnFile(f); setStatus(null); }
+          }}
           onUpload={() => txnFile && handleUpload(txnFile, "txn")}
           loading={txnLoading}
           label="Transactions"
@@ -202,7 +239,11 @@ export default function UploadPage() {
           icon="box"
           title="Inventory"
           file={invFile}
-          onFile={setInvFile}
+          onFile={(f) => {
+            const err = validateCSV(f);
+            if (err) setStatus({ type: "error", message: err });
+            else { setInvFile(f); setStatus(null); }
+          }}
           onUpload={() => invFile && handleUpload(invFile, "inv")}
           loading={invLoading}
           label="Inventory"

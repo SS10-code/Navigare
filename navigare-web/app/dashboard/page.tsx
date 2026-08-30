@@ -7,7 +7,7 @@ import Callout from "@/components/Callout";
 import SectionHeader from "@/components/SectionHeader";
 import { PageLoader, KPISkeleton } from "@/components/PageLoader";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar } from "recharts";
-import { apiFetch } from "@/lib/api";
+import { apiFetch, isEmptyApiResponse } from "@/lib/api";
 import { exportToCSV } from "@/lib/export";
 import Icon from "@/components/Icon";
 
@@ -135,6 +135,12 @@ export default function OverviewPage() {
       {error && (
         <Callout variant="danger" className="mb-6">
           {error}
+        </Callout>
+      )}
+
+      {isEmptyApiResponse(kpis) && (
+        <Callout variant="info" className="mb-6">
+          No data available. Upload data to populate the dashboard.
         </Callout>
       )}
 

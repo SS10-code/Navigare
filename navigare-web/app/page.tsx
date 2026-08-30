@@ -58,6 +58,12 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <div className="border-t border-border mt-16">
+        <div className="max-w-[1200px] mx-auto px-8 py-4 flex justify-between text-xs text-muted">
+          <span>© 2026 Navigare</span>
+          <Link href="/feedback" className="text-accent hover:underline">Send Feedback</Link>
+        </div>
+      </div>
     </div>
   );
 }

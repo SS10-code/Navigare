@@ -7,7 +7,7 @@ import Callout from "@/components/Callout";
 import SectionHeader from "@/components/SectionHeader";
 import { KPISkeleton } from "@/components/PageLoader";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
-import { apiFetch } from "@/lib/api";
+import { apiFetch, isEmptyApiResponse } from "@/lib/api";
 import { exportToCSV } from "@/lib/export";
 import Icon from "@/components/Icon";
 
@@ -158,6 +158,12 @@ export default function InventoryPage() {
       {error && (
         <Callout variant="danger" className="mb-6">
           {error} — showing demo data.
+        </Callout>
+      )}
+
+      {healthData.length === 0 && !loading && !error && (
+        <Callout variant="info" className="mb-6">
+          No inventory data available. Upload your inventory CSV to populate this view.
         </Callout>
       )}
 

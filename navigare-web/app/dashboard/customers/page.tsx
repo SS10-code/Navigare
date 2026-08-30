@@ -7,7 +7,7 @@ import Callout from "@/components/Callout";
 import SectionHeader from "@/components/SectionHeader";
 import Icon from "@/components/Icon";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ScatterChart, Scatter, Cell } from "recharts";
-import { apiFetch } from "@/lib/api";
+import { apiFetch, isEmptyApiResponse } from "@/lib/api";
 
 const COLORS = ["#423A8E", "#1565C0", "#2E7D32", "#F5A623", "#D32F2F", "#5A5A7A"];
 
@@ -90,6 +90,12 @@ export default function CustomersPage() {
       {error && (
         <Callout variant="danger" className="mb-6">
           {error} — showing demo data.
+        </Callout>
+      )}
+
+      {Object.keys(segments).length === 0 && !loading && !error && (
+        <Callout variant="info" className="mb-6">
+          No customer data available. Upload transaction data to populate this view.
         </Callout>
       )}
 
