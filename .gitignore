@@ -17,7 +17,9 @@ data/raw/
 data/clean/
 data/synthetic/
 *.csv
-*.json
+counters.json
+**/counters.json
+navigare-api/routers/counters.json
 *.parquet
 
 # Node
