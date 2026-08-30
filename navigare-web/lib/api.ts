@@ -63,3 +63,48 @@ export async function getCounters() {
     return { business_clients: 0, clients: 0, total_clients: 0 };
   }
 }
+
+export async function submitFeedback(email: string, message: string) {
+  return apiFetch("/feedback", {
+    method: "POST",
+    body: JSON.stringify({ email, message }),
+  });
+}
+
+/**
+ * Checks if an API response object contains valid data.
+ * Returns true for empty, null, or all-zero responses.
+ */
+export function isEmptyApiResponse(data: unknown): boolean {
+  if (data === null || data === undefined) return true;
+  if (typeof data === "string") {
+    const trimmed = data.trim().toLowerCase();
+    return trimmed === "" || trimmed === "null" || trimmed === "undefined" || trimmed === "none";
+  }
+  if (Array.isArray(data)) return data.length === 0;
+  if (typeof data === "object") {
+    const obj = data as Record<string, unknown>;
+    const hasValues = Object.values(obj).some((v) => {
+      if (v === null || v === undefined) return false;
+      if (typeof v === "number") return v !== 0;
+      if (typeof v === "string") return v.trim() !== "" && !["0", "$0", "none", "null", "n/a"].includes(v.trim().toLowerCase().replace(/[$,]/g, ""));
+      if (Array.isArray(v)) return v.length > 0;
+      if (typeof v === "object") return !isEmptyApiResponse(v);
+      return true;
+    });
+    return !hasValues;
+  }
+  return false;
+}
+
+/**
+ * Validates CSV content to reject placeholder or empty data.
+ * Returns an error message string, or null if valid.
+ */
+export function validateCSV(file: File): string | null {
+  const validTypes = ["text/csv", "application/vnd.ms-excel", "text/plain"];
+  if (!validTypes.includes(file.type) && !file.name.endsWith(".csv")) {
+    return "Invalid file type. Only CSV files are accepted.";
+  }
+  return null;
+}

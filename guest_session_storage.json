@@ -1,0 +1,25 @@
+{
+  "cookies": [
+    {
+      "name": "navigare_guest_mode",
+      "value": "true",
+      "domain": "navigare-one.vercel.app",
+      "path": "/",
+      "expires": 1788076105.618382,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "navigare_onboarded",
+      "value": "false",
+      "domain": "navigare-one.vercel.app",
+      "path": "/",
+      "expires": 1788076105.618639,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": []
+}
