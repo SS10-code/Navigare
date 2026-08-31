@@ -5,7 +5,7 @@ import Card from "@/components/Card";
 import Callout from "@/components/Callout";
 import SectionHeader from "@/components/SectionHeader";
 import Icon from "@/components/Icon";
-import { uploadFile } from "@/lib/api";
+import { uploadFile, apiFetch } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { setOnboarded } from "@/lib/auth";
 
@@ -137,8 +137,11 @@ export default function UploadPage() {
     }
   }, []);
 
-  const markOnboarded = () => {
+  const markOnboarded = async () => {
     setOnboarded(true);
+    try {
+      await apiFetch("/counters/onboarded", { method: "POST" });
+    } catch {}
     setTimeout(() => {
       window.location.href = "/dashboard";
     }, 150);
