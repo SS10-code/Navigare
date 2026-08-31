@@ -1,5 +1,5 @@
 """
-Counters router — tracks business clients and regular clients in Supabase.
+Counters router — tracks business clients, regular clients, and onboarded users in Supabase.
 """
 
 import os
@@ -37,7 +37,7 @@ async def init_counters():
             await client.post(
                 f"{SUPABASE_URL}/rest/v1/counters",
                 headers=HEADERS,
-                json={"id": COUNTERS_ID, "business_clients": 0, "clients": 0},
+                json={"id": COUNTERS_ID, "business_clients": 0, "clients": 0, "onboarded": 0},
             )
 
 
@@ -51,10 +51,10 @@ async def get_counters() -> dict:
         )
         resp.raise_for_status()
         data = resp.json()
-        return data[0] if data else {"business_clients": 0, "clients": 0}
+        return data[0] if data else {"business_clients": 0, "clients": 0, "onboarded": 0}
 
 
-async def update_counters(business_clients: int = None, clients: int = None) -> dict:
+async def update_counters(business_clients: int = None, clients: int = None, onboarded: int = None) -> dict:
     """Update counters in Supabase."""
     await init_counters()
     patch = {}
@@ -62,6 +62,8 @@ async def update_counters(business_clients: int = None, clients: int = None) -> 
         patch["business_clients"] = business_clients
     if clients is not None:
         patch["clients"] = clients
+    if onboarded is not None:
+        patch["onboarded"] = onboarded
 
     async with httpx.AsyncClient() as client:
         resp = await client.patch(
@@ -71,7 +73,7 @@ async def update_counters(business_clients: int = None, clients: int = None) -> 
         )
         resp.raise_for_status()
         data = resp.json()
-        return data[0] if data else {"business_clients": 0, "clients": 0}
+        return data[0] if data else {"business_clients": 0, "clients": 0, "onboarded": 0}
 
 
 @router.get("/counters")
@@ -80,6 +82,7 @@ async def get_counters_endpoint():
     return {
         "business_clients": counters.get("business_clients", 0),
         "clients": counters.get("clients", 0),
+        "onboarded": counters.get("onboarded", 0),
         "total_clients": counters.get("business_clients", 0) + counters.get("clients", 0),
     }
 
@@ -100,9 +103,17 @@ async def increment_client():
     return {"clients": new_val}
 
 
+@router.post("/counters/onboarded")
+async def increment_onboarded():
+    counters = await get_counters()
+    new_val = counters.get("onboarded", 0) + 1
+    await update_counters(onboarded=new_val)
+    return {"onboarded": new_val}
+
+
 @router.post("/counters/reset")
 async def reset_counters():
     if not ADMIN_TOKEN:
         raise HTTPException(status_code=404, detail="Not found")
-    await update_counters(business_clients=0, clients=0)
+    await update_counters(business_clients=0, clients=0, onboarded=0)
     return {"status": "reset"}
