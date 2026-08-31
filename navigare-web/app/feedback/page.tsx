@@ -141,7 +141,7 @@ export default function Feedback() {
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
-                  <Icon name="loading" size={14} className="animate-spin" />
+                  <Icon name="refresh" size={14} className="animate-spin" />
                   Sending...
                 </span>
               ) : success ? (
