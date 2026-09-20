@@ -1,0 +1,125 @@
+Slide 1: Problem & Mission
+
+The Ops Person Small Businesses Can't Afford
+
+The Operational Burden:
+Small business owners spend 30-50% of their time on admin - tracking finances, managing inventory, making routine decisions. No dedicated ops staff, no analytics tools at their scale, no time to learn enterprise software like Shopify or Square.
+
+The Navigare Solution:
+Navigare automates the analytics that would otherwise require hiring a dedicated ops person. One dashboard: inventory health, sales forecast, customer segments, SEO audit, market basket - all in one place. Upload two CSVs and get actionable insights in seconds.
+
+Inspired by a Streamlit prototype (src/dashboard.py) that proved the concept worked but lacked production readiness, user authentication, and a polished UI.
+
+Visual: docs/screenshots/nav-home.png
+
+
+Slide 2: How Navigare Works
+
+User Flow
+
+1. Upload: Drag-and-drop Sales + Inventory CSV files
+2. Process: Backend validates, stores, and runs analysis pipelines
+3. See: Dashboard with real-time KPIs, charts, and alerts
+
+CSV Upload -> Validation -> Database -> Analysis -> Dashboard
+
+
+Slide 3: Architecture
+
+Combined: Building the Site + Under the Hood
+
+VERCEL (Next.js 14)          RENDER (FastAPI Python 3.11)       SUPABASE (Postgres + Auth)
+- 11 pages                   - 8 routers                        - Postgres (data)
+- Guest Mode                 - Rate Limiter                     - Auth (JWT)
+- Supabase Auth              - Feedback Email                   - Storage (CSV uploads)
+- Proxy routes               - Auth middleware
+
+Frontend --proxy--> Backend --data--> Database
+
+Built from prototype to web app: Rebuilt Streamlit prototype as a Next.js + FastAPI web app. Created reusable components (KPICard, Callout, Sidebar, Icon). Connected frontend -> proxy -> backend -> database into one seamless experience.
+
+
+Slide 4: Deployment Journey
+
+From Code to Live Website
+
+Architecture: Designed Vercel -> Render -> Supabase stack. Free-tier deployment at zero cost.
+Development: Built 11 pages, 8 API endpoints, auth system. Full CRUD flow from upload to dashboard.
+Testing: Local testing with uvicorn + next dev, Playwright screenshots. All endpoints verified via curl + tsc --noEmit.
+Deployment: Pushed to GitHub -> auto-deploy to Render + Vercel. Live at navigare-one.vercel.app.
+
+Key challenge: Render Docker build failed because Dockerfile had "COPY .env ." but .env is gitignored. Fix: removed the line, moved all config to Render environment variables. Also required manual redeploy trigger.
+
+
+Slide 5: Live Demo
+
+Navigare in Action
+
+1. Upload data: Click "Use Without Account" -> Land on Upload page -> Upload CSV files
+2. Process: Backend validates CSV, computes H(x) scores, RFM segments, EMA forecasts
+3. Output: Dashboard with 5 KPIs, revenue chart, channel split, top products, all interactive
+
+Visual: docs/screenshots/nav-dashboard.png
+
+Try it live: navigare-one.vercel.app (admin: /admin, password: navigare_admin_2026)
+
+
+Slide 6: Key Takeaways & Impact
+
+What We Have Built
+
+Documented accomplishment: A full-stack retail analytics platform with 11 pages, 8 API endpoints, Supabase auth, guest mode, and email-based feedback - all deployed and accessible.
+
+Documented functionality: Upload CSV -> Auto-process -> Dashboard with inventory health, customer segments, sales forecast, market basket, SEO audit, profit margins. Admin panel for monitoring. Feedback form for user input.
+
+Current impact: Fully functional locally at localhost:3000 with live backend at localhost:8000. Vercel frontend deployed (navigare-one.vercel.app). Handles 1,066 transactions, 25 inventory items, 60 customer records in demo dataset.
+
+
+Slide 7: What We Learned
+
+Engineering Lessons
+
+Docker: Builds fail silently when gitignored files are referenced in Dockerfile. Always test docker build locally. python-dotenv does not work in containers - use env vars exclusively.
+
+Design: "DEMO DATA" watermark essential - users can't tell if data is real or sample without a persistent banner on every page.
+
+Deployment: Auto-deploy requires active (non-suspended) services. Persistent background processes prevent crashes between sessions.
+
+Collaboration: Git worktrees enable clean parallel feature development with consistent .gitignore fixes synced across branches.
+
+
+Slide 8: Feedback
+
+What People Think
+
+"[Actual documented quote]"
+
+"[Actual documented quote]"
+
+What we changed based on feedback:
+
+Added DEMO DATA watermark on all dashboard pages (visible when no data uploaded)
+Implemented persistent background processes to prevent service crashes
+Added CSV content validation to reject placeholder/empty uploads before processing
+
+
+Slide 9: Future Roadmap
+
+3 Actionable Strategy Cards
+
+Competitor Benchmarking: Compare business metrics against industry averages. In-progress.
+
+Automated Digests: Weekly email reports summarizing key performance indicators. Planned.
+
+GBP Integration: Google Business Profile integration for review monitoring and local SEO. Planned.
+
+Long-term goal: From prototype (1 store) to platform (thousands of stores), with weekly email digests and mobile alerts.
+
+
+Slide 10: Q&A
+
+Questions?
+
+Navigare
+navigare-one.vercel.app
+github.com/SS10-code/Navigare
