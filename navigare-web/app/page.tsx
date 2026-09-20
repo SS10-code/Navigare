@@ -13,10 +13,8 @@ export default function Home() {
     document.cookie = "navigare_guest_mode=true; path=/; max-age=" + 7 * 24 * 60 * 60;
     document.cookie = "navigare_onboarded=false; path=/; max-age=" + 7 * 24 * 60 * 60;
     analytics.track("guest_session_start");
-    await trackClient();
-    setTimeout(() => {
-      window.location.href = "/dashboard/upload?onboarding=true&guest=true";
-    }, 100);
+    trackClient().catch(() => {});
+    window.location.href = "/dashboard/upload?onboarding=true&guest=true";
   };
 
   return (
