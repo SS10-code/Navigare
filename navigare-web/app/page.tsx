@@ -13,10 +13,8 @@ export default function Home() {
     document.cookie = "navigare_guest_mode=true; path=/; max-age=" + 7 * 24 * 60 * 60;
     document.cookie = "navigare_onboarded=false; path=/; max-age=" + 7 * 24 * 60 * 60;
     analytics.track("guest_session_start");
-    await trackClient();
-    setTimeout(() => {
-      window.location.href = "/dashboard/upload?onboarding=true&guest=true";
-    }, 100);
+    trackClient().catch(() => {});
+    window.location.href = "/dashboard/upload?onboarding=true&guest=true";
   };
 
   return (
@@ -56,6 +54,12 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+      <div className="border-t border-border mt-16">
+        <div className="max-w-[1200px] mx-auto px-8 py-4 flex justify-between text-xs text-muted">
+          <span>© 2026 Navigare</span>
+          <Link href="/feedback" className="text-accent hover:underline">Send Feedback</Link>
         </div>
       </div>
     </div>
